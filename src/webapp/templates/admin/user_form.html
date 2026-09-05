@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, checkbox %}
+{% block title %}{{ 'Edit' if user else 'Add' }} user — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="container-narrow">
+  <div class="page-head"><div>
+    <h1>{{ 'Edit account' if user else 'Add user account' }}</h1>
+    <p class="lede">{{ 'Update this account. Leave the password blank to keep the existing one.' if user else 'Create an account and set a temporary password.' }}</p>
+  </div></div>
+
+  <div class="card"><div class="card-body">
+    <form method="post" novalidate data-guard>
+      {{ form.hidden_tag() }}
+      <div class="form-grid">
+        {{ field(form.full_name) }}
+        {{ field(form.email) }}
+        {{ field(form.role) }}
+        {{ field(form.facility) }}
+      </div>
+      <div class="fieldset-block">
+        <p class="fieldset-title">Access and credentials</p>
+        {{ field(form.password) }}
+        {{ checkbox(form.must_change_password) }}
+        {{ checkbox(form.is_active_account) }}
+      </div>
+      <div class="form-actions">
+        {{ form.submit(class="btn btn-primary") }}
+        <a class="btn btn-secondary" href="{{ url_for('admin.users') }}">Cancel</a>
+      </div>
+    </form>
+  </div></div>
+
+  <div class="card">
+    <div class="card-head"><h2>What each role can do</h2></div>
+    <div class="card-body">
+      <table class="data" style="min-width:0;">
+        <tbody>
+        {% for r in Role.ALL %}
+        <tr><td class="strong nowrap">{{ Role.LABELS[r] }}</td><td class="small muted">{{ Role.DESCRIPTIONS[r] }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

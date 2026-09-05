@@ -1,0 +1,119 @@
+{
+  "accuracy": 0.8697330331296237,
+  "balanced_accuracy": 0.7393622798739339,
+  "macro_precision": 0.745489613347678,
+  "macro_recall": 0.7393622798739339,
+  "macro_f1": 0.7377073880641484,
+  "weighted_f1": 0.8716751602848858,
+  "confusion_matrix": [
+    [
+      4341,
+      0,
+      0,
+      0
+    ],
+    [
+      43,
+      609,
+      478,
+      0
+    ],
+    [
+      19,
+      270,
+      208,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      250
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "Normal or No Typhoid",
+    "Acute Typhoid Fever",
+    "Relapsing Typhoid",
+    "Complicated Typhoid"
+  ],
+  "target_mode": "multiclass",
+  "n_test": 6218,
+  "classification_report": {
+    "Normal or No Typhoid": {
+      "precision": 0.9859186918010447,
+      "recall": 1.0,
+      "f1-score": 0.9929094236047575,
+      "support": 4341.0
+    },
+    "Acute Typhoid Fever": {
+      "precision": 0.6928327645051194,
+      "recall": 0.5389380530973451,
+      "f1-score": 0.6062717770034843,
+      "support": 1130.0
+    },
+    "Relapsing Typhoid": {
+      "precision": 0.3032069970845481,
+      "recall": 0.41851106639839036,
+      "f1-score": 0.3516483516483517,
+      "support": 497.0
+    },
+    "Complicated Typhoid": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 250.0
+    },
+    "accuracy": 0.8697330331296237,
+    "macro avg": {
+      "precision": 0.745489613347678,
+      "recall": 0.7393622798739339,
+      "f1-score": 0.7377073880641484,
+      "support": 6218.0
+    },
+    "weighted avg": {
+      "precision": 0.8786535771228917,
+      "recall": 0.8697330331296237,
+      "f1-score": 0.8716751602848858,
+      "support": 6218.0
+    }
+  },
+  "latency": {
+    "single_record_ms": 19.04,
+    "batch_records": 2000,
+    "batch_seconds": 8.351,
+    "records_per_second": 239.5
+  },
+  "subgroup_evaluation": {
+    "column": "Location",
+    "rows": [
+      {
+        "subgroup": "Endemic",
+        "n": 2063,
+        "accuracy": 0.8682,
+        "balanced_accuracy": 0.7391,
+        "macro_precision": 0.7451,
+        "macro_recall": 0.7391,
+        "macro_f1": 0.7396
+      },
+      {
+        "subgroup": "Rural",
+        "n": 2090,
+        "accuracy": 0.8651,
+        "balanced_accuracy": 0.7484,
+        "macro_precision": 0.7509,
+        "macro_recall": 0.7484,
+        "macro_f1": 0.7414
+      },
+      {
+        "subgroup": "Urban",
+        "n": 2065,
+        "accuracy": 0.876,
+        "balanced_accuracy": 0.7279,
+        "macro_precision": 0.738,
+        "macro_recall": 0.7279,
+        "macro_f1": 0.7288
+      }
+    ]
+  }
+}

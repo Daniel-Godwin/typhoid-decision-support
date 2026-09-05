@@ -1,0 +1,74 @@
+# Render blueprint.
+#
+# Sized for the FREE compute plan: 0.1 CPU and 512 MB RAM.
+#
+#   * One gunicorn worker. The process holds pandas, scikit-learn and the
+#     trained model and measures ~225 MB resident; two workers would exceed
+#     512 MB and be OOM-killed. Concurrency comes from threads instead.
+#   * `flask bootstrap` runs from the start command, not `preDeployCommand` —
+#     pre-deploy commands require a paid instance type. It is idempotent, so
+#     running it on every start and restart is safe.
+#   * Only the default (binary) model is preloaded. The 11 MB four-class
+#     artefact loads on first use.
+#
+# After creating the blueprint, set BOOTSTRAP_ADMIN_EMAIL and
+# BOOTSTRAP_ADMIN_PASSWORD in the dashboard. Everything else is set here.
+services:
+  - type: web
+    name: typhoid-decision-support
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: >-
+      python -m flask bootstrap &&
+      gunicorn wsgi:app --workers 1 --threads 4 --timeout 180
+      --graceful-timeout 30 --access-logfile - --error-logfile -
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_APP
+        value: wsgi.py
+      - key: PYTHONPATH
+        value: /opt/render/project/src/src
+      - key: LOG_TO_STDOUT
+        value: "true"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: RATELIMIT_ENABLED
+        value: "true"
+      # Cost-optimal cut-off from reports/THRESHOLD_ANALYSIS.md.
+      - key: TRIAGE_THRESHOLD
+        value: "0.08"
+      - key: DEFAULT_TARGET_MODE
+        value: binary
+      - key: DEFAULT_FEATURE_POLICY
+        value: routine
+      - key: PRELOAD_ALL_MODELS
+        value: "false"
+      - key: SESSION_LIFETIME_MINUTES
+        value: "60"
+      # Generated once by Render and kept for the life of the service.
+      # A changing SECRET_KEY invalidates every session on restart.
+      - key: SECRET_KEY
+        generateValue: true
+      # Supplied automatically from the database below.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: typhoid-db
+          property: connectionString
+      # Set these two in the Render dashboard before the first deploy.
+      - key: BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
+
+databases:
+  - name: typhoid-db
+    plan: free
+    region: frankfurt
+    databaseName: typhoid
+    user: typhoid

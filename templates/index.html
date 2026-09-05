@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typhoid SVM Decision Support</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <span class="mark">TS</span>
+      <div>
+        <h1>Typhoid Diagnostic Decision Support</h1>
+        <p>Support Vector Machine classifier &middot; research prototype</p>
+      </div>
+    </div>
+    {% if model_card and model_card.meta %}
+    <div class="badge">
+      <span>{{ model_card.meta.best_params.kernel | upper }} kernel</span>
+      <span>C = {{ model_card.meta.best_params.C }}</span>
+      {% if model_card.metrics.accuracy %}<span>Test accuracy {{ '%.2f'|format(model_card.metrics.accuracy * 100) }}%</span>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <h2>Patient assessment</h2>
+      <p>All fields are required. Options are restricted to the categories present in the training data.</p>
+    </div>
+
+    {% if errors %}
+    <div class="alert error">
+      <strong>Could not generate a prediction.</strong>
+      <ul>
+        {% for field, message in errors.items() %}
+        <li>{% if field.startswith('_') %}{{ message }}{% else %}<b>{{ field }}</b>: {{ message }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" id="assessment">
+      <input type="hidden" name="target_mode" value="{{ target_mode }}">
+
+      <div class="mode-row">
+        <span class="label">Model</span>
+        <div class="segmented">
+          <button type="submit" name="target_mode" value="binary" class="{{ 'on' if target_mode == 'binary' }}">Diagnosis (Typhoid / No Typhoid)</button>
+          <button type="submit" name="target_mode" value="multiclass" class="{{ 'on' if target_mode == 'multiclass' }}">Severity stratification</button>
+        </div>
+      </div>
+
+      {% for group in groups %}
+      <fieldset>
+        <legend>{{ group.title }}</legend>
+        <div class="grid">
+          {% for f in group.fields %}
+          <label class="field {{ 'invalid' if errors and f.name in errors }}">
+            <span class="name">{{ f.name }}</span>
+            {% if f.kind == 'numeric' %}
+              <input type="number" step="any" name="{{ f.name }}" {{ '' if f.optional else 'required' }}
+                     value="{{ submitted.get(f.name, '') }}"
+                     placeholder="{{ '%g'|format(reference[f.name]) }}">
+              <span class="hint">{{ f.help }}{% if f.range %} &middot; observed {{ '%g'|format(f.range.min) }}&ndash;{{ '%g'|format(f.range.max) }}{% endif %}{% if f.optional %} &middot; optional{% endif %}</span>
+            {% else %}
+              <select name="{{ f.name }}" {{ '' if f.optional else 'required' }}>
+                <option value="" disabled {{ 'selected' if not submitted.get(f.name) }}>Select&hellip;</option>
+                {% if f.optional %}
+                <option value="Not recorded" {{ 'selected' if submitted.get(f.name) == 'Not recorded' }}>Not recorded</option>
+                {% endif %}
+                {% for opt in f.options %}
+                <option value="{{ opt }}" {{ 'selected' if submitted.get(f.name) == opt }}>{{ opt }}</option>
+                {% endfor %}
+              </select>
+              <span class="hint">{{ f.help }}{% if f.optional %}Not always assessed &mdash; &ldquo;Not recorded&rdquo; is accepted{% endif %}</span>
+            {% endif %}
+            {% if errors and f.name in errors %}<span class="err">{{ errors[f.name] }}</span>{% endif %}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <div class="actions">
+        <button type="submit" class="primary">Run prediction</button>
+        <button type="button" class="ghost" id="fill">Load reference values</button>
+        <button type="reset" class="ghost">Clear</button>
+      </div>
+    </form>
+  </section>
+
+  <aside class="side">
+    {% if result %}
+    {% set positive = result.prediction not in ['No Typhoid', 'Normal or No Typhoid'] %}
+    <section class="panel result {{ 'positive' if positive else 'negative' }}">
+      <div class="panel-head"><h2>Prediction</h2></div>
+      <p class="verdict">{{ result.prediction }}</p>
+      {% if result.confidence %}
+      <div class="meter">
+        <div class="bar" style="width: {{ (result.confidence * 100) | round(1) }}%"></div>
+      </div>
+      <p class="conf">Model confidence {{ '%.1f'|format(result.confidence * 100) }}%</p>
+      {% endif %}
+
+      {% if result.probabilities %}
+      <table class="probs">
+        <tbody>
+        {% for cls, p in result.probabilities | dictsort(by='value', reverse=true) %}
+        <tr><th>{{ cls }}</th><td>{{ '%.1f'|format(p * 100) }}%</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+
+      {% if result.warnings %}
+      <div class="alert warn">
+        <strong>Out-of-range input</strong>
+        <ul>{% for f, m in result.warnings.items() %}<li><b>{{ f }}</b> {{ m }}</li>{% endfor %}</ul>
+      </div>
+      {% endif %}
+
+      <p class="disclaimer">Decision-support output only. It does not replace blood culture,
+      clinical judgement or confirmatory testing.</p>
+    </section>
+
+    {% if result.explanation and result.explanation.contributions %}
+    <section class="panel">
+      <div class="panel-head">
+        <h2>What drove this prediction</h2>
+        <p>Change in predicted probability of <b>{{ result.explanation.positive_label }}</b> attributable to each finding.</p>
+      </div>
+      <ul class="contrib">
+        {% for c in result.explanation.contributions %}
+        {% set pct = (c.contribution * 100) %}
+        {% set neutral = pct|abs < 0.05 %}
+        {% set dir = 'flat' if neutral else ('up' if pct > 0 else 'down') %}
+        <li>
+          <div class="crow">
+            <span class="cname">{{ c.feature }}</span>
+            <span class="cval">{{ c.value }}</span>
+            <span class="cnum {{ dir }}">{{ 'no effect' if neutral else '%+.1f pts'|format(pct) }}</span>
+          </div>
+          <div class="track">
+            <div class="mid"></div>
+            {% if not neutral %}
+            <div class="fill {{ dir }}"
+                 style="width: {{ [pct|abs, 50] | min }}%; {{ 'left:50%' if pct > 0 else 'right:50%' }}"></div>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="hint">Compared against a reference patient carrying the population median /
+      most frequent value for every field.</p>
+    </section>
+    {% endif %}
+    {% else %}
+    <section class="panel empty">
+      <div class="panel-head"><h2>No prediction yet</h2></div>
+      <p>Complete the assessment and run the model. The result, its confidence and the
+      findings that drove it will appear here.</p>
+    </section>
+    {% endif %}
+
+    {% if model_card and model_card.metrics %}
+    <section class="panel">
+      <div class="panel-head"><h2>Model card</h2></div>
+      <table class="kv">
+        <tr><th>Target</th><td>{{ model_card.meta.target_mode }}</td></tr>
+        <tr><th>Kernel</th><td>{{ model_card.meta.best_params.kernel }}</td></tr>
+        <tr><th>C</th><td>{{ model_card.meta.best_params.C }}</td></tr>
+        {% if model_card.meta.best_params.gamma %}<tr><th>Gamma</th><td>{{ model_card.meta.best_params.gamma }}</td></tr>{% endif %}
+        <tr><th>Training records</th><td>{{ '{:,}'.format(model_card.meta.n_train) }}</td></tr>
+        <tr><th>Test records</th><td>{{ '{:,}'.format(model_card.meta.n_test) }}</td></tr>
+        {% if model_card.metrics.accuracy %}<tr><th>Accuracy</th><td>{{ '%.4f'|format(model_card.metrics.accuracy) }}</td></tr>{% endif %}
+        {% if model_card.metrics.balanced_accuracy %}<tr><th>Balanced accuracy</th><td>{{ '%.4f'|format(model_card.metrics.balanced_accuracy) }}</td></tr>{% endif %}
+        {% if model_card.metrics.macro_f1 %}<tr><th>Macro F1</th><td>{{ '%.4f'|format(model_card.metrics.macro_f1) }}</td></tr>{% endif %}
+        {% if model_card.metrics.sensitivity %}<tr><th>Sensitivity</th><td>{{ '%.4f'|format(model_card.metrics.sensitivity) }}</td></tr>{% endif %}
+        {% if model_card.metrics.specificity %}<tr><th>Specificity</th><td>{{ '%.4f'|format(model_card.metrics.specificity) }}</td></tr>{% endif %}
+        {% if model_card.metrics.roc_auc %}<tr><th>ROC AUC</th><td>{{ '%.4f'|format(model_card.metrics.roc_auc) }}</td></tr>{% endif %}
+      </table>
+      <p class="hint">Blood Culture Result and Complications are excluded from the feature
+      set so the model is evaluated as an early decision-support tool.</p>
+    </section>
+    {% endif %}
+  </aside>
+</main>
+
+<footer class="wrap foot">
+  <span>Typhoid SVM research prototype</span>
+  <span>JSON API: <code>POST /api/predict</code> &middot; <code>GET /api/schema</code> &middot; <code>GET /health</code></span>
+</footer>
+
+<script>
+  const REFERENCE = {{ reference | tojson }};
+  document.getElementById('fill').addEventListener('click', () => {
+    const form = document.getElementById('assessment');
+    for (const [k, v] of Object.entries(REFERENCE)) {
+      const el = form.elements[k];
+      if (el) el.value = v;
+    }
+  });
+</script>
+</body>
+</html>

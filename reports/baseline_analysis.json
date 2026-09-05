@@ -1,0 +1,158 @@
+{
+  "test_records": 6218,
+  "baselines": [
+    {
+      "model": "Majority class ('No Typhoid')",
+      "accuracy": 0.6981,
+      "balanced_accuracy": 0.5,
+      "macro_precision": 0.3491,
+      "macro_recall": 0.5,
+      "macro_f1": 0.4111
+    },
+    {
+      "model": "Rule: Fever Duration (Days) >= 1",
+      "accuracy": 0.9875,
+      "balanced_accuracy": 0.9792,
+      "macro_precision": 0.9912,
+      "macro_recall": 0.9792,
+      "macro_f1": 0.9849
+    },
+    {
+      "model": "Optimised SVM (routine policy)",
+      "accuracy": 0.9881,
+      "balanced_accuracy": 0.9803,
+      "macro_precision": 0.9916,
+      "macro_recall": 0.9803,
+      "macro_f1": 0.9857
+    },
+    {
+      "model": "Optimised SVM (fever duration removed)",
+      "accuracy": 0.6012,
+      "balanced_accuracy": 0.5485,
+      "macro_precision": 0.545,
+      "macro_recall": 0.5485,
+      "macro_f1": 0.5454
+    }
+  ],
+  "baselines_multiclass": [
+    {
+      "model": "Majority class",
+      "accuracy": 0.6981,
+      "balanced_accuracy": 0.25,
+      "macro_precision": 0.1745,
+      "macro_recall": 0.25,
+      "macro_f1": 0.2056
+    },
+    {
+      "model": "Rules: WBC > 11,000 -> Complicated; fever >= 1 -> Acute",
+      "accuracy": 0.9133,
+      "balanced_accuracy": 0.7396,
+      "macro_precision": 0.6709,
+      "macro_recall": 0.7396,
+      "macro_f1": 0.7002
+    },
+    {
+      "model": "Optimised SVM (four-class)",
+      "accuracy": 0.8697,
+      "balanced_accuracy": 0.7394,
+      "macro_precision": 0.7455,
+      "macro_recall": 0.7394,
+      "macro_f1": 0.7377
+    }
+  ],
+  "wbc_contingency": {
+    "Acute Typhoid Fever": {
+      "<= 11,000": 5649,
+      "> 11,000": 0
+    },
+    "Complicated Typhoid": {
+      "<= 11,000": 0,
+      "> 11,000": 1251
+    },
+    "Normal or No Typhoid": {
+      "<= 11,000": 21701,
+      "> 11,000": 0
+    },
+    "Relapsing Typhoid": {
+      "<= 11,000": 2486,
+      "> 11,000": 0
+    }
+  },
+  "complicated_wbc_range": [
+    12013.0,
+    19994.0
+  ],
+  "other_class_wbc_range": [
+    3000.0,
+    11000.0
+  ],
+  "fever_rule_confusion_matrix": [
+    [
+      4341,
+      0
+    ],
+    [
+      78,
+      1799
+    ]
+  ],
+  "fever_rule_labels": [
+    "No Typhoid",
+    "Typhoid"
+  ],
+  "fever_duration_contingency": {
+    "No Typhoid": {
+      "0 days": 21701,
+      ">= 1 day": 0
+    },
+    "Typhoid": {
+      "0 days": 405,
+      ">= 1 day": 8981
+    }
+  },
+  "records_with_fever_ge_1": 8981,
+  "typhoid_among_fever_ge_1": 8981,
+  "typhoid_with_zero_fever": 405,
+  "top_associations": [
+    {
+      "feature": "Blood Culture Result",
+      "statistic": "Cramer's V",
+      "value": 0.9999
+    },
+    {
+      "feature": "Fever Duration (Days)",
+      "statistic": "point-biserial r",
+      "value": 0.8138
+    },
+    {
+      "feature": "Complications",
+      "statistic": "Cramer's V",
+      "value": 0.2685
+    },
+    {
+      "feature": "White Blood Cell Count",
+      "statistic": "point-biserial r",
+      "value": 0.1948
+    },
+    {
+      "feature": "Water Source Type",
+      "statistic": "Cramer's V",
+      "value": 0.0132
+    },
+    {
+      "feature": "Location",
+      "statistic": "Cramer's V",
+      "value": 0.012
+    },
+    {
+      "feature": "Neurological Symptoms",
+      "statistic": "Cramer's V",
+      "value": 0.0091
+    },
+    {
+      "feature": "Ongoing Infection in Society",
+      "statistic": "Cramer's V",
+      "value": 0.0073
+    }
+  ]
+}

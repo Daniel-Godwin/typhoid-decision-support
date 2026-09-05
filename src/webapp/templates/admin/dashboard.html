@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Administration — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Administration</h1><p class="lede">System-wide overview of users, activity and model availability.</p></div>
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="{{ url_for('admin.logs') }}">Activity log</a>
+    <a class="btn btn-primary" href="{{ url_for('admin.user_new') }}">Add user</a>
+  </div>
+</div>
+
+<div class="grid grid-4 mb-5">
+  <div class="stat accent"><p class="label">User accounts</p><p class="value">{{ stats.users }}</p><p class="sub">{{ stats.active_users }} enabled</p></div>
+  <div class="stat"><p class="label">Assessments</p><p class="value">{{ stats.assessments }}</p><p class="sub">{{ stats.assessments_30d }} in last 30 days</p></div>
+  <div class="stat warn"><p class="label">Flagged for testing</p><p class="value">{{ stats.flagged }}</p><p class="sub">At or above threshold</p></div>
+  <div class="stat {{ 'danger' if stats.failed_logins_30d else '' }}"><p class="label">Failed sign-ins</p><p class="value">{{ stats.failed_logins_30d }}</p><p class="sub">Last 30 days</p></div>
+</div>
+
+<div class="split">
+  <div class="card">
+    <div class="card-head">
+      <div><h2>Recent activity</h2><p>The twelve most recent recorded events.</p></div>
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.logs') }}">View all</a>
+    </div>
+    <div class="card-body" style="padding-top: var(--s-4);">
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>When</th><th>Action</th><th>User</th><th>Detail</th><th>Result</th></tr></thead>
+          <tbody>
+          {% for e in recent_activity %}
+          <tr>
+            <td class="nowrap muted small">{{ e.created_at|dt('%d %b, %H:%M') }}</td>
+            <td><span class="mono">{{ e.action }}</span></td>
+            <td class="small">{{ e.user_email }}</td>
+            <td class="small muted">{{ (e.detail or '')[:60] }}</td>
+            <td>{% if e.success %}<span class="badge badge-ok">ok</span>{% else %}<span class="badge badge-danger">failed</span>{% endif %}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" class="muted">No activity recorded yet.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-head"><h2>Accounts by role</h2></div>
+      <div class="card-body">
+        <table class="kv">
+          {% for role in Role.ALL %}
+          <tr><th>{{ Role.LABELS[role] }}</th><td>{{ by_role.get(role, 0) }}</td></tr>
+          {% endfor %}
+          <tr><th>Locked accounts</th><td>{{ stats.locked_users }}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Model status</h2></div>
+      <div class="card-body">
+        <table class="kv">
+          {% for mode, info in models.items() %}
+          <tr>
+            <th>{{ mode }}</th>
+            <td>{% if info.available %}<span class="badge badge-ok"><span class="dot dot-ok"></span>Loaded</span>
+                {% else %}<span class="badge badge-danger"><span class="dot dot-danger"></span>Missing</span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <div class="form-actions" style="margin-top:var(--s-4); padding-top:var(--s-4);">
+          <a class="btn btn-secondary btn-sm" href="{{ url_for('admin.system') }}">System details</a>
+        </div>
+      </div>
+    </div>
+
+    {% if busiest %}
+    <div class="card">
+      <div class="card-head"><h2>Most active clinicians</h2></div>
+      <div class="card-body">
+        <table class="kv">
+          {% for name, n in busiest %}<tr><th>{{ name }}</th><td>{{ n }}</td></tr>{% endfor %}
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

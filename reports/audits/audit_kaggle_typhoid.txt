@@ -1,0 +1,86 @@
+DATASET INTEGRITY AUDIT — typhoid_dataset.csv
+==============================================================================
+
+Rows: 31,087   Attributes: 23   Target: Typhoid Status
+Class balance (1 = positive): {0: 21701, 1: 9386}
+Positive rate: 30.2%
+Duplicate rows: 0 (0.0%)
+Missing values: {'Gastrointestinal Symptoms': 7760, 'Neurological Symptoms': 7744, 'Complications': 30147, 'Ongoing Infection in Society': 7680}
+
+ASSOCIATION WITH TARGET
+------------------------------------------------------------------------------
+                   attribute        statistic   value
+       Fever Duration (Days) point-biserial r  0.8138
+      White Blood Cell Count point-biserial r  0.1948
+           Water Source Type       Cramer's V  0.0132
+                    Location       Cramer's V  0.0120
+       Neurological Symptoms       Cramer's V  0.0091
+Ongoing Infection in Society       Cramer's V  0.0073
+       Sanitation Facilities       Cramer's V  0.0069
+        Socioeconomic Status       Cramer's V  0.0066
+               Typhidot Test       Cramer's V  0.0065
+   Gastrointestinal Symptoms       Cramer's V  0.0052
+ Previous History of Typhoid       Cramer's V  0.0045
+                Hand Hygiene       Cramer's V  0.0042
+  Consumption of Street Food       Cramer's V  0.0035
+              Platelet Count point-biserial r -0.0026
+           Weather Condition       Cramer's V  0.0023
+         Skin Manifestations       Cramer's V  0.0022
+  Typhoid Vaccination Status       Cramer's V  0.0021
+                         Age point-biserial r  0.0014
+                  Widal Test       Cramer's V  0.0014
+                      Gender       Cramer's V  0.0008
+
+CLASS-CONDITIONAL RANGES  (overlap=False means a hard threshold separates)
+------------------------------------------------------------------------------
+             attribute  positive_range  negative_range  ranges_overlap  sd_positive  sd_negative  sd_ratio
+                   Age         [1, 80]         [1, 80]            True       23.248       23.090      1.01
+ Fever Duration (Days)         [0, 21]          [0, 0]            True        6.289        0.000       inf
+White Blood Cell Count   [3000, 19994]   [3000, 11000]            True     3816.451     2315.485      1.65
+        Platelet Count [50163, 449994] [50001, 449984]            True   106399.129   107994.094      0.99
+
+TRIVIAL BASELINES  (held-out 20%)
+------------------------------------------------------------------------------
+                                   classifier  accuracy  balanced_accuracy  macro_f1
+                               Majority class    0.6981             0.5000    0.4111
+Best single attribute (Fever Duration (Days))    0.9875             0.9792    0.9849
+                       Decision tree, depth 2    0.9883             0.9806    0.9859
+                       Decision tree, depth 3    0.9883             0.9806    0.9859
+                       Decision tree, depth 5    0.9881             0.9804    0.9857
+
+BEST SINGLE ATTRIBUTES
+------------------------------------------------------------------------------
+             attribute  accuracy  balanced_accuracy  macro_f1
+ Fever Duration (Days)    0.9875             0.9792    0.9849
+White Blood Cell Count    0.7383             0.5666    0.5386
+                   Age    0.6981             0.5000    0.4111
+                Gender    0.6981             0.5000    0.4111
+  Socioeconomic Status    0.6981             0.5000    0.4111
+              Location    0.6981             0.5000    0.4111
+
+DEPTH-3 DECISION TREE
+------------------------------------------------------------------------------
+|--- Fever Duration (Days) <= 0.5
+|   |--- White Blood Cell Count <= 11532.0
+|   |   |--- Platelet Count <= 368670.0
+|   |   |   |--- class: 0
+|   |   |--- Platelet Count >  368670.0
+|   |   |   |--- class: 0
+|   |--- White Blood Cell Count >  11532.0
+|   |   |--- class: 1
+|--- Fever Duration (Days) >  0.5
+|   |--- class: 1
+
+AFTER DEDUPLICATION  (5-fold cross-validated balanced accuracy)
+------------------------------------------------------------------------------
+Rows: 31,087 -> 31,087   class balance {0: 21701, 1: 9386}
+  tree_depth_1: 0.9784
+  tree_depth_2: 0.9812
+  tree_depth_3: 0.9812
+
+FINDINGS
+==============================================================================
+1. A depth-3 decision tree reaches 0.9806 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.
+2. 'Fever Duration (Days)' varies infx more in one class than the other (sd 6.289 vs 0.0): consistent with generated data.
+
+Treat reported accuracy on this dataset with caution: report trivial baselines alongside any model result.

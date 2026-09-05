@@ -1,0 +1,56 @@
+{
+  "file": "Typhoid_Dataset.xlsx",
+  "rows": 659,
+  "attributes": 14,
+  "class_balance": {
+    "1": 500,
+    "0": 159
+  },
+  "duplicate_rows": 86,
+  "duplicates_by_class": {
+    "0": 86
+  },
+  "baselines": [
+    {
+      "classifier": "Majority class",
+      "accuracy": 0.7576,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.431
+    },
+    {
+      "classifier": "Best single attribute (fever range (deg F))",
+      "accuracy": 0.8333,
+      "balanced_accuracy": 0.89,
+      "macro_f1": 0.8103
+    },
+    {
+      "classifier": "Decision tree, depth 2",
+      "accuracy": 0.9697,
+      "balanced_accuracy": 0.98,
+      "macro_f1": 0.9604
+    },
+    {
+      "classifier": "Decision tree, depth 3",
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    {
+      "classifier": "Decision tree, depth 5",
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    }
+  ],
+  "deduplicated_cv": {
+    "tree_depth_1": 0.7027,
+    "tree_depth_2": 0.9347,
+    "tree_depth_3": 0.9882
+  },
+  "findings": [
+    "A depth-3 decision tree reaches 1.0000 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.",
+    "'Platelet Count' varies 16x more in one class than the other (sd 50086.574 vs 3229.774): consistent with generated data.",
+    "'Urine Culture Bacteria' = 'Klebsiella pneumoniae' maps to class 1 in all 162 records, without exception.",
+    "All 86 duplicated rows belong to a single class (0): consistent with a small sample padded by copying."
+  ]
+}

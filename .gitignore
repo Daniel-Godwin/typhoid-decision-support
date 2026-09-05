@@ -1,0 +1,32 @@
+# Virtual environments and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+# Local runtime state. Regenerated on demand; never deployed.
+instance/
+logs/
+*.db
+*.sqlite3
+migrations/versions/*.pyc
+
+# Secrets. `.env.example` is committed; `.env` never is.
+.env
+.env.*
+!.env.example
+
+# Update archives produced during development
+typhoid_update*.zip
+
+# ---------------------------------------------------------------------------
+# Deliberately NOT ignored
+# ---------------------------------------------------------------------------
+# models/*.joblib  — the deployed application loads these at start-up. If they
+#                    are excluded, the service builds cleanly and then reports
+#                    `model_unavailable` on every prediction. ~19 MB total,
+#                    well inside GitHub's limits.
+# reports/         — figures and tables are the evidence behind Chapter 4.
+# data/            — the dataset the results are reproducible from (~6 MB).

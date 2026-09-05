@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block title %}Activity log — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Activity log</h1><p class="lede">{{ pagination.total }} recorded event{{ '' if pagination.total == 1 else 's' }}. This log is append-only.</p></div>
+</div>
+
+<div class="split">
+  <div class="card"><div class="card-body">
+    <form class="toolbar" method="get">
+      <input class="input grow" type="search" name="q" value="{{ search }}" placeholder="Search action, user or detail">
+      <select name="category" class="input" style="width:auto;">
+        <option value="">All categories</option>
+        {% for c in categories %}<option value="{{ c }}" {{ 'selected' if category == c }}>{{ c }}</option>{% endfor %}
+      </select>
+      <select name="outcome" class="input" style="width:auto;">
+        <option value="">All results</option>
+        <option value="success" {{ 'selected' if outcome == 'success' }}>Successful</option>
+        <option value="failed" {{ 'selected' if outcome == 'failed' }}>Failed</option>
+      </select>
+      <button class="btn btn-secondary" type="submit">Filter</button>
+      {% if search or category or outcome %}<a class="btn btn-ghost" href="{{ url_for('admin.logs') }}">Reset</a>{% endif %}
+    </form>
+
+    {% if pagination.items %}
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>When</th><th>Action</th><th>Category</th><th>User</th><th>Detail</th><th>IP</th><th>Result</th></tr></thead>
+        <tbody>
+        {% for e in pagination.items %}
+        <tr>
+          <td class="nowrap muted small">{{ e.created_at|dt('%d %b %Y, %H:%M:%S') }}</td>
+          <td><span class="mono">{{ e.action }}</span></td>
+          <td><span class="badge badge-muted">{{ e.category }}</span></td>
+          <td class="small">{{ e.user_email }}</td>
+          <td class="small muted">{{ e.detail or '—' }}</td>
+          <td class="mono xs">{{ e.ip_address or '—' }}</td>
+          <td>{% if e.success %}<span class="badge badge-ok">ok</span>{% else %}<span class="badge badge-danger">failed</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {{ pager(pagination, 'admin.logs', {'q': search, 'category': category, 'outcome': outcome}) }}
+    {% else %}
+    {{ empty('No matching events', 'Adjust the filters to see recorded activity.') }}
+    {% endif %}
+  </div></div>
+
+  <div class="card">
+    <div class="card-head"><h2>Most frequent actions</h2></div>
+    <div class="card-body">
+      <table class="kv">
+        {% for action, n in top_actions %}<tr><th class="mono xs">{{ action }}</th><td>{{ n }}</td></tr>{% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

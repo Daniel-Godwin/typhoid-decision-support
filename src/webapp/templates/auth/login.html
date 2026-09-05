@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, checkbox %}
+{% block title %}Sign in — {{ APP_NAME }}{% endblock %}
+
+{% block anonymous %}
+<div class="auth-shell">
+  <aside class="auth-aside">
+    <div>
+      <div class="brand" style="margin-bottom: var(--s-10);">
+        <span class="brand-mark" style="background: rgba(255,255,255,.16);">TD</span>
+        <span class="brand-text"><strong style="color:#fff;">Typhoid Decision Support</strong></span>
+      </div>
+      <h2>Clinical decision support for typhoid assessment</h2>
+      <p>A Support Vector Machine model trained on 31,087 records, deployed as a
+         point-of-care triage aid for settings where confirmatory testing is limited.</p>
+      <ul class="feature-list">
+        <li><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Calibrated probability with every prediction</span></li>
+        <li><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Explains which findings drove each result</span></li>
+        <li><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Full audit trail of every assessment</span></li>
+        <li><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Sub-10 ms inference for real-time use</span></li>
+      </ul>
+    </div>
+    <p class="foot">Research prototype. Decision support only — it does not replace
+       blood culture, confirmatory testing or clinical judgement.</p>
+  </aside>
+
+  <div class="auth-panel">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="lede">Enter your credentials to access the system.</p>
+
+      <form method="post" novalidate data-guard>
+        {{ form.hidden_tag() }}
+        {{ field(form.email) }}
+        {{ field(form.password) }}
+        {{ checkbox(form.remember) }}
+        <div class="form-actions">
+          {{ form.submit(class="btn btn-primary btn-block btn-lg") }}
+        </div>
+      </form>
+
+      {% if ENV_NAME != 'production' %}
+      <div class="demo-hint">
+        <strong>Demonstration accounts</strong><br>
+        Administrator — <code>admin@example.com</code> / <code>AdminPass2026</code><br>
+        Clinician — <code>clinician@example.com</code> / <code>ClinicPass2026</code><br>
+        Auditor — <code>auditor@example.com</code> / <code>AuditPass2026</code>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

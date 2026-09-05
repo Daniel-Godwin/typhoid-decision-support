@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block title %}User accounts — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>User accounts</h1><p class="lede">{{ pagination.total }} account{{ '' if pagination.total == 1 else 's' }}.</p></div>
+  <div class="page-actions"><a class="btn btn-primary" href="{{ url_for('admin.user_new') }}">Add user</a></div>
+</div>
+
+<div class="card"><div class="card-body">
+  <form class="toolbar" method="get">
+    <input class="input grow" type="search" name="q" value="{{ search }}" placeholder="Search name or email">
+    <select name="role" class="input" style="width:auto;">
+      <option value="">All roles</option>
+      {% for r in Role.ALL %}<option value="{{ r }}" {{ 'selected' if role == r }}>{{ Role.LABELS[r] }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-secondary" type="submit">Filter</button>
+    {% if search or role %}<a class="btn btn-ghost" href="{{ url_for('admin.users') }}">Reset</a>{% endif %}
+  </form>
+
+  {% if pagination.items %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last sign-in</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for u in pagination.items %}
+      <tr>
+        <td class="strong">{{ u.full_name }}{% if u.id == current_user.id %} <span class="badge badge-muted">you</span>{% endif %}</td>
+        <td class="small">{{ u.email }}</td>
+        <td><span class="badge {{ 'badge-brand' if u.role == Role.ADMIN else '' }}">{{ u.role_label }}</span></td>
+        <td>
+          {% if u.is_locked %}<span class="badge badge-warn">Locked</span>
+          {% elif u.is_active_account %}<span class="badge badge-ok">Enabled</span>
+          {% else %}<span class="badge badge-danger">Disabled</span>{% endif %}
+        </td>
+        <td class="nowrap muted small">{{ u.last_login_at|dt('%d %b %Y, %H:%M') }}</td>
+        <td>
+          <div class="flex gap-2 wrap-flex">
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.user_edit', user_id=u.id) }}">Edit</a>
+            {% if u.is_locked %}
+            <form method="post" action="{{ url_for('admin.user_unlock', user_id=u.id) }}" style="display:inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-ghost btn-sm" type="submit">Unlock</button>
+            </form>
+            {% endif %}
+            {% if u.id != current_user.id %}
+            <form method="post" action="{{ url_for('admin.user_toggle', user_id=u.id) }}" style="display:inline"
+                  data-confirm="{{ 'Disable' if u.is_active_account else 'Enable' }} {{ u.full_name }}'s account?">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-ghost btn-sm" type="submit">{{ 'Disable' if u.is_active_account else 'Enable' }}</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ pager(pagination, 'admin.users', {'q': search, 'role': role}) }}
+  {% else %}
+  {{ empty('No accounts found', 'Adjust your filters or add a new user.') }}
+  {% endif %}
+</div></div>
+{% endblock %}

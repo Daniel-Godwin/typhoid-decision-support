@@ -1,0 +1,147 @@
+[
+  {
+    "screenshot": "01-landing",
+    "url": "http://127.0.0.1:5000/",
+    "title": "Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "02-login",
+    "url": "http://127.0.0.1:5000/auth/login",
+    "title": "Sign in \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "03-login-failed",
+    "url": "http://127.0.0.1:5000/auth/login",
+    "title": "Sign in \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "04-clinician-dashboard",
+    "url": "http://127.0.0.1:5000/clinic/",
+    "title": "Dashboard \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "05-clinician-assessment-form",
+    "url": "http://127.0.0.1:5000/clinic/assess",
+    "title": "New assessment \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "06-clinician-assessment-result",
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
+    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "07-clinician-assessments",
+    "url": "http://127.0.0.1:5000/clinic/assessments",
+    "title": "Assessments \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "08-clinician-patients",
+    "url": "http://127.0.0.1:5000/clinic/patients",
+    "title": "Patients \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "09-clinician-patient-detail",
+    "url": "http://127.0.0.1:5000/clinic/patients/1",
+    "title": "403 \u2014 Not permitted"
+  },
+  {
+    "screenshot": "12-validation-error",
+    "url": "http://127.0.0.1:5000/clinic/patients/new",
+    "title": "Add patient \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "13-forbidden-403",
+    "url": "http://127.0.0.1:5000/admin/users",
+    "title": "403 \u2014 Not permitted"
+  },
+  {
+    "screenshot": "14-not-found-404",
+    "url": "http://127.0.0.1:5000/no-such-page",
+    "title": "404 \u2014 Page not found"
+  },
+  {
+    "screenshot": "15-admin-dashboard",
+    "url": "http://127.0.0.1:5000/admin/",
+    "title": "Administration \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "16-admin-users",
+    "url": "http://127.0.0.1:5000/admin/users",
+    "title": "User accounts \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "17-admin-user-form",
+    "url": "http://127.0.0.1:5000/admin/users/new",
+    "title": "Add user \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "18-admin-activity-log",
+    "url": "http://127.0.0.1:5000/admin/logs",
+    "title": "Activity log \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "19-admin-system-status",
+    "url": "http://127.0.0.1:5000/admin/system",
+    "title": "System status \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "20-profile",
+    "url": "http://127.0.0.1:5000/auth/profile",
+    "title": "My profile \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "21-auditor-dashboard",
+    "url": "http://127.0.0.1:5000/clinic/",
+    "title": "Dashboard \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "22-auditor-blocked-from-assessing",
+    "url": "http://127.0.0.1:5000/clinic/assess",
+    "title": "403 \u2014 Not permitted"
+  },
+  {
+    "screenshot": "23-tablet-login",
+    "url": "http://127.0.0.1:5000/auth/login",
+    "title": "Sign in \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "24-tablet-dashboard",
+    "url": "http://127.0.0.1:5000/clinic/",
+    "title": "Dashboard \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "25-tablet-assessment-form",
+    "url": "http://127.0.0.1:5000/clinic/assess",
+    "title": "New assessment \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "26-tablet-assessment-result",
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
+    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "23-mobile-login",
+    "url": "http://127.0.0.1:5000/auth/login",
+    "title": "Sign in \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "24-mobile-dashboard",
+    "url": "http://127.0.0.1:5000/clinic/",
+    "title": "Dashboard \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "25-mobile-assessment-form",
+    "url": "http://127.0.0.1:5000/clinic/assess",
+    "title": "New assessment \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "26-mobile-assessment-result",
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
+    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+  },
+  {
+    "screenshot": "27-mobile-navigation-open",
+    "url": "http://127.0.0.1:5000/clinic/",
+    "title": "Dashboard \u2014 Typhoid Diagnostic Decision Support"
+  }
+]

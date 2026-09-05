@@ -1,0 +1,69 @@
+
+====================================================================================================
+A. Held-out test sample   —   10/10 correct
+====================================================================================================
+ #  age  fever_days               widal     typhidot   wbc     actual  predicted  confidence correct             top_driver
+ 1   80          13 High O & H Antibody IgM Positive  8177    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 2   79           6  Low O & H Antibody IgG Positive  9846    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 3   15           1 High O & H Antibody IgM Positive  4548    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 4   44          21  Low O & H Antibody IgG Positive  9763    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 5   52           5 High O & H Antibody     Negative 10954    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 6   69           0 High O & H Antibody IgM Positive  3295 No Typhoid No Typhoid      0.9819     yes White Blood Cell Count
+ 7   19           0  Low O & H Antibody     Negative  9579 No Typhoid No Typhoid      0.9901     yes White Blood Cell Count
+ 8    5           0 High O & H Antibody     Negative  6570 No Typhoid No Typhoid      0.9906     yes      Water Source Type
+ 9   35           0  Low O & H Antibody IgM Positive  9168 No Typhoid No Typhoid      0.9871     yes White Blood Cell Count
+10   40           0 High O & H Antibody     Negative  6475 No Typhoid No Typhoid      0.9872     yes   Socioeconomic Status
+
+====================================================================================================
+B. Held-out test sample 2   —   10/10 correct
+====================================================================================================
+ #  age  fever_days               widal     typhidot   wbc     actual  predicted  confidence correct             top_driver
+ 1   55           2  Low O & H Antibody IgM Positive  6160    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 2   63          20 High O & H Antibody IgM Positive  8808    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 3    1          14  Low O & H Antibody IgG Positive 18775    Typhoid    Typhoid      1.0000     yes    (none above 0.1 pt)
+ 4   80           5 High O & H Antibody IgG Positive  8661    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 5   56          16 High O & H Antibody IgM Positive  7364    Typhoid    Typhoid      1.0000     yes  Fever Duration (Days)
+ 6   80           0 High O & H Antibody IgM Positive  3244 No Typhoid No Typhoid      0.9788     yes White Blood Cell Count
+ 7   62           0  Low O & H Antibody IgG Positive  3574 No Typhoid No Typhoid      0.9778     yes White Blood Cell Count
+ 8   79           0 High O & H Antibody IgG Positive  9074 No Typhoid No Typhoid      0.9861     yes White Blood Cell Count
+ 9   40           0 High O & H Antibody IgM Positive  7095 No Typhoid No Typhoid      0.9863     yes               Location
+10   27           0 High O & H Antibody IgG Positive  8761 No Typhoid No Typhoid      0.9867     yes               Location
+
+====================================================================================================
+C. Training sample (seen)   —   10/10 correct
+====================================================================================================
+ #  age  fever_days               widal     typhidot   wbc     actual  predicted  confidence correct                 top_driver
+ 1   45           3 High O & H Antibody IgM Positive  7326    Typhoid    Typhoid      1.0000     yes      Fever Duration (Days)
+ 2   73          18 High O & H Antibody     Negative  3465    Typhoid    Typhoid      1.0000     yes      Fever Duration (Days)
+ 3   18          16  Low O & H Antibody     Negative  3155    Typhoid    Typhoid      1.0000     yes      Fever Duration (Days)
+ 4    8          15 High O & H Antibody IgG Positive 10225    Typhoid    Typhoid      1.0000     yes      Fever Duration (Days)
+ 5   36          17  Low O & H Antibody IgG Positive  7524    Typhoid    Typhoid      1.0000     yes      Fever Duration (Days)
+ 6   45           0 High O & H Antibody IgM Positive  6990 No Typhoid No Typhoid      0.9856     yes Typhoid Vaccination Status
+ 7   29           0  Low O & H Antibody IgM Positive  5484 No Typhoid No Typhoid      0.9872     yes          Water Source Type
+ 8   24           0  Low O & H Antibody IgM Positive  8936 No Typhoid No Typhoid      0.9806     yes     White Blood Cell Count
+ 9   19           0 High O & H Antibody     Negative  6327 No Typhoid No Typhoid      0.9901     yes       Socioeconomic Status
+10   47           0 High O & H Antibody     Negative  9024 No Typhoid No Typhoid      0.9856     yes     White Blood Cell Count
+
+====================================================================================================
+D. Hard cases (fever = 0)   —   5/10 correct
+====================================================================================================
+ #  age  fever_days               widal     typhidot   wbc     actual  predicted  confidence correct                   top_driver
+ 1   57           0 High O & H Antibody     Negative  7168    Typhoid No Typhoid      0.9863      NO        Sanitation Facilities
+ 2   22           0 High O & H Antibody IgM Positive  7655    Typhoid No Typhoid      0.9851      NO          Skin Manifestations
+ 3   20           0  Low O & H Antibody IgM Positive  7329    Typhoid No Typhoid      0.9906      NO Ongoing Infection in Society
+ 4   13           0 High O & H Antibody IgG Positive  8875    Typhoid No Typhoid      0.9882      NO    Gastrointestinal Symptoms
+ 5   34           0 High O & H Antibody     Negative 10099    Typhoid No Typhoid      0.9692      NO       White Blood Cell Count
+ 6   51           0  Low O & H Antibody     Negative  8207 No Typhoid No Typhoid      0.9855     yes    Gastrointestinal Symptoms
+ 7    2           0  Low O & H Antibody     Negative  5605 No Typhoid No Typhoid      0.9845     yes                       Gender
+ 8   17           0 High O & H Antibody     Negative  7976 No Typhoid No Typhoid      0.9857     yes         Socioeconomic Status
+ 9   64           0 High O & H Antibody IgM Positive  3010 No Typhoid No Typhoid      0.9525     yes       White Blood Cell Count
+10   73           0 High O & H Antibody     Negative  6444 No Typhoid No Typhoid      0.9887     yes         Socioeconomic Status
+
+====================================================================================================
+SUMMARY
+====================================================================================================
+                      set    n  correct  accuracy  mean_confidence
+  A. Held-out test sample 10.0     10.0       1.0            0.994
+B. Held-out test sample 2 10.0     10.0       1.0            0.992
+C. Training sample (seen) 10.0     10.0       1.0            0.993
+D. Hard cases (fever = 0) 10.0      5.0       0.5            0.982

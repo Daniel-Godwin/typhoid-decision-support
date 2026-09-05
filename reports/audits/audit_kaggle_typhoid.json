@@ -1,0 +1,52 @@
+{
+  "file": "typhoid_dataset.csv",
+  "rows": 31087,
+  "attributes": 23,
+  "class_balance": {
+    "0": 21701,
+    "1": 9386
+  },
+  "duplicate_rows": 0,
+  "duplicates_by_class": {},
+  "baselines": [
+    {
+      "classifier": "Majority class",
+      "accuracy": 0.6981,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.4111
+    },
+    {
+      "classifier": "Best single attribute (Fever Duration (Days))",
+      "accuracy": 0.9875,
+      "balanced_accuracy": 0.9792,
+      "macro_f1": 0.9849
+    },
+    {
+      "classifier": "Decision tree, depth 2",
+      "accuracy": 0.9883,
+      "balanced_accuracy": 0.9806,
+      "macro_f1": 0.9859
+    },
+    {
+      "classifier": "Decision tree, depth 3",
+      "accuracy": 0.9883,
+      "balanced_accuracy": 0.9806,
+      "macro_f1": 0.9859
+    },
+    {
+      "classifier": "Decision tree, depth 5",
+      "accuracy": 0.9881,
+      "balanced_accuracy": 0.9804,
+      "macro_f1": 0.9857
+    }
+  ],
+  "deduplicated_cv": {
+    "tree_depth_1": 0.9784,
+    "tree_depth_2": 0.9812,
+    "tree_depth_3": 0.9812
+  },
+  "findings": [
+    "A depth-3 decision tree reaches 0.9806 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.",
+    "'Fever Duration (Days)' varies infx more in one class than the other (sd 6.289 vs 0.0): consistent with generated data."
+  ]
+}

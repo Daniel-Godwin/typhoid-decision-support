@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2314607f'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='sans-serif' font-weight='bold' fill='white'>T</text></svg>">
+{% block head %}{% endblock %}
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+{% macro icon(name) -%}
+<svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{%- if name == 'dashboard' %}<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>
+{%- elif name == 'assess' %}<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+{%- elif name == 'list' %}<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+{%- elif name == 'patients' %}<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+{%- elif name == 'users' %}<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+{%- elif name == 'logs' %}<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+{%- elif name == 'system' %}<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+{%- elif name == 'shield' %}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+{%- elif name == 'lock' %}<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+{%- elif name == 'activity' %}<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+{%- elif name == 'user' %}<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+{%- endif -%}
+</svg>
+{%- endmacro %}
+
+{% if current_user.is_authenticated %}
+<div class="app">
+  <header class="app-header">
+    <button class="nav-toggle" data-nav-toggle aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand">
+      <span class="brand-mark">TD</span>
+      <span class="brand-text">
+        <strong>Typhoid Decision Support</strong>
+        <span>{{ ENV_NAME|title }} · v{{ APP_VERSION }}</span>
+      </span>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="user-menu">
+      <button class="user-trigger" data-menu-trigger aria-haspopup="true" aria-expanded="false">
+        <span class="avatar">{{ current_user.initials }}</span>
+        <span class="user-meta">
+          <strong>{{ current_user.full_name }}</strong>
+          <span>{{ current_user.role_label }}</span>
+        </span>
+      </button>
+      <div class="menu" data-menu hidden>
+        <a href="{{ url_for('auth.profile') }}">My profile</a>
+        <a href="{{ url_for('auth.change_password') }}">Change password</a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <div class="scrim" data-scrim></div>
+    <nav class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div>
+        <p class="nav-group-label">Clinical</p>
+        <div class="nav">
+          <a href="{{ url_for('clinician.dashboard') }}">{{ icon('dashboard') }} Dashboard</a>
+          {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+          <a href="{{ url_for('clinician.assess') }}">{{ icon('assess') }} New assessment</a>
+          {% endif %}
+          <a href="{{ url_for('clinician.assessments') }}">{{ icon('list') }} Assessments</a>
+          <a href="{{ url_for('clinician.patients') }}">{{ icon('patients') }} Patients</a>
+        </div>
+      </div>
+      {% if current_user.is_admin or current_user.role == Role.AUDITOR %}
+      <div>
+        <p class="nav-group-label">Administration</p>
+        <div class="nav">
+          {% if current_user.is_admin %}
+          <a href="{{ url_for('admin.dashboard') }}">{{ icon('shield') }} Admin overview</a>
+          <a href="{{ url_for('admin.users') }}">{{ icon('users') }} User accounts</a>
+          {% endif %}
+          <a href="{{ url_for('admin.logs') }}">{{ icon('logs') }} Activity log</a>
+          {% if current_user.is_admin %}
+          <a href="{{ url_for('admin.system') }}">{{ icon('system') }} System status</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </nav>
+
+    <main class="main" id="main">
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+</div>
+{% else %}
+{% block anonymous %}{% endblock %}
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-stack" role="status" aria-live="polite">
+  {% for category, message in messages %}
+  <div class="flash {{ category }}" data-flash>
+    <span class="msg">{{ message }}</span>
+    <button type="button" data-dismiss aria-label="Dismiss">&times;</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

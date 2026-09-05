@@ -1,0 +1,4 @@
+subgroup,n,accuracy,balanced_accuracy,macro_precision,macro_recall,macro_f1,sensitivity,specificity
+Endemic,2084,0.5816,0.5428,0.5395,0.5428,0.5389,0.4366,0.6491
+Rural,2046,0.6207,0.5558,0.5522,0.5558,0.5531,0.4031,0.7085
+Urban,2088,0.6015,0.5455,0.5425,0.5455,0.5429,0.4051,0.6858

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block title %}{{ 'Edit' if patient else 'Add' }} patient — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="container-narrow">
+  <div class="page-head"><div>
+    <h1>{{ 'Edit patient' if patient else 'Add patient' }}</h1>
+    <p class="lede">{{ 'Update this record.' if patient else 'Register a patient so assessments can be linked to a history.' }}</p>
+  </div></div>
+
+  <div class="card"><div class="card-body">
+    <form method="post" novalidate data-guard>
+      {{ form.hidden_tag() }}
+      <div class="form-grid">
+        {{ field(form.patient_code) }}
+        {{ field(form.full_name) }}
+        {{ field(form.age) }}
+        {{ field(form.gender) }}
+        {{ field(form.location) }}
+        {{ field(form.contact) }}
+      </div>
+      {{ field(form.notes, 'mt-4') }}
+      <div class="form-actions">
+        {{ form.submit(class="btn btn-primary") }}
+        <a class="btn btn-secondary" href="{{ url_for('clinician.patient_detail', patient_id=patient.id) if patient else url_for('clinician.patients') }}">Cancel</a>
+      </div>
+    </form>
+  </div></div>
+</div>
+{% endblock %}

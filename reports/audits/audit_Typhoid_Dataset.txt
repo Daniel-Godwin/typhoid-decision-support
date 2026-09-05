@@ -1,0 +1,89 @@
+DATASET INTEGRITY AUDIT — Typhoid_Dataset.xlsx
+==============================================================================
+
+Rows: 659   Attributes: 14   Target: typhoid
+Class balance (1 = positive): {1: 500, 0: 159}
+Positive rate: 75.9%
+Duplicate rows: 86 (13.1%)
+  duplicated rows by class: {0: 86}
+Missing values: none
+
+ASSOCIATION WITH TARGET
+------------------------------------------------------------------------------
+             attribute        statistic   value
+   fever range (deg F) point-biserial r  0.6338
+     Hemoglobin (g/dL) point-biserial r -0.4541
+Urine Culture Bacteria       Cramer's V  0.4356
+        Platelet Count point-biserial r -0.4112
+     Potassium (mg/dL) point-biserial r -0.3123
+       Calcium (mg/dL) point-biserial r -0.2308
+                 cough       Cramer's V  0.2238
+              diarrhea       Cramer's V  0.2217
+                nausea       Cramer's V  0.1861
+           muscle pain       Cramer's V  0.1200
+                Gender       Cramer's V  0.0718
+                   Age point-biserial r  0.0537
+              headache       Cramer's V  0.0250
+
+CLASS-CONDITIONAL RANGES  (overlap=False means a hard threshold separates)
+------------------------------------------------------------------------------
+          attribute   positive_range   negative_range  ranges_overlap  sd_positive  sd_negative  sd_ratio
+                Age         [18, 70]         [20, 68]            True       14.922       11.885      1.26
+fever range (deg F)   [100.5, 105.4]      [99, 101.6]            True        1.414        0.629      2.25
+  Hemoglobin (g/dL)         [10, 15]         [13, 16]            True        1.460        0.663      2.20
+     Platelet Count [120255, 299799] [250099, 262155]            True    50086.574     3229.774     15.51
+    Calcium (mg/dL)          [8, 10]        [8.5, 10]            True        0.563        0.423      1.33
+  Potassium (mg/dL)         [3.5, 5]         [4, 5.3]            True        0.428        0.391      1.10
+
+DETERMINISTIC CATEGORY LEVELS  (level always maps to one class)
+------------------------------------------------------------------------------
+             attribute                 level   n  always_class
+Urine Culture Bacteria Klebsiella pneumoniae 162             1
+
+TRIVIAL BASELINES  (held-out 20%)
+------------------------------------------------------------------------------
+                                 classifier  accuracy  balanced_accuracy  macro_f1
+                             Majority class    0.7576               0.50    0.4310
+Best single attribute (fever range (deg F))    0.8333               0.89    0.8103
+                     Decision tree, depth 2    0.9697               0.98    0.9604
+                     Decision tree, depth 3    1.0000               1.00    1.0000
+                     Decision tree, depth 5    1.0000               1.00    1.0000
+
+BEST SINGLE ATTRIBUTES
+------------------------------------------------------------------------------
+          attribute  accuracy  balanced_accuracy  macro_f1
+fever range (deg F)    0.8333             0.8900    0.8103
+     Platelet Count    0.8258             0.8850    0.8028
+  Potassium (mg/dL)    0.8030             0.6362    0.6578
+             Gender    0.7576             0.5000    0.4310
+                Age    0.7576             0.5000    0.4310
+             nausea    0.7576             0.5000    0.4310
+
+DEPTH-3 DECISION TREE
+------------------------------------------------------------------------------
+|--- fever range (deg F) <= 101.6
+|   |--- Platelet Count <= 248714.0
+|   |   |--- class: 1
+|   |--- Platelet Count >  248714.0
+|   |   |--- Platelet Count <= 262458.0
+|   |   |   |--- class: 0
+|   |   |--- Platelet Count >  262458.0
+|   |   |   |--- class: 1
+|--- fever range (deg F) >  101.6
+|   |--- class: 1
+
+AFTER DEDUPLICATION  (5-fold cross-validated balanced accuracy)
+------------------------------------------------------------------------------
+Rows: 659 -> 602   class balance {1: 500, 0: 102}
+  tree_depth_1: 0.7027
+  tree_depth_2: 0.9347
+  tree_depth_3: 0.9882
+
+FINDINGS
+==============================================================================
+1. A depth-3 decision tree reaches 1.0000 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.
+2. 'Platelet Count' varies 16x more in one class than the other (sd 50086.574 vs 3229.774): consistent with generated data.
+3. 'Urine Culture Bacteria' = 'Klebsiella pneumoniae' maps to class 1 in all 162 records, without exception.
+4. All 86 duplicated rows belong to a single class (0): consistent with a small sample padded by copying.
+
+Treat reported accuracy on this dataset with caution: report trivial baselines alongside any model result.

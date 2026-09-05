@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}{{ assessment.reference }} — {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Assessment {{ assessment.reference }}</h1>
+    <p class="lede">
+      Recorded {{ assessment.created_at|dt }} by {{ assessment.clinician.full_name }}
+      {%- if assessment.patient %} for patient
+      <a href="{{ url_for('clinician.patient_detail', patient_id=assessment.patient.id) }}">{{ assessment.patient.patient_code }}</a>
+      {%- endif %}.
+    </p>
+  </div>
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="{{ url_for('clinician.assessments') }}">Back to list</a>
+    {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+    <a class="btn btn-primary" href="{{ url_for('clinician.assess') }}">New assessment</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="split">
+  <div>
+    {% set positive = assessment.is_positive %}
+    <div class="result-banner {{ 'positive' if positive else 'negative' }}">
+      <p class="eyebrow">Model output — {{ 'diagnosis' if assessment.target_mode == 'binary' else 'severity stratification' }}</p>
+      <p class="verdict">{{ assessment.prediction }}</p>
+
+      {% if assessment.confidence %}
+      <div class="meter" role="img" aria-label="Model confidence {{ assessment.confidence|pct }}">
+        <div class="bar" style="width: {{ (assessment.confidence * 100)|round(1) }}%"></div>
+      </div>
+      <div class="meter-caption">
+        <span>Model confidence</span>
+        <span class="strong tnum">{{ assessment.confidence|pct }}</span>
+      </div>
+      {% endif %}
+
+      {% if triage %}
+      <div class="triage {{ triage.level }}">
+        <h4>{{ triage.headline }}</h4>
+        <p class="mb-0">{{ triage.detail }}</p>
+      </div>
+      {% endif %}
+
+      {% if assessment.warnings %}
+      <div class="alert alert-warning mt-4">
+        <div>
+          <strong>Values outside the observed range</strong>
+          <ul>{% for f, m in assessment.warnings.items() %}<li><strong>{{ f }}</strong> {{ m }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+      {% endif %}
+
+      <p class="disclaimer">{{ disclaimer }}</p>
+    </div>
+
+    {% if assessment.explanation and assessment.explanation.contributions %}
+    <div class="card mt-5">
+      <div class="card-head">
+        <div>
+          <h2>What drove this prediction</h2>
+          <p>Change in predicted probability of
+             <strong>{{ assessment.explanation.positive_label }}</strong> attributable to each finding,
+             measured against a reference patient carrying the population median or most frequent value.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <ul class="contrib">
+          {% for c in assessment.explanation.contributions %}
+          {% set pct_value = c.contribution * 100 %}
+          {% set neutral = pct_value|abs < 0.05 %}
+          {% set dir = 'flat' if neutral else ('up' if pct_value > 0 else 'down') %}
+          <li>
+            <div class="contrib-row">
+              <span class="contrib-name">{{ c.feature }}</span>
+              <span class="contrib-val">{{ c.value }}</span>
+              <span class="contrib-num {{ dir }}">
+                {{ 'no effect' if neutral else '%+.1f pts'|format(pct_value) }}
+              </span>
+            </div>
+            <div class="track">
+              <div class="mid"></div>
+              {% if not neutral %}
+              <div class="fill {{ dir }}"
+                   style="width: {{ [pct_value|abs, 50]|min }}%; {{ 'left:50%' if pct_value > 0 else 'right:50%' }}"></div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="card mt-5">
+      <div class="card-head"><h2>Submitted findings</h2></div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+            <tbody>
+              {% for key, value in assessment.inputs.items() %}
+              <tr><td>{{ key }}</td><td class="strong">{{ value if value == value else 'Not recorded' }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-head"><h2>Class probabilities</h2></div>
+      <div class="card-body">
+        {% if assessment.probabilities %}
+        <table class="kv">
+          {% for label, p in assessment.probabilities|dictsort(by='value', reverse=true) %}
+          <tr><th>{{ label }}</th><td>{{ p|pct }}</td></tr>
+          {% endfor %}
+        </table>
+        {% else %}<p class="muted small mb-0">Not available.</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Provenance</h2><p>What produced this result.</p></div>
+      <div class="card-body">
+        <table class="kv">
+          <tr><th>Reference</th><td class="mono">{{ assessment.reference }}</td></tr>
+          <tr><th>Model</th><td>{{ assessment.target_mode }}</td></tr>
+          <tr><th>Feature policy</th><td>{{ assessment.feature_policy }}</td></tr>
+          <tr><th>Kernel</th><td>{{ assessment.model_kernel or '—' }}</td></tr>
+          <tr><th>Model trained</th><td class="xs">{{ assessment.model_trained_at or '—' }}</td></tr>
+          <tr><th>Referral threshold</th><td>{{ assessment.triage_threshold|pct(0) }}</td></tr>
+          <tr><th>Flagged for testing</th>
+              <td>{% if assessment.flagged_for_testing %}<span class="badge badge-warn">Yes</span>{% else %}<span class="badge badge-muted">No</span>{% endif %}</td></tr>
+          <tr><th>Inference time</th><td>{{ '%.1f ms'|format(assessment.latency_ms) if assessment.latency_ms else '—' }}</td></tr>
+          <tr><th>Clinician</th><td>{{ assessment.clinician.full_name }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

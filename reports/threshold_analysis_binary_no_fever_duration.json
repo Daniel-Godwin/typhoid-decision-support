@@ -1,0 +1,323 @@
+{
+  "policy": "no_fever_duration",
+  "model": "models/svm_binary_no_fever_duration.joblib",
+  "test_records": 6218,
+  "test_prevalence": 0.3018655516243165,
+  "calibration": {
+    "brier_score": 0.2349992868096477,
+    "expected_calibration_error": 0.158,
+    "roc_auc": 0.5728683537682664,
+    "bins": [
+      {
+        "bin": "0.1-0.2",
+        "n": 153,
+        "mean_predicted": 0.1746,
+        "observed_frequency": 0.2418,
+        "gap": 0.0672
+      },
+      {
+        "bin": "0.2-0.3",
+        "n": 863,
+        "mean_predicted": 0.258,
+        "observed_frequency": 0.2549,
+        "gap": -0.0031
+      },
+      {
+        "bin": "0.3-0.4",
+        "n": 1538,
+        "mean_predicted": 0.3522,
+        "observed_frequency": 0.2718,
+        "gap": -0.0804
+      },
+      {
+        "bin": "0.4-0.5",
+        "n": 1501,
+        "mean_predicted": 0.4487,
+        "observed_frequency": 0.2811,
+        "gap": -0.1676
+      },
+      {
+        "bin": "0.5-0.6",
+        "n": 1093,
+        "mean_predicted": 0.5462,
+        "observed_frequency": 0.2919,
+        "gap": -0.2543
+      },
+      {
+        "bin": "0.6-0.7",
+        "n": 625,
+        "mean_predicted": 0.6427,
+        "observed_frequency": 0.32,
+        "gap": -0.3227
+      },
+      {
+        "bin": "0.7-0.8",
+        "n": 263,
+        "mean_predicted": 0.7405,
+        "observed_frequency": 0.3346,
+        "gap": -0.4059
+      },
+      {
+        "bin": "0.8-0.9",
+        "n": 70,
+        "mean_predicted": 0.8468,
+        "observed_frequency": 0.8714,
+        "gap": 0.0247
+      },
+      {
+        "bin": "0.9-1.0",
+        "n": 112,
+        "mean_predicted": 0.9455,
+        "observed_frequency": 1.0,
+        "gap": 0.0545
+      }
+    ]
+  },
+  "operating_points": {
+    "default": {
+      "threshold": 0.5,
+      "sensitivity": 0.41555673947789024,
+      "specificity": 0.6814098134070491,
+      "ppv": 0.3606102635228849,
+      "npv": 0.7294697903822441,
+      "accuracy": 0.6011579285944033,
+      "balanced_accuracy": 0.5484832764424696,
+      "youden_j": 0.09696655288493927,
+      "false_negatives": 1097,
+      "false_positives": 1383,
+      "referral_rate": 0.3478610485686716,
+      "rationale": "Library default; treats the two error types as equal."
+    },
+    "youden": {
+      "threshold": 0.57,
+      "sensitivity": 0.29355354288758656,
+      "specificity": 0.8182446440912232,
+      "ppv": 0.41119402985074627,
+      "npv": 0.7281672816728167,
+      "accuracy": 0.6598584753940173,
+      "balanced_accuracy": 0.5558990934894049,
+      "youden_j": 0.11179818697880983,
+      "false_negatives": 1326,
+      "false_positives": 789,
+      "referral_rate": 0.2155033772917337,
+      "rationale": "Maximises Youden's J (sensitivity + specificity - 1); the standard choice when the two error types are weighted equally."
+    },
+    "max_f1": {
+      "threshold": 0.25,
+      "sensitivity": 0.9429941395844432,
+      "specificity": 0.08776779543883897,
+      "ppv": 0.3089005235602094,
+      "npv": 0.7807377049180327,
+      "accuracy": 0.34593116757799935,
+      "balanced_accuracy": 0.5153809675116411,
+      "youden_j": 0.030761935023282172,
+      "false_negatives": 107,
+      "false_positives": 3960,
+      "referral_rate": 0.9215181730459955,
+      "rationale": "Maximises F1 on the positive class; favours precision-recall balance under class imbalance."
+    },
+    "sens_90": {
+      "threshold": 0.28,
+      "sensitivity": 0.9009057005860416,
+      "specificity": 0.13844736235890348,
+      "ppv": 0.3113607070521083,
+      "npv": 0.7636594663278272,
+      "accuracy": 0.3686072692183982,
+      "balanced_accuracy": 0.5196765314724725,
+      "youden_j": 0.039353062944945005,
+      "false_negatives": 186,
+      "false_positives": 3740,
+      "referral_rate": 0.8734319716950788,
+      "rationale": "Highest specificity among cut-offs achieving at least 90% sensitivity; a rule-out operating point."
+    },
+    "sens_95": {
+      "threshold": 0.24,
+      "sensitivity": 0.9531166755460841,
+      "specificity": 0.06864777700990556,
+      "ppv": 0.30675582990397804,
+      "npv": 0.772020725388601,
+      "accuracy": 0.33563846896108074,
+      "balanced_accuracy": 0.5108822262779948,
+      "youden_j": 0.02176445255598969,
+      "false_negatives": 88,
+      "false_positives": 4043,
+      "referral_rate": 0.9379221614667096,
+      "rationale": "Highest specificity among cut-offs achieving at least 95% sensitivity; a rule-out operating point."
+    },
+    "sens_99": {
+      "threshold": 0.18,
+      "sensitivity": 0.9909429941395844,
+      "specificity": 0.013360976733471551,
+      "ppv": 0.302783656194042,
+      "npv": 0.7733333333333333,
+      "accuracy": 0.30845931167578,
+      "balanced_accuracy": 0.502151985436528,
+      "youden_j": 0.004303970873055896,
+      "false_negatives": 17,
+      "false_positives": 4283,
+      "referral_rate": 0.9879382438082985,
+      "rationale": "Highest specificity among cut-offs achieving at least 99% sensitivity; a rule-out operating point."
+    },
+    "cost_fn1x": {
+      "threshold": 0.79,
+      "sensitivity": 0.09536494405966968,
+      "specificity": 0.9967749366505414,
+      "ppv": 0.927461139896373,
+      "npv": 0.7181742738589212,
+      "accuracy": 0.7246703119974268,
+      "balanced_accuracy": 0.5460699403551056,
+      "youden_j": 0.09213988071021117,
+      "false_negatives": 1698,
+      "false_positives": 14,
+      "referral_rate": 0.031038919266645225,
+      "rationale": "Minimises expected cost when a missed case is treated as 1x as costly as an unnecessary confirmatory test."
+    },
+    "cost_fn5x": {
+      "threshold": 0.01,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.3018655516243165,
+      "npv": null,
+      "accuracy": 0.3018655516243165,
+      "balanced_accuracy": 0.5,
+      "youden_j": 0.0,
+      "false_negatives": 0,
+      "false_positives": 4341,
+      "referral_rate": 1.0,
+      "rationale": "Minimises expected cost when a missed case is treated as 5x as costly as an unnecessary confirmatory test."
+    },
+    "cost_fn10x": {
+      "threshold": 0.01,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.3018655516243165,
+      "npv": null,
+      "accuracy": 0.3018655516243165,
+      "balanced_accuracy": 0.5,
+      "youden_j": 0.0,
+      "false_negatives": 0,
+      "false_positives": 4341,
+      "referral_rate": 1.0,
+      "rationale": "Minimises expected cost when a missed case is treated as 10x as costly as an unnecessary confirmatory test.",
+      "degenerate": true
+    },
+    "cost_fn20x": {
+      "threshold": 0.01,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.3018655516243165,
+      "npv": null,
+      "accuracy": 0.3018655516243165,
+      "balanced_accuracy": 0.5,
+      "youden_j": 0.0,
+      "false_negatives": 0,
+      "false_positives": 4341,
+      "referral_rate": 1.0,
+      "rationale": "Minimises expected cost when a missed case is treated as 20x as costly as an unnecessary confirmatory test."
+    }
+  },
+  "recommended": {
+    "key": "cost_fn10x",
+    "threshold": 0.01,
+    "sensitivity": 1.0,
+    "specificity": 0.0,
+    "ppv": 0.3018655516243165,
+    "npv": null,
+    "accuracy": 0.3018655516243165,
+    "balanced_accuracy": 0.5,
+    "youden_j": 0.0,
+    "false_negatives": 0,
+    "false_positives": 4341,
+    "referral_rate": 1.0,
+    "rationale": "Minimises expected cost when a missed case is treated as 10x as costly as an unnecessary confirmatory test.",
+    "degenerate": true
+  },
+  "prevalence_projection": [
+    {
+      "prevalence": 0.02,
+      "ppv": 0.02,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    },
+    {
+      "prevalence": 0.05,
+      "ppv": 0.05,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    },
+    {
+      "prevalence": 0.1,
+      "ppv": 0.1,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    },
+    {
+      "prevalence": 0.2,
+      "ppv": 0.2,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    },
+    {
+      "prevalence": 0.35,
+      "ppv": 0.35,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    },
+    {
+      "prevalence": 0.5,
+      "ppv": 0.5,
+      "npv": NaN,
+      "positives_per_1000": 1000.0,
+      "missed_per_1000": 0.0
+    }
+  ],
+  "subgroups_at_recommended": [
+    {
+      "subgroup": "Endemic",
+      "n": 2084,
+      "prevalence": 0.31765834932821496,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.31765834932821496,
+      "npv": NaN,
+      "accuracy": 0.31765834932821496
+    },
+    {
+      "subgroup": "Rural",
+      "n": 2046,
+      "prevalence": 0.2873900293255132,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.2873900293255132,
+      "npv": NaN,
+      "accuracy": 0.2873900293255132
+    },
+    {
+      "subgroup": "Urban",
+      "n": 2088,
+      "prevalence": 0.30028735632183906,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "ppv": 0.30028735632183906,
+      "npv": NaN,
+      "accuracy": 0.30028735632183906
+    }
+  ],
+  "zero_fever_duration_cases": {
+    "n_typhoid_with_zero_fever_duration": 78,
+    "mean_predicted_probability": 0.4685,
+    "max_predicted_probability": 0.9689,
+    "recovered_at": {
+      "default (t=0.50)": "30/78",
+      "cost_fn10x (t=0.01)": "78/78",
+      "sens_95 (t=0.24)": "74/78",
+      "sens_99 (t=0.18)": "78/78",
+      "t=0.05": "78/78"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+TYPHOID SVM PROJECT
+===================
+
+Dataset      data/typhoid_dataset.csv
+Rows         31,087    Columns 23    Duplicates 0
+Target       Typhoid Status
+             binary     -> Typhoid / No Typhoid            (primary, matches Chapter 3)
+             multiclass -> Normal / Acute / Relapsing /
+                           Complicated                      (secondary, severity)
+
+Excluded     Blood Culture Result   confirmatory gold standard, Cramer's V 0.9999
+             Complications          post-diagnostic, 96.98% missing
+             Typhoid Status         target
+
+Model        Support Vector Machine
+Kernels      linear, polynomial, RBF
+Split        stratified 80:20, random_state 42
+Balancing    SMOTENC, applied inside the pipeline (training folds only)
+Optimisation GridSearchCV + StratifiedKFold(3), selection on macro F1
+Calibration  CalibratedClassifierCV (Platt scaling, out-of-fold)
+Evaluation   accuracy, balanced accuracy, precision, recall, F1, FPR, FNR,
+             ROC AUC, confusion matrix, per-Location subgroup analysis,
+             inference latency
+
+Feature policies
+  routine            all permitted attributes                  (default)
+  clinical_only      Widal and Typhidot removed                (sensitivity)
+  no_fever_duration  Fever Duration (Days) removed             (ablation)
+
+DATASET CAVEAT
+  Fever Duration (Days) is a deterministic proxy for the target: all 8,981
+  records with fever >= 1 day are labelled typhoid, none are negative. A single
+  threshold on that column scores 0.9870 accuracy / 0.9844 macro F1 against the
+  optimised SVM's 0.9881 / 0.9857. Widal (V=0.0014) and Typhidot (V=0.0065) are
+  independent of the outcome. The dataset is synthetic. See docs/DATASET_AUDIT.md
+  and docs/THESIS_ALIGNMENT.md before writing up any result.
+
+WEB APPLICATION (v2.0.0)
+  Architecture   src/typhoid_ml/ (ML, unchanged) + src/webapp/ (web)
+                 joined only by src/webapp/services/prediction_service.py
+  Auth           PBKDF2-SHA256, lockout, CSRF, session hardening, CSP/HSTS
+  Roles          Administrator / Clinician / Auditor
+  Database       PostgreSQL in production, SQLite locally
+                 users · patients · assessments · audit_logs
+  Deployment     render.yaml (web + Postgres), Dockerfile, Procfile
+  Tests          115 passing (41 ML pipeline + 74 web application)
+
+Entry points
+  python scripts/audit_dataset.py
+  python scripts/train_model.py --mode all --target binary
+  python scripts/train_model.py --mode all --target multiclass
+  python scripts/train_model.py --mode all --target binary --policy no_fever_duration
+  python scripts/baseline_rules.py
+  python scripts/make_report.py
+  python scripts/run_app.py
+  python -m pytest
+  python run_dev.py                     (development server)
+  gunicorn wsgi:app                     (production server)
+  python -m flask bootstrap             (deployment: tables + first admin)
+  python scripts/make_test_report.py
+  python scripts/ui_walkthrough.py

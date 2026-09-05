@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% from "_macros.html" import outcome_badge, empty %}
+{% block title %}Dashboard — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Welcome, {{ current_user.full_name.split()[0] }}</h1>
+    <p class="lede">Overview of your clinical activity. Referral threshold is set at
+       {{ threshold|pct(0) }} predicted probability.</p>
+  </div>
+  {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="{{ url_for('clinician.patient_new') }}">Add patient</a>
+    <a class="btn btn-primary" href="{{ url_for('clinician.assess') }}">New assessment</a>
+  </div>
+  {% endif %}
+</div>
+
+<div class="grid grid-4 mb-5">
+  <div class="stat accent"><p class="label">Assessments</p><p class="value">{{ stats.total }}</p><p class="sub">All time</p></div>
+  <div class="stat"><p class="label">Last 30 days</p><p class="value">{{ stats.recent }}</p><p class="sub">Recent activity</p></div>
+  <div class="stat warn"><p class="label">Flagged for testing</p><p class="value">{{ stats.flagged }}</p><p class="sub">At or above threshold</p></div>
+  <div class="stat"><p class="label">Patients</p><p class="value">{{ stats.patients }}</p><p class="sub">On your register</p></div>
+</div>
+
+<div class="split">
+  <div class="card">
+    <div class="card-head">
+      <div><h2>Recent assessments</h2><p>Your ten most recent results.</p></div>
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('clinician.assessments') }}">View all</a>
+    </div>
+    <div class="card-body" style="padding-top: var(--s-4);">
+      {% if latest %}
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>Reference</th><th>Patient</th><th>Outcome</th><th class="num">Confidence</th><th>When</th></tr></thead>
+          <tbody>
+          {% for a in latest %}
+          <tr>
+            <td><a class="mono" href="{{ url_for('clinician.assessment_detail', reference=a.reference) }}">{{ a.reference }}</a></td>
+            <td>{{ a.patient.patient_code if a.patient else '—' }}</td>
+            <td>{{ outcome_badge(a.prediction) }}</td>
+            <td class="num">{{ a.confidence|pct }}</td>
+            <td class="nowrap muted">{{ a.created_at|dt('%d %b, %H:%M') }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      {{ empty('No assessments yet', 'Run your first assessment to see results here.') }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-head"><h2>Outcome breakdown</h2></div>
+      <div class="card-body">
+        {% if breakdown %}
+        <table class="kv">
+          {% for label, count in breakdown %}
+          <tr><th>{{ label }}</th><td>{{ count }}</td></tr>
+          {% endfor %}
+        </table>
+        {% else %}<p class="muted small mb-0">No data yet.</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Model availability</h2></div>
+      <div class="card-body">
+        <table class="kv">
+          {% for mode, ok in model_status.items() %}
+          <tr>
+            <th>{{ 'Diagnosis' if mode == 'binary' else 'Severity' }}</th>
+            <td>
+              {% if ok %}<span class="badge badge-ok"><span class="dot dot-ok"></span>Ready</span>
+              {% else %}<span class="badge badge-danger"><span class="dot dot-danger"></span>Missing</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <p class="disclaimer">Decision-support output only. It does not replace blood
+           culture, confirmatory testing or clinical judgement.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

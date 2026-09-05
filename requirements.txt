@@ -1,0 +1,28 @@
+# --- machine-learning pipeline ---------------------------------------------
+pandas>=2.2,<3
+numpy>=1.26,<3
+scipy>=1.11,<2
+scikit-learn>=1.5,<2
+imbalanced-learn>=0.12,<1
+joblib>=1.4,<2
+matplotlib>=3.8,<4
+openpyxl>=3.1,<4
+
+# --- web application --------------------------------------------------------
+Flask>=3.0,<4
+Flask-SQLAlchemy>=3.1,<4
+Flask-Login>=0.6,<1
+Flask-WTF>=1.2,<2
+Flask-Migrate>=4,<5
+Flask-Limiter>=3,<4
+WTForms>=3.1,<4
+email-validator>=2,<3
+SQLAlchemy>=2.0,<3
+python-dotenv>=1.0,<2
+
+# --- production server and database ----------------------------------------
+gunicorn>=21,<24
+psycopg2-binary>=2.9,<3
+
+# --- testing ----------------------------------------------------------------
+pytest>=8

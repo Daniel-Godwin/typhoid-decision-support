@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block title %}My profile — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="container-narrow">
+  <div class="page-head"><div>
+    <h1>My profile</h1>
+    <p class="lede">Your account details. Contact an administrator to change your role.</p>
+  </div></div>
+
+  <div class="card"><div class="card-body">
+    <form method="post" novalidate data-guard>
+      {{ form.hidden_tag() }}
+      {{ field(form.full_name) }}
+      {{ field(form.facility) }}
+      <div class="form-actions">{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+  </div></div>
+
+  <div class="card">
+    <div class="card-head"><h2>Account</h2></div>
+    <div class="card-body">
+      <table class="kv">
+        <tr><th>Email</th><td>{{ current_user.email }}</td></tr>
+        <tr><th>Role</th><td>{{ current_user.role_label }}</td></tr>
+        <tr><th>Account created</th><td>{{ current_user.created_at|dt }}</td></tr>
+        <tr><th>Last sign-in</th><td>{{ current_user.last_login_at|dt }}</td></tr>
+        <tr><th>Last sign-in address</th><td class="mono">{{ current_user.last_login_ip or '—' }}</td></tr>
+      </table>
+      <div class="form-actions">
+        <a class="btn btn-secondary" href="{{ url_for('auth.change_password') }}">Change password</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

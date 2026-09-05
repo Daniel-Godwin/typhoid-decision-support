@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} — {{ title }}{% endblock %}
+
+{% macro body() %}
+<div class="container-narrow" style="padding: var(--s-16) var(--s-5); text-align:center;">
+  <p class="mono muted" style="font-size:3rem; font-weight:700; letter-spacing:-.03em;">{{ code }}</p>
+  <h1 class="mb-4">{{ title }}</h1>
+  <p class="muted">{{ message }}</p>
+  <div class="flex gap-3 mt-6" style="justify-content:center;">
+    {% if current_user.is_authenticated %}
+    <a class="btn btn-primary" href="{{ url_for('main.index') }}">Return to dashboard</a>
+    {% else %}
+    <a class="btn btn-primary" href="{{ url_for('auth.login') }}">Go to sign in</a>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% block content %}{{ body() }}{% endblock %}
+{% block anonymous %}{{ body() }}{% endblock %}

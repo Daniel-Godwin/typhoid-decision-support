@@ -1,0 +1,11 @@
+attribute,statistic,value
+TH,Cramer's V,0.5972
+TO,Cramer's V,0.5403
+AH,Cramer's V,0.2399
+BH,Cramer's V,0.1298
+Age_years,point-biserial r,0.0916
+M,Cramer's V,0.0818
+OXK,Cramer's V,0.0619
+OX9,Cramer's V,0.0601
+Gender,Cramer's V,0.0503
+OX2,Cramer's V,0.049

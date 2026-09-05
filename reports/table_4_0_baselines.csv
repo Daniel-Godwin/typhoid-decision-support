@@ -1,0 +1,5 @@
+model,accuracy,balanced_accuracy,macro_precision,macro_recall,macro_f1
+Majority class ('No Typhoid'),0.6981,0.5,0.3491,0.5,0.4111
+Rule: Fever Duration (Days) >= 1,0.9875,0.9792,0.9912,0.9792,0.9849
+Optimised SVM (routine policy),0.9881,0.9803,0.9916,0.9803,0.9857
+Optimised SVM (fever duration removed),0.6012,0.5485,0.545,0.5485,0.5454

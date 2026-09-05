@@ -1,0 +1,6 @@
+classifier,accuracy,balanced_accuracy,macro_f1
+Majority class,0.6981,0.5,0.4111
+Best single attribute (Fever Duration (Days)),0.9875,0.9792,0.9849
+"Decision tree, depth 2",0.9883,0.9806,0.9859
+"Decision tree, depth 3",0.9883,0.9806,0.9859
+"Decision tree, depth 5",0.9881,0.9804,0.9857

@@ -1,0 +1,21 @@
+feature,accuracy,balanced_accuracy,macro_f1
+Fever Duration (Days),0.9875,0.9792,0.9849
+White Blood Cell Count,0.7383,0.5666,0.5386
+Age,0.6981,0.5,0.4111
+Platelet Count,0.6981,0.5,0.4111
+Gender,0.6981,0.5,0.4111
+Location,0.6981,0.5,0.4111
+Socioeconomic Status,0.6981,0.5,0.4111
+Water Source Type,0.6981,0.5,0.4111
+Sanitation Facilities,0.6981,0.5,0.4111
+Hand Hygiene,0.6981,0.5,0.4111
+Consumption of Street Food,0.6981,0.5,0.4111
+Gastrointestinal Symptoms,0.6981,0.5,0.4111
+Neurological Symptoms,0.6981,0.5,0.4111
+Skin Manifestations,0.6981,0.5,0.4111
+Typhoid Vaccination Status,0.6981,0.5,0.4111
+Previous History of Typhoid,0.6981,0.5,0.4111
+Weather Condition,0.6981,0.5,0.4111
+Ongoing Infection in Society,0.6981,0.5,0.4111
+Widal Test,0.6981,0.5,0.4111
+Typhidot Test,0.6981,0.5,0.4111

@@ -1,0 +1,5 @@
+set,n,correct,accuracy,mean_confidence
+A. Held-out test sample,10.0,10.0,1.0,0.994
+B. Held-out test sample 2,10.0,10.0,1.0,0.992
+C. Training sample (seen),10.0,10.0,1.0,0.993
+D. Hard cases (fever = 0),10.0,5.0,0.5,0.982

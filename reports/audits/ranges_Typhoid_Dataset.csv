@@ -1,0 +1,7 @@
+attribute,positive_range,negative_range,ranges_overlap,sd_positive,sd_negative,sd_ratio
+Age,"[18, 70]","[20, 68]",True,14.922,11.885,1.26
+fever range (deg F),"[100.5, 105.4]","[99, 101.6]",True,1.414,0.629,2.25
+Hemoglobin (g/dL),"[10, 15]","[13, 16]",True,1.46,0.663,2.2
+Platelet Count,"[120255, 299799]","[250099, 262155]",True,50086.574,3229.774,15.51
+Calcium (mg/dL),"[8, 10]","[8.5, 10]",True,0.563,0.423,1.33
+Potassium (mg/dL),"[3.5, 5]","[4, 5.3]",True,0.428,0.391,1.1

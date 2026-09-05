@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "_macros.html" import outcome_badge, pager, empty %}
+{% block title %}Assessments — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Assessments</h1>
+    <p class="lede">{{ pagination.total }} record{{ '' if pagination.total == 1 else 's' }}
+      {%- if current_user.is_admin or current_user.role == Role.AUDITOR %} across all clinicians{% else %} recorded by you{% endif %}.</p>
+  </div>
+  {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+  <div class="page-actions"><a class="btn btn-primary" href="{{ url_for('clinician.assess') }}">New assessment</a></div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form class="toolbar" method="get">
+      <input class="input grow" type="search" name="q" value="{{ search }}" placeholder="Search reference, patient code or name">
+      <select name="outcome" class="input" style="width:auto;">
+        <option value="">All outcomes</option>
+        <option value="positive" {{ 'selected' if outcome == 'positive' }}>Typhoid predicted</option>
+        <option value="negative" {{ 'selected' if outcome == 'negative' }}>No typhoid predicted</option>
+        <option value="flagged" {{ 'selected' if outcome == 'flagged' }}>Flagged for testing</option>
+      </select>
+      <button class="btn btn-secondary" type="submit">Filter</button>
+      {% if search or outcome %}<a class="btn btn-ghost" href="{{ url_for('clinician.assessments') }}">Reset</a>{% endif %}
+    </form>
+
+    {% if pagination.items %}
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr>
+          <th>Reference</th><th>Patient</th><th>Outcome</th><th class="num">Confidence</th>
+          <th>Flagged</th><th>Clinician</th><th>Recorded</th>
+        </tr></thead>
+        <tbody>
+        {% for a in pagination.items %}
+        <tr>
+          <td><a class="mono" href="{{ url_for('clinician.assessment_detail', reference=a.reference) }}">{{ a.reference }}</a></td>
+          <td>{{ a.patient.patient_code if a.patient else '—' }}</td>
+          <td>{{ outcome_badge(a.prediction) }}</td>
+          <td class="num">{{ a.confidence|pct }}</td>
+          <td>{% if a.flagged_for_testing %}<span class="badge badge-warn">Refer</span>{% else %}<span class="muted xs">—</span>{% endif %}</td>
+          <td class="small">{{ a.clinician.full_name }}</td>
+          <td class="nowrap muted small">{{ a.created_at|dt('%d %b %Y, %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {{ pager(pagination, 'clinician.assessments', {'q': search, 'outcome': outcome}) }}
+    {% else %}
+    {{ empty('No assessments found', 'Adjust your filters, or run a new assessment.') }}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

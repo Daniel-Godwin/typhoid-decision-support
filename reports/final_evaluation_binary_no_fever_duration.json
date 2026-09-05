@@ -1,0 +1,107 @@
+{
+  "accuracy": 0.6011579285944033,
+  "balanced_accuracy": 0.5484832764424696,
+  "macro_precision": 0.5450400269525645,
+  "macro_recall": 0.5484832764424696,
+  "macro_f1": 0.5453799310374106,
+  "weighted_f1": 0.6084823121119882,
+  "confusion_matrix": [
+    [
+      2958,
+      1383
+    ],
+    [
+      1097,
+      780
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "No Typhoid",
+    "Typhoid"
+  ],
+  "true_positive": 780,
+  "false_negative": 1097,
+  "false_positive": 1383,
+  "true_negative": 2958,
+  "sensitivity": 0.41555673947789024,
+  "specificity": 0.6814098134070491,
+  "precision_positive": 0.3606102635228849,
+  "f1_positive": 0.38613861386138615,
+  "false_positive_rate": 0.3185901865929509,
+  "false_negative_rate": 0.5844432605221097,
+  "target_mode": "binary",
+  "n_test": 6218,
+  "classification_report": {
+    "No Typhoid": {
+      "precision": 0.7294697903822441,
+      "recall": 0.6814098134070491,
+      "f1-score": 0.704621248213435,
+      "support": 4341.0
+    },
+    "Typhoid": {
+      "precision": 0.3606102635228849,
+      "recall": 0.41555673947789024,
+      "f1-score": 0.38613861386138615,
+      "support": 1877.0
+    },
+    "accuracy": 0.6011579285944033,
+    "macro avg": {
+      "precision": 0.5450400269525645,
+      "recall": 0.5484832764424696,
+      "f1-score": 0.5453799310374106,
+      "support": 6218.0
+    },
+    "weighted avg": {
+      "precision": 0.6181238058349592,
+      "recall": 0.6011579285944033,
+      "f1-score": 0.6084823121119882,
+      "support": 6218.0
+    }
+  },
+  "latency": {
+    "single_record_ms": 21.3,
+    "batch_records": 2000,
+    "batch_seconds": 6.689,
+    "records_per_second": 299.0
+  },
+  "roc_auc": 0.5728683537682664,
+  "average_precision": 0.4348629813188346,
+  "subgroup_evaluation": {
+    "column": "Location",
+    "rows": [
+      {
+        "subgroup": "Endemic",
+        "n": 2084,
+        "accuracy": 0.5816,
+        "balanced_accuracy": 0.5428,
+        "macro_precision": 0.5395,
+        "macro_recall": 0.5428,
+        "macro_f1": 0.5389,
+        "sensitivity": 0.4366,
+        "specificity": 0.6491
+      },
+      {
+        "subgroup": "Rural",
+        "n": 2046,
+        "accuracy": 0.6207,
+        "balanced_accuracy": 0.5558,
+        "macro_precision": 0.5522,
+        "macro_recall": 0.5558,
+        "macro_f1": 0.5531,
+        "sensitivity": 0.4031,
+        "specificity": 0.7085
+      },
+      {
+        "subgroup": "Urban",
+        "n": 2088,
+        "accuracy": 0.6015,
+        "balanced_accuracy": 0.5455,
+        "macro_precision": 0.5425,
+        "macro_recall": 0.5455,
+        "macro_f1": 0.5429,
+        "sensitivity": 0.4051,
+        "specificity": 0.6858
+      }
+    ]
+  }
+}

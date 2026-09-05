@@ -1,0 +1,4 @@
+model,accuracy,balanced_accuracy,macro_precision,macro_recall,macro_f1
+Majority class,0.6981,0.25,0.1745,0.25,0.2056
+"Rules: WBC > 11,000 -> Complicated; fever >= 1 -> Acute",0.9133,0.7396,0.6709,0.7396,0.7002
+Optimised SVM (four-class),0.8697,0.7394,0.7455,0.7394,0.7377

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}New assessment — {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>New assessment</h1>
+    <p class="lede">Complete the patient's presentation. Options are limited to values
+       present in the training data, so an unrecognised entry can never reach the model.</p>
+  </div>
+</div>
+
+{% if errors %}
+<div class="alert alert-error mb-5" role="alert">
+  <div>
+    <strong>The assessment could not be completed.</strong>
+    <ul>
+      {% for name, message in errors.items() %}
+      <li>{% if name.startswith('_') %}{{ message }}{% else %}<strong>{{ name }}</strong>: {{ message }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+
+<form method="post" id="assessment-form" novalidate data-guard data-busy-label="Running model…">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <div class="card mb-5">
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label for="patient_id">Patient record</label>
+          <select name="patient_id" id="patient_id">
+            <option value="">Not linked to a patient record</option>
+            {% for p in patients %}
+            <option value="{{ p.id }}" {{ 'selected' if selected_patient == p.id|string }}>
+              {{ p.patient_code }} — {{ p.full_name }}
+            </option>
+            {% endfor %}
+          </select>
+          <span class="hint">Optional. Linking allows the result to appear in the patient's history.</span>
+        </div>
+        <div class="field">
+          <label for="target_mode">Model</label>
+          <select name="target_mode" id="target_mode">
+            <option value="binary" {{ 'selected' if target_mode == 'binary' }}>Diagnosis — Typhoid / No Typhoid</option>
+            <option value="multiclass" {{ 'selected' if target_mode == 'multiclass' }}>Severity stratification</option>
+          </select>
+          <span class="hint">Diagnosis is the primary model; severity grades the type of presentation.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h2>Patient presentation</h2><p>All fields are required unless marked optional.</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-fill-reference
+              data-reference='{{ reference_record|tojson }}'>Fill with reference values</button>
+    </div>
+    <div class="card-body">
+      {% for group in groups %}
+      <fieldset class="fieldset-block">
+        <legend>{{ group.title }}</legend>
+        <div class="form-grid">
+          {% for f in group.fields %}
+          <div class="field {{ 'has-error' if errors and f.name in errors }}">
+            <label for="f-{{ loop.index }}-{{ f.name|replace(' ', '_') }}">
+              {{ f.name }}{% if not f.optional %}<span class="req">*</span>{% else %}<span class="optional-tag">optional</span>{% endif %}
+            </label>
+            {% if f.kind == 'numeric' %}
+              <input type="number" step="any" name="{{ f.name }}"
+                     id="f-{{ loop.index }}-{{ f.name|replace(' ', '_') }}"
+                     value="{{ submitted.get(f.name, '') }}"
+                     placeholder="{{ '%g'|format(reference_record[f.name]) }}"
+                     {{ '' if f.optional else 'required' }}>
+              <span class="hint">
+                {{ f.help }}{% if f.range %} · observed range {{ '%g'|format(f.range.min) }}–{{ '%g'|format(f.range.max) }}{% endif %}
+              </span>
+            {% else %}
+              <select name="{{ f.name }}" id="f-{{ loop.index }}-{{ f.name|replace(' ', '_') }}"
+                      {{ '' if f.optional else 'required' }}>
+                <option value="" {{ 'selected' if not submitted.get(f.name) }} disabled>Select…</option>
+                {% if f.optional %}
+                <option value="Not recorded" {{ 'selected' if submitted.get(f.name) == 'Not recorded' }}>Not recorded</option>
+                {% endif %}
+                {% for opt in f.options %}
+                <option value="{{ opt }}" {{ 'selected' if submitted.get(f.name) == opt }}>{{ opt }}</option>
+                {% endfor %}
+              </select>
+              {% if f.help or f.optional %}
+              <span class="hint">{{ f.help }}{% if f.optional %}{{ ' · ' if f.help }}Not always assessed{% endif %}</span>
+              {% endif %}
+            {% endif %}
+            {% if errors and f.name in errors %}<span class="error">{{ errors[f.name] }}</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">Run assessment</button>
+        <button type="reset" class="btn btn-secondary">Clear form</button>
+        <a class="btn btn-ghost" href="{{ url_for('clinician.dashboard') }}">Cancel</a>
+      </div>
+
+      <p class="disclaimer">{{ disclaimer }}</p>
+    </div>
+  </div>
+</form>
+{% endblock %}

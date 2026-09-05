@@ -1,0 +1,46 @@
+{
+  "target_mode": "multiclass",
+  "feature_policy": "routine",
+  "best_params": {
+    "C": 10.0,
+    "degree": 2,
+    "gamma": "scale",
+    "kernel": "poly"
+  },
+  "numeric_features": [
+    "Age",
+    "Fever Duration (Days)",
+    "White Blood Cell Count",
+    "Platelet Count"
+  ],
+  "categorical_features": [
+    "Gender",
+    "Location",
+    "Socioeconomic Status",
+    "Water Source Type",
+    "Sanitation Facilities",
+    "Hand Hygiene",
+    "Consumption of Street Food",
+    "Gastrointestinal Symptoms",
+    "Neurological Symptoms",
+    "Skin Manifestations",
+    "Typhoid Vaccination Status",
+    "Previous History of Typhoid",
+    "Weather Condition",
+    "Ongoing Infection in Society",
+    "Widal Test",
+    "Typhidot Test"
+  ],
+  "classes": [
+    "Acute Typhoid Fever",
+    "Complicated Typhoid",
+    "Normal or No Typhoid",
+    "Relapsing Typhoid"
+  ],
+  "n_train": 24869,
+  "n_test": 6218,
+  "fit_seconds": 1644.5,
+  "trained_at": "2026-09-03T20:21:11+00:00",
+  "python": "3.11.15",
+  "random_state": 42
+}

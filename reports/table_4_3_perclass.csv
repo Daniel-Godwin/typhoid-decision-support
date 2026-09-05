@@ -1,0 +1,7 @@
+model,class,precision,recall,f1_score,support
+Binary,No Typhoid,0.9832,1.0000,0.9915,4341
+Binary,Typhoid,1.0000,0.9606,0.9799,1877
+Four-class,Normal or No Typhoid,0.9859,1.0000,0.9929,4341
+Four-class,Acute Typhoid Fever,0.6928,0.5389,0.6063,1130
+Four-class,Relapsing Typhoid,0.3032,0.4185,0.3516,497
+Four-class,Complicated Typhoid,1.0000,1.0000,1.0000,250

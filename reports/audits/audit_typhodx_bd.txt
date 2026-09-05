@@ -1,0 +1,89 @@
+DATASET INTEGRITY AUDIT — typhodx_bd_clean.csv
+==============================================================================
+
+Rows: 1,100   Attributes: 11   Target: Typhoid
+Class balance (1 = positive): {1: 638, 0: 462}
+Positive rate: 58.0%
+Duplicate rows: 528 (48.0%)
+  duplicated rows by class: {1: 270, 0: 258}
+Missing values: {'Age_years': 61, 'OX2': 397, 'OXK': 397, 'OX9': 397, 'M': 445}
+
+ASSOCIATION WITH TARGET
+------------------------------------------------------------------------------
+attribute        statistic  value
+       TH       Cramer's V 0.5972
+       TO       Cramer's V 0.5403
+       AH       Cramer's V 0.2399
+       BH       Cramer's V 0.1298
+Age_years point-biserial r 0.0916
+        M       Cramer's V 0.0818
+      OXK       Cramer's V 0.0619
+      OX9       Cramer's V 0.0601
+   Gender       Cramer's V 0.0503
+      OX2       Cramer's V 0.0490
+
+CLASS-CONDITIONAL RANGES  (overlap=False means a hard threshold separates)
+------------------------------------------------------------------------------
+attribute positive_range negative_range  ranges_overlap  sd_positive  sd_negative  sd_ratio
+Age_years        [1, 85]        [1, 90]            True       21.528       21.777      0.99
+
+DETERMINISTIC CATEGORY LEVELS  (level always maps to one class)
+------------------------------------------------------------------------------
+attribute level   n  always_class
+       TO 1:160 312             1
+       TH 1:160 328             1
+       TH 1:320  35             1
+       AH 1:160  41             1
+       AH 1:320  40             1
+       BH 1:160  24             1
+
+TRIVIAL BASELINES  (held-out 20%)
+------------------------------------------------------------------------------
+                classifier  accuracy  balanced_accuracy  macro_f1
+            Majority class    0.5818             0.5000    0.3678
+Best single attribute (TH)    0.7591             0.7930    0.7576
+    Decision tree, depth 2    0.9591             0.9648    0.9585
+    Decision tree, depth 3    1.0000             1.0000    1.0000
+    Decision tree, depth 5    1.0000             1.0000    1.0000
+
+BEST SINGLE ATTRIBUTES
+------------------------------------------------------------------------------
+attribute  accuracy  balanced_accuracy  macro_f1
+       TH    0.7591             0.7930    0.7576
+       TO    0.6818             0.7266    0.6740
+Age_years    0.5727             0.5350    0.5246
+   Gender    0.5818             0.5000    0.3678
+       AH    0.5818             0.5000    0.3678
+       BH    0.5818             0.5000    0.3678
+
+DEPTH-3 DECISION TREE
+------------------------------------------------------------------------------
+|--- TH <= 1.5
+|   |--- class: 1
+|--- TH >  1.5
+|   |--- TO <= 1.0
+|   |   |--- class: 1
+|   |--- TO >  1.0
+|   |   |--- AH <= 1.5
+|   |   |   |--- class: 1
+|   |   |--- AH >  1.5
+|   |   |   |--- class: 0
+
+AFTER DEDUPLICATION  (5-fold cross-validated balanced accuracy)
+------------------------------------------------------------------------------
+Rows: 1,100 -> 760   class balance {1: 471, 0: 289}
+  tree_depth_1: 0.8026
+  tree_depth_2: 0.9554
+  tree_depth_3: 0.9979
+
+FINDINGS
+==============================================================================
+1. A depth-3 decision tree reaches 1.0000 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.
+2. 'TO' = '1:160' maps to class 1 in all 312 records, without exception.
+3. 'TH' = '1:160' maps to class 1 in all 328 records, without exception.
+4. 'TH' = '1:320' maps to class 1 in all 35 records, without exception.
+5. 'AH' = '1:160' maps to class 1 in all 41 records, without exception.
+6. 'AH' = '1:320' maps to class 1 in all 40 records, without exception.
+7. 'BH' = '1:160' maps to class 1 in all 24 records, without exception.
+
+Treat reported accuracy on this dataset with caution: report trivial baselines alongside any model result.

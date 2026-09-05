@@ -1,0 +1,240 @@
+{
+  "rows": 31087,
+  "columns": 23,
+  "column_names": [
+    "Age",
+    "Gender",
+    "Location",
+    "Socioeconomic Status",
+    "Water Source Type",
+    "Sanitation Facilities",
+    "Hand Hygiene",
+    "Consumption of Street Food",
+    "Fever Duration (Days)",
+    "Gastrointestinal Symptoms",
+    "Neurological Symptoms",
+    "Skin Manifestations",
+    "Complications",
+    "White Blood Cell Count",
+    "Platelet Count",
+    "Blood Culture Result",
+    "Widal Test",
+    "Typhidot Test",
+    "Typhoid Vaccination Status",
+    "Previous History of Typhoid",
+    "Weather Condition",
+    "Ongoing Infection in Society",
+    "Typhoid Status"
+  ],
+  "dtypes": {
+    "Age": "int64",
+    "Gender": "str",
+    "Location": "str",
+    "Socioeconomic Status": "str",
+    "Water Source Type": "str",
+    "Sanitation Facilities": "str",
+    "Hand Hygiene": "str",
+    "Consumption of Street Food": "str",
+    "Fever Duration (Days)": "int64",
+    "Gastrointestinal Symptoms": "str",
+    "Neurological Symptoms": "str",
+    "Skin Manifestations": "str",
+    "Complications": "str",
+    "White Blood Cell Count": "int64",
+    "Platelet Count": "int64",
+    "Blood Culture Result": "str",
+    "Widal Test": "str",
+    "Typhidot Test": "str",
+    "Typhoid Vaccination Status": "str",
+    "Previous History of Typhoid": "str",
+    "Weather Condition": "str",
+    "Ongoing Infection in Society": "str",
+    "Typhoid Status": "str"
+  },
+  "duplicates": 0,
+  "missing_values": {
+    "Gastrointestinal Symptoms": 7760,
+    "Neurological Symptoms": 7744,
+    "Complications": 30147,
+    "Ongoing Infection in Society": 7680
+  },
+  "missing_percentage": {
+    "Gastrointestinal Symptoms": 24.96,
+    "Neurological Symptoms": 24.91,
+    "Complications": 96.98,
+    "Ongoing Infection in Society": 24.7
+  },
+  "target": "Typhoid Status",
+  "target_distribution_multiclass": {
+    "Normal or No Typhoid": 21701,
+    "Acute Typhoid Fever": 5649,
+    "Relapsing Typhoid": 2486,
+    "Complicated Typhoid": 1251
+  },
+  "target_distribution_binary": {
+    "No Typhoid": 21701,
+    "Typhoid": 9386
+  },
+  "imbalance_ratio_multiclass": 17.35,
+  "imbalance_ratio_binary": 2.31,
+  "numeric_columns": [
+    "Age",
+    "Fever Duration (Days)",
+    "White Blood Cell Count",
+    "Platelet Count"
+  ],
+  "categorical_columns": [
+    "Gender",
+    "Location",
+    "Socioeconomic Status",
+    "Water Source Type",
+    "Sanitation Facilities",
+    "Hand Hygiene",
+    "Consumption of Street Food",
+    "Gastrointestinal Symptoms",
+    "Neurological Symptoms",
+    "Skin Manifestations",
+    "Complications",
+    "Blood Culture Result",
+    "Widal Test",
+    "Typhidot Test",
+    "Typhoid Vaccination Status",
+    "Previous History of Typhoid",
+    "Weather Condition",
+    "Ongoing Infection in Society",
+    "Typhoid Status"
+  ],
+  "excluded_features": [
+    "Blood Culture Result",
+    "Complications",
+    "Typhoid Status"
+  ],
+  "model_features": {
+    "numeric": [
+      "Age",
+      "Fever Duration (Days)",
+      "White Blood Cell Count",
+      "Platelet Count"
+    ],
+    "categorical": [
+      "Gender",
+      "Location",
+      "Socioeconomic Status",
+      "Water Source Type",
+      "Sanitation Facilities",
+      "Hand Hygiene",
+      "Consumption of Street Food",
+      "Gastrointestinal Symptoms",
+      "Neurological Symptoms",
+      "Skin Manifestations",
+      "Typhoid Vaccination Status",
+      "Previous History of Typhoid",
+      "Weather Condition",
+      "Ongoing Infection in Society",
+      "Widal Test",
+      "Typhidot Test"
+    ]
+  },
+  "category_levels": {
+    "Gender": [
+      "Female",
+      "Male"
+    ],
+    "Location": [
+      "Endemic",
+      "Rural",
+      "Urban"
+    ],
+    "Socioeconomic Status": [
+      "High",
+      "Low",
+      "Middle"
+    ],
+    "Water Source Type": [
+      "River",
+      "Tap",
+      "Untreated Supply",
+      "Well"
+    ],
+    "Sanitation Facilities": [
+      "Open Defecation",
+      "Proper"
+    ],
+    "Hand Hygiene": [
+      "No",
+      "Yes"
+    ],
+    "Consumption of Street Food": [
+      "No",
+      "Yes"
+    ],
+    "Gastrointestinal Symptoms": [
+      "Abdominal Pain",
+      "Constipation",
+      "Diarrhea"
+    ],
+    "Neurological Symptoms": [
+      "Confusion",
+      "Delirium",
+      "Headache"
+    ],
+    "Skin Manifestations": [
+      "No",
+      "Yes"
+    ],
+    "Typhoid Vaccination Status": [
+      "Not Received",
+      "Received"
+    ],
+    "Previous History of Typhoid": [
+      "No",
+      "Yes"
+    ],
+    "Weather Condition": [
+      "Cold & Humid",
+      "Hot & Dry",
+      "Moderate",
+      "Rainy & Wet"
+    ],
+    "Ongoing Infection in Society": [
+      "COVID-19 Surge",
+      "Dengue Outbreak",
+      "Seasonal Flu"
+    ],
+    "Widal Test": [
+      "High O & H Antibody",
+      "Low O & H Antibody"
+    ],
+    "Typhidot Test": [
+      "IgG Positive",
+      "IgM Positive",
+      "Negative"
+    ]
+  },
+  "numeric_ranges": {
+    "Age": {
+      "min": 1.0,
+      "max": 80.0,
+      "median": 40.0,
+      "mean": 40.470743397561684
+    },
+    "Fever Duration (Days)": {
+      "min": 0.0,
+      "max": 21.0,
+      "median": 0.0,
+      "mean": 3.182230514362917
+    },
+    "White Blood Cell Count": {
+      "min": 3000.0,
+      "max": 19994.0,
+      "median": 7160.0,
+      "mean": 7357.771705214398
+    },
+    "Platelet Count": {
+      "min": 50001.0,
+      "max": 449994.0,
+      "median": 273045.0,
+      "mean": 269143.39392672176
+    }
+  }
+}

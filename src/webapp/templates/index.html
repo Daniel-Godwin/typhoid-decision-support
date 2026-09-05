@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block anonymous %}
+<div class="hero">
+  <span class="brand-mark" style="margin:0 auto var(--s-5); width:52px; height:52px; font-size:1rem;">TD</span>
+  <h1>{{ APP_NAME }}</h1>
+  <p>A Support Vector Machine decision-support system for typhoid fever assessment
+     in resource-limited clinical settings. Access is restricted to authorised staff.</p>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Sign in to continue</a>
+  <p class="xs muted mt-6">Research prototype. Not a medical device.</p>
+</div>
+{% endblock %}

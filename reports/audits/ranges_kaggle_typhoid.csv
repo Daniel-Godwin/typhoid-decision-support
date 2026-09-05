@@ -1,0 +1,5 @@
+attribute,positive_range,negative_range,ranges_overlap,sd_positive,sd_negative,sd_ratio
+Age,"[1, 80]","[1, 80]",True,23.248,23.09,1.01
+Fever Duration (Days),"[0, 21]","[0, 0]",True,6.289,0.0,inf
+White Blood Cell Count,"[3000, 19994]","[3000, 11000]",True,3816.451,2315.485,1.65
+Platelet Count,"[50163, 449994]","[50001, 449984]",True,106399.129,107994.094,0.99

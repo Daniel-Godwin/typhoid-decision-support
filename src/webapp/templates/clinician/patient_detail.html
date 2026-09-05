@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "_macros.html" import outcome_badge, empty %}
+{% block title %}{{ patient.patient_code }} — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ patient.full_name }}</h1>
+    <p class="lede">Patient <span class="mono">{{ patient.patient_code }}</span> ·
+       added {{ patient.created_at|dt('%d %b %Y') }} by {{ patient.created_by.full_name }}.</p>
+  </div>
+  {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="{{ url_for('clinician.patient_edit', patient_id=patient.id) }}">Edit</a>
+    <a class="btn btn-primary" href="{{ url_for('clinician.assess', patient_id=patient.id) }}">New assessment</a>
+  </div>
+  {% endif %}
+</div>
+
+<div class="split">
+  <div class="card">
+    <div class="card-head"><div><h2>Assessment history</h2><p>{{ history|length }} recorded.</p></div></div>
+    <div class="card-body" style="padding-top: var(--s-4);">
+      {% if history %}
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>Reference</th><th>Outcome</th><th class="num">Confidence</th><th>Flagged</th><th>Date</th></tr></thead>
+          <tbody>
+          {% for a in history %}
+          <tr>
+            <td><a class="mono" href="{{ url_for('clinician.assessment_detail', reference=a.reference) }}">{{ a.reference }}</a></td>
+            <td>{{ outcome_badge(a.prediction) }}</td>
+            <td class="num">{{ a.confidence|pct }}</td>
+            <td>{% if a.flagged_for_testing %}<span class="badge badge-warn">Refer</span>{% else %}<span class="muted xs">—</span>{% endif %}</td>
+            <td class="nowrap muted small">{{ a.created_at|dt('%d %b %Y, %H:%M') }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      {{ empty('No assessments yet', 'Run an assessment to start this patient\'s history.') }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Details</h2></div>
+    <div class="card-body">
+      <table class="kv">
+        <tr><th>Patient code</th><td class="mono">{{ patient.patient_code }}</td></tr>
+        <tr><th>Age</th><td>{{ patient.age if patient.age is not none else '—' }}</td></tr>
+        <tr><th>Gender</th><td>{{ patient.gender or '—' }}</td></tr>
+        <tr><th>Setting</th><td>{{ patient.location or '—' }}</td></tr>
+        <tr><th>Contact</th><td>{{ patient.contact or '—' }}</td></tr>
+      </table>
+      {% if patient.notes %}
+      <p class="label mt-5 xs muted strong" style="text-transform:uppercase; letter-spacing:.06em;">Clinical notes</p>
+      <p class="small">{{ patient.notes }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}System status — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>System status</h1><p class="lede">Runtime configuration, database health and model artefacts.</p></div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><h2>Runtime</h2></div>
+    <div class="card-body">
+      <table class="kv">
+        <tr><th>Environment</th><td><span class="badge {{ 'badge-warn' if runtime.environment != 'production' else 'badge-ok' }}">{{ runtime.environment }}</span></td></tr>
+        <tr><th>Debug mode</th><td>{{ 'on' if runtime.debug else 'off' }}</td></tr>
+        <tr><th>Python</th><td>{{ runtime.python }}</td></tr>
+        <tr><th>Platform</th><td class="xs">{{ runtime.platform }}</td></tr>
+        <tr><th>Rate limiting</th><td>{{ 'enabled' if runtime.rate_limiting else 'disabled' }}</td></tr>
+        <tr><th>Session lifetime</th><td>{{ runtime.session_lifetime }}</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Database</h2></div>
+    <div class="card-body">
+      <table class="kv">
+        <tr><th>Engine</th><td>{{ runtime.database_engine }}</td></tr>
+        <tr><th>Connectivity</th>
+            <td>{% if runtime.database_ok %}<span class="badge badge-ok"><span class="dot dot-ok"></span>Reachable</span>
+                {% else %}<span class="badge badge-danger"><span class="dot dot-danger"></span>Unreachable</span>{% endif %}</td></tr>
+      </table>
+      {% if runtime.database_error %}<div class="alert alert-error mt-4"><div>{{ runtime.database_error }}</div></div>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><div><h2>Machine-learning models</h2>
+    <p>Artefacts produced by the training pipeline. The web layer reads them through the prediction service and never modifies them.</p></div></div>
+  <div class="card-body">
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Model</th><th>Status</th><th>Kernel</th><th>C</th><th>Gamma</th><th class="num">Train</th><th class="num">Test</th><th>Trained</th></tr></thead>
+        <tbody>
+        {% for mode, info in models.items() %}
+        <tr>
+          <td class="strong">{{ mode }}</td>
+          <td>{% if info.available %}<span class="badge badge-ok">available</span>{% else %}<span class="badge badge-danger">missing</span>{% endif %}</td>
+          {% if info.meta %}
+          <td>{{ info.meta.best_params.kernel }}</td>
+          <td>{{ info.meta.best_params.C }}</td>
+          <td>{{ info.meta.best_params.get('gamma', '—') }}</td>
+          <td class="num">{{ '{:,}'.format(info.meta.n_train) }}</td>
+          <td class="num">{{ '{:,}'.format(info.meta.n_test) }}</td>
+          <td class="xs nowrap">{{ info.meta.trained_at }}</td>
+          {% else %}<td colspan="6" class="muted">—</td>{% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-foot">
+    Feature policies available: {{ policies|join(', ') }} ·
+    Default model: {{ runtime.default_target }} ({{ runtime.default_policy }}) ·
+    Referral threshold: {{ runtime.triage_threshold|pct(0) }}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head"><h2>Model artefacts on disk</h2></div>
+  <div class="card-body">
+    <table class="kv">
+      {% for name, path in artefacts.items() %}<tr><th>{{ name }}</th><td class="mono xs">{{ path.name }}</td></tr>
+      {% else %}<tr><th class="muted">No artefacts found</th><td></td></tr>{% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

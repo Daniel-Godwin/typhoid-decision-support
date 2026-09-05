@@ -1,0 +1,41 @@
+set,#,record_id,age,fever_days,widal,typhidot,wbc,actual,predicted,confidence,correct,top_driver,four_class_actual
+A. Held-out test sample,1,28217,80,13,High O & H Antibody,IgM Positive,8177,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+A. Held-out test sample,2,19441,79,6,Low O & H Antibody,IgG Positive,9846,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Relapsing Typhoid
+A. Held-out test sample,3,12214,15,1,High O & H Antibody,IgM Positive,4548,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+A. Held-out test sample,4,574,44,21,Low O & H Antibody,IgG Positive,9763,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Relapsing Typhoid
+A. Held-out test sample,5,4615,52,5,High O & H Antibody,Negative,10954,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+A. Held-out test sample,6,19182,69,0,High O & H Antibody,IgM Positive,3295,No Typhoid,No Typhoid,0.9819,yes,White Blood Cell Count,Normal or No Typhoid
+A. Held-out test sample,7,30965,19,0,Low O & H Antibody,Negative,9579,No Typhoid,No Typhoid,0.9901,yes,White Blood Cell Count,Normal or No Typhoid
+A. Held-out test sample,8,2266,5,0,High O & H Antibody,Negative,6570,No Typhoid,No Typhoid,0.9906,yes,Water Source Type,Normal or No Typhoid
+A. Held-out test sample,9,7939,35,0,Low O & H Antibody,IgM Positive,9168,No Typhoid,No Typhoid,0.9871,yes,White Blood Cell Count,Normal or No Typhoid
+A. Held-out test sample,10,9333,40,0,High O & H Antibody,Negative,6475,No Typhoid,No Typhoid,0.9872,yes,Socioeconomic Status,Normal or No Typhoid
+B. Held-out test sample 2,1,27120,55,2,Low O & H Antibody,IgM Positive,6160,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+B. Held-out test sample 2,2,25125,63,20,High O & H Antibody,IgM Positive,8808,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Relapsing Typhoid
+B. Held-out test sample 2,3,4146,1,14,Low O & H Antibody,IgG Positive,18775,Typhoid,Typhoid,1.0,yes,(none above 0.1 pt),Complicated Typhoid
+B. Held-out test sample 2,4,5560,80,5,High O & H Antibody,IgG Positive,8661,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+B. Held-out test sample 2,5,1165,56,16,High O & H Antibody,IgM Positive,7364,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+B. Held-out test sample 2,6,15410,80,0,High O & H Antibody,IgM Positive,3244,No Typhoid,No Typhoid,0.9788,yes,White Blood Cell Count,Normal or No Typhoid
+B. Held-out test sample 2,7,27455,62,0,Low O & H Antibody,IgG Positive,3574,No Typhoid,No Typhoid,0.9778,yes,White Blood Cell Count,Normal or No Typhoid
+B. Held-out test sample 2,8,4292,79,0,High O & H Antibody,IgG Positive,9074,No Typhoid,No Typhoid,0.9861,yes,White Blood Cell Count,Normal or No Typhoid
+B. Held-out test sample 2,9,30021,40,0,High O & H Antibody,IgM Positive,7095,No Typhoid,No Typhoid,0.9863,yes,Location,Normal or No Typhoid
+B. Held-out test sample 2,10,4969,27,0,High O & H Antibody,IgG Positive,8761,No Typhoid,No Typhoid,0.9867,yes,Location,Normal or No Typhoid
+C. Training sample (seen),1,13808,45,3,High O & H Antibody,IgM Positive,7326,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+C. Training sample (seen),2,20523,73,18,High O & H Antibody,Negative,3465,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+C. Training sample (seen),3,9697,18,16,Low O & H Antibody,Negative,3155,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Relapsing Typhoid
+C. Training sample (seen),4,15180,8,15,High O & H Antibody,IgG Positive,10225,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+C. Training sample (seen),5,28191,36,17,Low O & H Antibody,IgG Positive,7524,Typhoid,Typhoid,1.0,yes,Fever Duration (Days),Acute Typhoid Fever
+C. Training sample (seen),6,25573,45,0,High O & H Antibody,IgM Positive,6990,No Typhoid,No Typhoid,0.9856,yes,Typhoid Vaccination Status,Normal or No Typhoid
+C. Training sample (seen),7,20093,29,0,Low O & H Antibody,IgM Positive,5484,No Typhoid,No Typhoid,0.9872,yes,Water Source Type,Normal or No Typhoid
+C. Training sample (seen),8,16097,24,0,Low O & H Antibody,IgM Positive,8936,No Typhoid,No Typhoid,0.9806,yes,White Blood Cell Count,Normal or No Typhoid
+C. Training sample (seen),9,30111,19,0,High O & H Antibody,Negative,6327,No Typhoid,No Typhoid,0.9901,yes,Socioeconomic Status,Normal or No Typhoid
+C. Training sample (seen),10,22586,47,0,High O & H Antibody,Negative,9024,No Typhoid,No Typhoid,0.9856,yes,White Blood Cell Count,Normal or No Typhoid
+D. Hard cases (fever = 0),1,10397,57,0,High O & H Antibody,Negative,7168,Typhoid,No Typhoid,0.9863,NO,Sanitation Facilities,Relapsing Typhoid
+D. Hard cases (fever = 0),2,5407,22,0,High O & H Antibody,IgM Positive,7655,Typhoid,No Typhoid,0.9851,NO,Skin Manifestations,Acute Typhoid Fever
+D. Hard cases (fever = 0),3,21684,20,0,Low O & H Antibody,IgM Positive,7329,Typhoid,No Typhoid,0.9906,NO,Ongoing Infection in Society,Relapsing Typhoid
+D. Hard cases (fever = 0),4,23440,13,0,High O & H Antibody,IgG Positive,8875,Typhoid,No Typhoid,0.9882,NO,Gastrointestinal Symptoms,Acute Typhoid Fever
+D. Hard cases (fever = 0),5,11274,34,0,High O & H Antibody,Negative,10099,Typhoid,No Typhoid,0.9692,NO,White Blood Cell Count,Relapsing Typhoid
+D. Hard cases (fever = 0),6,21980,51,0,Low O & H Antibody,Negative,8207,No Typhoid,No Typhoid,0.9855,yes,Gastrointestinal Symptoms,Normal or No Typhoid
+D. Hard cases (fever = 0),7,19032,2,0,Low O & H Antibody,Negative,5605,No Typhoid,No Typhoid,0.9845,yes,Gender,Normal or No Typhoid
+D. Hard cases (fever = 0),8,18154,17,0,High O & H Antibody,Negative,7976,No Typhoid,No Typhoid,0.9857,yes,Socioeconomic Status,Normal or No Typhoid
+D. Hard cases (fever = 0),9,22785,64,0,High O & H Antibody,IgM Positive,3010,No Typhoid,No Typhoid,0.9525,yes,White Blood Cell Count,Normal or No Typhoid
+D. Hard cases (fever = 0),10,4004,73,0,High O & H Antibody,Negative,6444,No Typhoid,No Typhoid,0.9887,yes,Socioeconomic Status,Normal or No Typhoid

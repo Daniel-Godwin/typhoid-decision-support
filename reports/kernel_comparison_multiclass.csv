@@ -1,0 +1,4 @@
+kernel,accuracy,balanced_accuracy,macro_f1,weighted_f1,fit_predict_seconds
+linear,0.8681,0.7363,0.7347,0.8701,492.0
+poly,0.8731,0.7301,0.7341,0.8728,240.4
+rbf,0.8705,0.7199,0.7266,0.8677,261.3

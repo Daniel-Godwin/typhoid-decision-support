@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block title %}Patients — {{ APP_NAME }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Patients</h1><p class="lede">{{ pagination.total }} patient record{{ '' if pagination.total == 1 else 's' }}.</p></div>
+  {% if current_user.role != Role.AUDITOR or current_user.is_admin %}
+  <div class="page-actions"><a class="btn btn-primary" href="{{ url_for('clinician.patient_new') }}">Add patient</a></div>
+  {% endif %}
+</div>
+
+<div class="card"><div class="card-body">
+  <form class="toolbar" method="get">
+    <input class="input grow" type="search" name="q" value="{{ search }}" placeholder="Search code, name or setting">
+    <button class="btn btn-secondary" type="submit">Search</button>
+    {% if search %}<a class="btn btn-ghost" href="{{ url_for('clinician.patients') }}">Reset</a>{% endif %}
+  </form>
+
+  {% if pagination.items %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Code</th><th>Name</th><th class="num">Age</th><th>Gender</th><th>Setting</th><th class="num">Assessments</th><th>Added</th></tr></thead>
+      <tbody>
+      {% for p in pagination.items %}
+      <tr>
+        <td><a class="mono" href="{{ url_for('clinician.patient_detail', patient_id=p.id) }}">{{ p.patient_code }}</a></td>
+        <td class="strong">{{ p.full_name }}</td>
+        <td class="num">{{ p.age if p.age is not none else '—' }}</td>
+        <td>{{ p.gender or '—' }}</td>
+        <td>{{ p.location or '—' }}</td>
+        <td class="num">{{ p.assessments.count() }}</td>
+        <td class="nowrap muted small">{{ p.created_at|dt('%d %b %Y') }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ pager(pagination, 'clinician.patients', {'q': search}) }}
+  {% else %}
+  {{ empty('No patients found', 'Add a patient record to begin building a history.') }}
+  {% endif %}
+</div></div>
+{% endblock %}

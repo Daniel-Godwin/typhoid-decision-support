@@ -1,0 +1,647 @@
+{
+  "summary": {
+    "passed": 128
+  },
+  "tests": [
+    {
+      "file": "tests/test_app.py",
+      "test": "test_schema_covers_every_model_feature",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_validation_accepts_reference_record",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_validation_rejects_missing_field",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_optional_fields_match_dataset_missingness",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_optional_field_may_be_left_unanswered[]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_optional_field_may_be_left_unanswered[Not recorded]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_optional_field_may_be_left_unanswered[None]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_unanswered_optional_field_is_not_treated_as_a_category",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_required_field_still_rejects_not_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_validation_rejects_unknown_category",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_validation_rejects_non_numeric",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_out_of_range_numeric_warns_but_passes",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_index_renders_dropdowns",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_health_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_api_schema_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_api_rejects_invalid_payload",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_api_rejects_unknown_target_mode",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_api_predict_returns_calibrated_result",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_api_accepts_record_with_unrecorded_optional_fields",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_form_submission_renders_prediction",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_dataset_shape",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_no_duplicates",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_target_is_complete",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_binary_target_collapses_correctly",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_multiclass_target_is_passthrough",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_unknown_target_mode_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_feature_policy_excludes_leakage_columns[routine]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_feature_policy_excludes_leakage_columns[clinical_only]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_clinical_only_policy_drops_serology",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_category_levels_are_non_empty",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_audit_reports_both_target_views",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_ordinal_preprocessor_removes_missing_values",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_categorical_indices_follow_numeric_block",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_unseen_category_maps_to_sentinel",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_smotenc_balances_training_classes",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_smotenc_keeps_categorical_codes_integral",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_post_smote_encoder_scales_and_expands",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_pipeline_end_to_end_predicts_valid_labels",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_calibrated_pipeline_emits_probabilities",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_resampling_never_touches_held_out_data",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_pipeline.py",
+      "test": "test_search_space_is_tractable",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_sweep_counts_match_hand_computation",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_sweep_is_monotonic_in_sensitivity",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_extreme_thresholds_are_degenerate",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_sweep_carries_a_cost_column_per_ratio",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_operating_points_include_every_named_rule",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_youden_point_maximises_j",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_prevalence_adjustment_lowers_ppv_as_disease_becomes_rarer",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_prevalence_adjustment_is_independent_of_the_evaluation_partition",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_calibration_reports_perfect_agreement_for_honest_probabilities",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_calibration_detects_an_overconfident_model",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_stratified_operating_point_partitions_the_records",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_threshold.py",
+      "test": "test_positive_label_orientation_is_respected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_login_page_renders",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_valid_login_succeeds",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_wrong_password_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_unknown_account_gives_same_message",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_account_locks_after_repeated_failures",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_disabled_account_cannot_sign_in",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_logout_ends_session",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_password_change_requires_current_password",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_password_change_succeeds_and_new_password_works",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_weak_password_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_password_is_hashed_not_stored",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthentication::test_open_redirect_is_blocked",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/clinic/]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/clinic/assess]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/clinic/patients]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/admin/]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/admin/users]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_anonymous_is_redirected[/admin/logs]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_clinician_cannot_reach_admin",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_admin_reaches_everything",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_auditor_is_read_only",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_clinician_cannot_see_another_clinicians_assessment",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_admin_cannot_remove_own_admin_role",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuthorisation::test_admin_cannot_disable_own_account",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAdmin::test_dashboard_shows_statistics",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAdmin::test_create_user",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAdmin::test_duplicate_email_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAdmin::test_toggle_and_unlock",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAdmin::test_system_page_reports_models_and_database",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_dashboard",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_assessment_form_renders_dataset_options",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_create_patient",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_duplicate_patient_code_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_patient_age_out_of_range_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestClinician::test_patient_list_and_search",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestDatabase::test_tables_exist",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestDatabase::test_cascade_delete_removes_assessments",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestDatabase::test_unique_constraints",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_schema_matches_trained_feature_set",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_policies_and_modes_exposed",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_validation_rejects_unknown_category",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_validation_rejects_missing_required_field",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_optional_field_imputes_rather_than_failing",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_out_of_range_numeric_warns",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_prediction_returns_calibrated_output",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_explanation_is_produced",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_triage_recommendation_levels",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_unknown_target_mode_rejected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_assessment_is_persisted_with_provenance",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_invalid_submission_is_reported_not_crashed",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_api_predict",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_api_validation_error",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_api_requires_authentication",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_api_auditor_cannot_predict",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAssessmentFlow::test_api_schema_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_successful_login_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_failed_login_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_access_denial_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_patient_creation_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_prediction_recorded",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestAuditTrail::test_audit_entries_capture_context",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_404_page",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_404_json_for_api_paths",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_403_page_rendered",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_missing_assessment_returns_404",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_api_rejects_non_json",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_security_headers_present",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestErrorHandling::test_request_id_header",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_health_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_testing_config_isolated",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_production_config_flags_secure_cookies",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_production_config_validation_detects_default_secret",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_postgres_url_is_normalised",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_csrf_enabled_outside_testing",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_ml_package_is_not_imported_by_blueprints",
+      "status": "PASSED"
+    }
+  ]
+}

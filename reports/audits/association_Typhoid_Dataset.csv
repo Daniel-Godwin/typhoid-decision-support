@@ -1,0 +1,14 @@
+attribute,statistic,value
+fever range (deg F),point-biserial r,0.6338
+Hemoglobin (g/dL),point-biserial r,-0.4541
+Urine Culture Bacteria,Cramer's V,0.4356
+Platelet Count,point-biserial r,-0.4112
+Potassium (mg/dL),point-biserial r,-0.3123
+Calcium (mg/dL),point-biserial r,-0.2308
+cough,Cramer's V,0.2238
+diarrhea,Cramer's V,0.2217
+nausea,Cramer's V,0.1861
+muscle pain,Cramer's V,0.12
+Gender,Cramer's V,0.0718
+Age,point-biserial r,0.0537
+headache,Cramer's V,0.025

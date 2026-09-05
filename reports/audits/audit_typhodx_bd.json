@@ -1,0 +1,60 @@
+{
+  "file": "typhodx_bd_clean.csv",
+  "rows": 1100,
+  "attributes": 11,
+  "class_balance": {
+    "1": 638,
+    "0": 462
+  },
+  "duplicate_rows": 528,
+  "duplicates_by_class": {
+    "1": 270,
+    "0": 258
+  },
+  "baselines": [
+    {
+      "classifier": "Majority class",
+      "accuracy": 0.5818,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.3678
+    },
+    {
+      "classifier": "Best single attribute (TH)",
+      "accuracy": 0.7591,
+      "balanced_accuracy": 0.793,
+      "macro_f1": 0.7576
+    },
+    {
+      "classifier": "Decision tree, depth 2",
+      "accuracy": 0.9591,
+      "balanced_accuracy": 0.9648,
+      "macro_f1": 0.9585
+    },
+    {
+      "classifier": "Decision tree, depth 3",
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    {
+      "classifier": "Decision tree, depth 5",
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    }
+  ],
+  "deduplicated_cv": {
+    "tree_depth_1": 0.8026,
+    "tree_depth_2": 0.9554,
+    "tree_depth_3": 0.9979
+  },
+  "findings": [
+    "A depth-3 decision tree reaches 1.0000 balanced accuracy. The classes are separable by three thresholds, so no complex model is being meaningfully tested.",
+    "'TO' = '1:160' maps to class 1 in all 312 records, without exception.",
+    "'TH' = '1:160' maps to class 1 in all 328 records, without exception.",
+    "'TH' = '1:320' maps to class 1 in all 35 records, without exception.",
+    "'AH' = '1:160' maps to class 1 in all 41 records, without exception.",
+    "'AH' = '1:320' maps to class 1 in all 40 records, without exception.",
+    "'BH' = '1:160' maps to class 1 in all 24 records, without exception."
+  ]
+}

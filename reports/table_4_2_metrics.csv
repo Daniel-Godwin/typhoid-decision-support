@@ -1,0 +1,3 @@
+model,kernel,C,gamma,accuracy,balanced_accuracy,macro_precision,macro_recall,macro_f1,weighted_f1,sensitivity,specificity,fpr,fnr,roc_auc,inference_ms_per_record
+Binary diagnosis,poly,10.0,0.1,0.9881,0.9803,0.9916,0.9803,0.9857,0.9880,0.9606,1.0000,0.0000,0.0394,0.9797,9.96
+Severity stratification,poly,10.0,scale,0.8697,0.7394,0.7455,0.7394,0.7377,0.8717,,,,,,19.04
