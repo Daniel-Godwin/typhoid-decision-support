@@ -32,6 +32,23 @@ def health():
         checks["database"] = f"error: {exc.__class__.__name__}"
         ok = False
 
+    # Which engine answered, so a silent fall-back to the local SQLite file is
+    # visible rather than being mistaken for a working deployment. In
+    # production that file is on an ephemeral disk and is emptied on every
+    # restart. Only the dialect name is reported — never the host, the
+    # database name or any part of the connection string.
+    try:
+        dialect = db.engine.dialect.name
+    except Exception:
+        dialect = "unknown"
+    checks["database_engine"] = dialect
+    if current_app.config.get("ENV_NAME") == "production" and dialect == "sqlite":
+        checks["database_warning"] = (
+            "running on the ephemeral SQLite fallback; DATABASE_URL is not set, "
+            "and all stored data is lost on restart"
+        )
+        ok = False
+
     model_state = {}
     for mode in ps.available_target_modes():
         available = ps.model_is_available(mode)

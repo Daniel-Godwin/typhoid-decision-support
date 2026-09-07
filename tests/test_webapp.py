@@ -623,6 +623,34 @@ class TestProductionReadiness:
 
         assert DevelopmentConfig.WTF_CSRF_ENABLED and ProductionConfig.WTF_CSRF_ENABLED
 
+    def test_health_reports_the_database_engine(self, client):
+        """A silent SQLite fall-back must be visible, not mistaken for success."""
+        body = client.get("/health").get_json()
+        assert "database_engine" in body["checks"]
+        assert body["checks"]["database_engine"] == "sqlite"
+
+    def test_health_never_leaks_the_connection_string(self, app, client):
+        """Only the dialect name is reported — no host, database or credentials."""
+        import json
+
+        raw = json.dumps(client.get("/health").get_json())
+        uri = app.config["SQLALCHEMY_DATABASE_URI"]
+        assert uri not in raw
+        for fragment in ("://", "@", "password", "sslmode"):
+            assert fragment not in raw
+
+    def test_production_on_sqlite_reports_degraded(self, monkeypatch):
+        """The ephemeral fall-back is a failed deployment, not a healthy one."""
+        monkeypatch.setenv("SECRET_KEY", "test-key-for-this-check")
+        monkeypatch.delenv("DATABASE_URL", raising=False)
+        application = create_app("production")
+        with application.test_client() as c:
+            response = c.get("/health")
+        body = response.get_json()
+        assert response.status_code == 503
+        assert body["status"] == "degraded"
+        assert "ephemeral" in body["checks"]["database_warning"]
+
     def test_ml_package_is_not_imported_by_blueprints(self):
         """The separation must hold: only the service touches the ML package."""
         blueprint_dir = ROOT / "src" / "webapp" / "blueprints"
