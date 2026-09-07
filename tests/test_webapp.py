@@ -585,6 +585,39 @@ class TestProductionReadiness:
 
         assert _normalise_db_url("postgres://u:p@h:5432/d").startswith("postgresql+psycopg2://")
 
+    def test_external_provider_url_keeps_its_query_string(self):
+        """A hosted provider's connection string must survive normalisation.
+
+        Neon and similar append `?sslmode=require`; dropping it turns TLS off.
+        """
+        from webapp.config import _normalise_db_url
+
+        url = _normalise_db_url(
+            "postgresql://u:p@ep-x.eu-central-1.aws.neon.tech/typhoid"
+            "?sslmode=require&channel_binding=require"
+        )
+        assert url.startswith("postgresql+psycopg2://")
+        assert url.endswith("?sslmode=require&channel_binding=require")
+
+    def test_already_normalised_url_is_left_alone(self):
+        from webapp.config import _normalise_db_url
+
+        url = "postgresql+psycopg2://u:p@h/d"
+        assert _normalise_db_url(url) == url
+
+    def test_connection_pool_survives_an_idle_suspending_database(self):
+        """External free-tier Postgres suspends when idle and drops the socket.
+
+        `pool_pre_ping` discards a dead connection instead of raising, and
+        `pool_recycle` keeps connections younger than the provider's own idle
+        timeout. Without both, the first request after a quiet period fails.
+        """
+        from webapp.config import BaseConfig
+
+        options = BaseConfig.SQLALCHEMY_ENGINE_OPTIONS
+        assert options["pool_pre_ping"] is True
+        assert 0 < options["pool_recycle"] <= 300
+
     def test_csrf_enabled_outside_testing(self):
         from webapp.config import DevelopmentConfig, ProductionConfig
 
