@@ -1,0 +1,98 @@
+{
+  "generated": "2026-09-07T13:27:50+00:00",
+  "model": "svm_binary.joblib",
+  "model_sha256_prefix": "13b5620b5e898412",
+  "threshold": 0.08,
+  "cases": [
+    {
+      "case": 1,
+      "patient_code": "UAT-001",
+      "expected_prediction": "Typhoid",
+      "expected_probability": 1.0,
+      "recorded_diagnosis": "Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 2,
+      "patient_code": "UAT-002",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0052,
+      "recorded_diagnosis": "No Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 3,
+      "patient_code": "UAT-003",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0118,
+      "recorded_diagnosis": "No Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 4,
+      "patient_code": "UAT-004",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0053,
+      "recorded_diagnosis": "Typhoid",
+      "agrees_with_record": false,
+      "kind": "known-difficult"
+    },
+    {
+      "case": 5,
+      "patient_code": "UAT-005",
+      "expected_prediction": "Typhoid",
+      "expected_probability": 0.9996,
+      "recorded_diagnosis": "Typhoid",
+      "agrees_with_record": true,
+      "kind": "difficult, correctly identified"
+    },
+    {
+      "case": 6,
+      "patient_code": "UAT-006",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0147,
+      "recorded_diagnosis": "No Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 7,
+      "patient_code": "UAT-007",
+      "expected_prediction": "Typhoid",
+      "expected_probability": 1.0,
+      "recorded_diagnosis": "Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 8,
+      "patient_code": "UAT-008",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0078,
+      "recorded_diagnosis": "Typhoid",
+      "agrees_with_record": false,
+      "kind": "known-difficult"
+    },
+    {
+      "case": 9,
+      "patient_code": "UAT-009",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.0186,
+      "recorded_diagnosis": "No Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    },
+    {
+      "case": 10,
+      "patient_code": "UAT-010",
+      "expected_prediction": "No Typhoid",
+      "expected_probability": 0.026,
+      "recorded_diagnosis": "No Typhoid",
+      "agrees_with_record": true,
+      "kind": "routine"
+    }
+  ]
+}
