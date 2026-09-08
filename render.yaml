@@ -7,7 +7,10 @@
 #     512 MB and be OOM-killed. Concurrency comes from threads instead.
 #   * `flask bootstrap` runs from the start command, not `preDeployCommand` —
 #     pre-deploy commands require a paid instance type. It is idempotent, so
-#     running it on every start and restart is safe.
+#     running it on every start and restart is safe. It runs with
+#     PRELOAD_MODELS=false because it only touches the database; loading the
+#     model there would import the whole scientific Python stack a second time
+#     and roughly double the cold-start delay on 0.1 CPU.
 #   * Only the default (binary) model is preloaded. The 11 MB four-class
 #     artefact loads on first use.
 #
@@ -27,7 +30,7 @@ services:
     region: frankfurt
     buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: >-
-      python -m flask bootstrap &&
+      PRELOAD_MODELS=false python -m flask bootstrap &&
       gunicorn wsgi:app --workers 1 --threads 4 --timeout 180
       --graceful-timeout 30 --access-logfile - --error-logfile -
     healthCheckPath: /health

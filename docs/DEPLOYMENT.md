@@ -145,10 +145,17 @@ Open `https://<your-service>.onrender.com/health`. You should see:
   "version": "2.0.0",
   "checks": {
     "database": "ok",
+    "database_engine": "postgresql",
     "models": {"binary": "available", "multiclass": "available"}
   }
 }
 ```
+
+**Check `database_engine` says `postgresql`.** If it says `sqlite`, `DATABASE_URL`
+did not reach the service and the application is running on an ephemeral local
+file: it will behave correctly until the service sleeps or redeploys, and then
+every stored patient and assessment is gone. In production that state returns
+HTTP 503 with `status: degraded` and a `database_warning` naming the problem.
 
 If `status` is `degraded`, the `checks` block names what is wrong.
 
@@ -275,6 +282,20 @@ be an environment variable, not generated at run time.
 `True` in production, so the cookie is only set over HTTPS. Render serves HTTPS
 by default; this bites only when testing the production config over plain HTTP
 locally.
+
+**HTTP 502 Bad Gateway on the first request** — this is almost always the free
+service waking from sleep, not a crash. Render returns 502 while the container
+boots and no worker is yet listening. Wait 60 to 90 seconds and reload.
+
+To tell a cold start from a real failure, open the service's **Events** tab. A
+cold start shows no new event; a genuine failure shows *Exited with status 1*,
+*Out of memory*, or a failed deploy. `/health` returning `status: ok` after the
+wait confirms the service itself is sound.
+
+The start command runs `flask bootstrap` with `PRELOAD_MODELS=false`, because
+that step only touches the database. Loading the model there would import
+pandas and scikit-learn a second time before gunicorn even starts, roughly
+doubling the cold-start delay on 0.1 CPU.
 
 **First request takes a minute** — expected. The free service sleeps after 15
 minutes of inactivity.
