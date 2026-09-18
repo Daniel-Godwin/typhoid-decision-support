@@ -18,20 +18,20 @@
       "macro_f1": 0.9849
     },
     {
-      "model": "Optimised SVM (routine policy)",
-      "accuracy": 0.9881,
-      "balanced_accuracy": 0.9803,
-      "macro_precision": 0.9916,
-      "macro_recall": 0.9803,
-      "macro_f1": 0.9857
+      "model": "Optimised SVM (deployed policy)",
+      "accuracy": 0.9875,
+      "balanced_accuracy": 0.9792,
+      "macro_precision": 0.9912,
+      "macro_recall": 0.9792,
+      "macro_f1": 0.9849
     },
     {
       "model": "Optimised SVM (fever duration removed)",
-      "accuracy": 0.6012,
-      "balanced_accuracy": 0.5485,
-      "macro_precision": 0.545,
-      "macro_recall": 0.5485,
-      "macro_f1": 0.5454
+      "accuracy": 0.4241,
+      "balanced_accuracy": 0.4874,
+      "macro_precision": 0.4881,
+      "macro_recall": 0.4874,
+      "macro_f1": 0.4235
     }
   ],
   "baselines_multiclass": [
@@ -53,11 +53,11 @@
     },
     {
       "model": "Optimised SVM (four-class)",
-      "accuracy": 0.8697,
-      "balanced_accuracy": 0.7394,
-      "macro_precision": 0.7455,
-      "macro_recall": 0.7394,
-      "macro_f1": 0.7377
+      "accuracy": 0.7951,
+      "balanced_accuracy": 0.4921,
+      "macro_precision": 0.4952,
+      "macro_recall": 0.4921,
+      "macro_f1": 0.4722
     }
   ],
   "wbc_contingency": {
@@ -150,9 +150,9 @@
       "value": 0.0091
     },
     {
-      "feature": "Ongoing Infection in Society",
+      "feature": "Headache",
       "statistic": "Cramer's V",
-      "value": 0.0073
+      "value": 0.0081
     }
   ]
 }

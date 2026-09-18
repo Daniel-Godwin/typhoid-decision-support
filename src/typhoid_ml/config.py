@@ -47,6 +47,38 @@ def labels_for(target_mode: str) -> list[str]:
 # tool rather than a restatement of a completed laboratory workup.
 LEAKAGE_EXCLUDED = ["Blood Culture Result", "Complications"]
 
+# ---------------------------------------------------------------------------
+# Features dropped at supervisory review
+# ---------------------------------------------------------------------------
+# The review directed that prediction should rest on the presenting symptoms
+# and the history a clinician can obtain at the point of care, rather than on
+# laboratory investigations that a resource-limited setting may be unable to
+# perform. Seven attributes were therefore dropped during preprocessing.
+#
+# Each is listed with the reason. The haematology and serology are removed
+# because they are laboratory investigations; the two optional symptom fields
+# because a quarter of records lack them and an optional field that changes the
+# prediction is a liability at the point of care; vaccination status because it
+# is history of prophylaxis rather than of disease.
+DROPPED_AT_REVIEW = {
+    "White Blood Cell Count": "laboratory investigation, not available at the point of care",
+    "Platelet Count": "laboratory investigation, not available at the point of care",
+    "Widal Test": "serological investigation; also independent of the label (V = 0.0014)",
+    "Typhidot Test": "serological investigation; also independent of the label (V = 0.0065)",
+    "Typhoid Vaccination Status": "prophylaxis history, not a presenting sign or disease history",
+    "Gastrointestinal Symptoms": "absent for 24.96% of records; optional field at entry",
+    "Ongoing Infection in Society": "absent for 24.70% of records; community context, not a patient sign",
+}
+
+# `Neurological Symptoms` records one of Confusion, Delirium or Headache, or is
+# absent. The review directed that it be reduced to headache alone, to match the
+# symptom named in Objective 1. It is therefore recoded as a binary indicator:
+# Headache -> Yes, and Confusion, Delirium or absent -> No. No discriminative
+# information is lost, because there was none: P(typhoid) is 0.2972 to 0.3085
+# across the four levels against an overall rate of 0.3019.
+HEADACHE_SOURCE = "Neurological Symptoms"
+HEADACHE_FEATURE = "Headache"
+
 NUMERIC_FEATURES = [
     "Age",
     "Fever Duration (Days)",
@@ -54,9 +86,7 @@ NUMERIC_FEATURES = [
     "Platelet Count",
 ]
 
-# Serological / rapid tests. Present in the routine policy (they are listed in
-# the thesis dataset description) but removable for the pre-laboratory
-# sensitivity analysis.
+# Serological / rapid tests.
 LAB_TEST_FEATURES = ["Widal Test", "Typhidot Test"]
 
 CATEGORICAL_FEATURES = [
@@ -78,29 +108,52 @@ CATEGORICAL_FEATURES = [
     "Typhidot Test",
 ]
 
+# --- the feature space after the review -----------------------------------
+SYMPTOM_NUMERIC = ["Age", "Fever Duration (Days)"]
+SYMPTOM_CATEGORICAL = [
+    "Gender",
+    "Location",                     # retained: Objective 4 requires it
+    "Socioeconomic Status",
+    "Water Source Type",
+    "Sanitation Facilities",
+    "Hand Hygiene",
+    "Consumption of Street Food",
+    "Weather Condition",
+    "Skin Manifestations",
+    HEADACHE_FEATURE,
+    "Previous History of Typhoid",
+]
+
 FEATURE_POLICIES = {
-    # Routine policy: demographics + environment + symptoms + haematology + serology.
+    # Post-review policy. Presenting symptoms, environmental exposure and
+    # disease history only. Every field is mandatory at entry, so the
+    # application no longer carries an optional field that moves the result.
+    "symptom_based": {
+        "numeric": SYMPTOM_NUMERIC,
+        "categorical": SYMPTOM_CATEGORICAL,
+    },
+    # The full permitted attribute set, retained as the pre-review comparator
+    # so Chapter Four can report what the seven dropped attributes contributed.
     "routine": {
         "numeric": NUMERIC_FEATURES,
         "categorical": CATEGORICAL_FEATURES,
     },
-    # Pre-laboratory policy: no Widal / Typhidot. Used as a sensitivity analysis
-    # for settings where no serological testing is available at all.
+    # Pre-laboratory sensitivity analysis: no Widal / Typhidot.
     "clinical_only": {
         "numeric": NUMERIC_FEATURES,
         "categorical": [c for c in CATEGORICAL_FEATURES if c not in LAB_TEST_FEATURES],
     },
-    # Ablation policy: `Fever Duration (Days)` is removed. In this dataset every
-    # record with a fever duration of one day or more is labelled typhoid, so the
-    # variable behaves as a deterministic proxy for the target. Excluding it
-    # measures what the remaining clinical, environmental and serological
-    # features actually contribute. See docs/DATASET_AUDIT.md.
+    # Ablation: `Fever Duration (Days)` removed from the post-review set. In
+    # this dataset every record with a fever duration of one day or more is
+    # labelled typhoid, so the variable is a deterministic proxy for the target.
+    # Excluding it measures what the remaining attributes actually contribute.
+    # See docs/DATASET_AUDIT.md.
     "no_fever_duration": {
-        "numeric": [c for c in NUMERIC_FEATURES if c != "Fever Duration (Days)"],
-        "categorical": CATEGORICAL_FEATURES,
+        "numeric": [c for c in SYMPTOM_NUMERIC if c != "Fever Duration (Days)"],
+        "categorical": SYMPTOM_CATEGORICAL,
     },
 }
-DEFAULT_POLICY = "routine"
+DEFAULT_POLICY = "symptom_based"
 
 # Subgroup used for the scalability evaluation (Objective 4).
 SUBGROUP_COLUMN = "Location"

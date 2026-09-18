@@ -27,10 +27,16 @@ app = Flask(
 FIELD_HELP = {
     "Age": "Patient age in years",
     "Fever Duration (Days)": "Days of fever before presentation",
+    "Headache": "Headache reported at presentation",
+    "Skin Manifestations": "Rose spots or other rash",
+    "Previous History of Typhoid": "Previously diagnosed with typhoid fever",
     "White Blood Cell Count": "WBC, cells per microlitre",
     "Platelet Count": "Platelets per microlitre",
 }
 
+# Presentation order for the assessment form. Fields absent from the active
+# feature policy are skipped by `_grouped_fields`, and a group left empty is
+# dropped, so this list may name attributes that a narrower policy excludes.
 FIELD_GROUPS = [
     ("Demographics", ["Age", "Gender", "Location", "Socioeconomic Status"]),
     (
@@ -45,23 +51,29 @@ FIELD_GROUPS = [
         ],
     ),
     (
-        "Clinical presentation",
+        "Presenting symptoms",
         [
             "Fever Duration (Days)",
+            "Headache",
+            "Skin Manifestations",
             "Gastrointestinal Symptoms",
             "Neurological Symptoms",
-            "Skin Manifestations",
         ],
     ),
     (
-        "Laboratory and history",
+        "Laboratory",
         [
             "White Blood Cell Count",
             "Platelet Count",
             "Widal Test",
             "Typhidot Test",
-            "Typhoid Vaccination Status",
+        ],
+    ),
+    (
+        "History",
+        [
             "Previous History of Typhoid",
+            "Typhoid Vaccination Status",
         ],
     ),
 ]

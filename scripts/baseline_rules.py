@@ -134,7 +134,7 @@ def main():
     if svm_path.exists():
         d = json.loads(svm_path.read_text(encoding="utf-8"))
         baseline_df.loc[len(baseline_df)] = {
-            "model": "Optimised SVM (routine policy)",
+            "model": "Optimised SVM (deployed policy)",
             "accuracy": round(d["accuracy"], 4),
             "balanced_accuracy": round(d["balanced_accuracy"], 4),
             "macro_precision": round(d["macro_precision"], 4),

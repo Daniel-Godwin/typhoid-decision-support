@@ -62,14 +62,17 @@ class BaseConfig:
     # The web layer never reaches past this: it asks the prediction service,
     # which is the only module that imports the ML package.
     DEFAULT_TARGET_MODE = os.environ.get("DEFAULT_TARGET_MODE", "binary")
-    DEFAULT_FEATURE_POLICY = os.environ.get("DEFAULT_FEATURE_POLICY", "routine")
+    # The post-review feature space: presenting symptoms, exposure history and
+    # prior illness history. Laboratory attributes were dropped at supervisory
+    # review; see reports/CHAPTER_3_AMENDMENT and typhoid_ml.config.
+    DEFAULT_FEATURE_POLICY = os.environ.get("DEFAULT_FEATURE_POLICY", "symptom_based")
     # Probability at or above which a case is flagged for confirmatory testing.
-    # 0.08 is the cost-optimal cut-off derived in reports/THRESHOLD_ANALYSIS.md
-    # for the routine policy, weighting a missed case as ten times as damaging
+    # 0.03 is the cost-optimal cut-off derived in reports/THRESHOLD_ANALYSIS.md
+    # for the deployed policy, weighting a missed case as ten times as damaging
     # as an unnecessary confirmatory test. It costs nothing in specificity
     # relative to the library default of 0.5. Regenerate with
     # `python scripts/threshold_analysis.py` after any retraining.
-    TRIAGE_THRESHOLD = float(os.environ.get("TRIAGE_THRESHOLD", "0.08"))
+    TRIAGE_THRESHOLD = float(os.environ.get("TRIAGE_THRESHOLD", "0.03"))
     PRELOAD_MODELS = _bool("PRELOAD_MODELS", True)
     # Load every model at start-up rather than only the default one.
     # Off by default: the four-class artefact is 11 MB and is loaded

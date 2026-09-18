@@ -55,7 +55,7 @@
 
   <div class="card">
     <div class="card-head">
-      <div><h2>Patient presentation</h2><p>All fields are required unless marked optional.</p></div>
+      <div><h2>Patient presentation</h2><p>{% if groups | selectattr("fields") | map(attribute="fields") | sum(start=[]) | selectattr("optional") | list %}All fields are required unless marked optional.{% else %}Every field is required. All are obtainable by history and examination — no laboratory result is needed.{% endif %}</p></div>
       <button type="button" class="btn btn-ghost btn-sm" data-fill-reference
               data-reference='{{ reference_record|tojson }}'>Fill with reference values</button>
     </div>

@@ -26,8 +26,8 @@
   },
   {
     "screenshot": "06-clinician-assessment-result",
-    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
-    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-525666E6DD",
+    "title": "ASM-525666E6DD \u2014 Typhoid Diagnostic Decision Support"
   },
   {
     "screenshot": "07-clinician-assessments",
@@ -116,8 +116,8 @@
   },
   {
     "screenshot": "26-tablet-assessment-result",
-    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
-    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-525666E6DD",
+    "title": "ASM-525666E6DD \u2014 Typhoid Diagnostic Decision Support"
   },
   {
     "screenshot": "23-mobile-login",
@@ -136,8 +136,8 @@
   },
   {
     "screenshot": "26-mobile-assessment-result",
-    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-BE1C9981C8",
-    "title": "ASM-BE1C9981C8 \u2014 Typhoid Diagnostic Decision Support"
+    "url": "http://127.0.0.1:5000/clinic/assessments/ASM-525666E6DD",
+    "title": "ASM-525666E6DD \u2014 Typhoid Diagnostic Decision Support"
   },
   {
     "screenshot": "27-mobile-navigation-open",

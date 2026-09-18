@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,9 @@ def df():
 
 
 def test_dataset_shape(df):
-    assert df.shape == (31087, 23)
+    """23 supplied attributes, plus the Headache indicator derived at preprocessing."""
+    assert df.shape == (31087, 24)
+    assert pd.read_csv(DATA).shape == (31087, 23)
 
 
 def test_no_duplicates(df):
@@ -52,7 +55,7 @@ def test_unknown_target_mode_rejected(df):
         build_target(df, "trinary")
 
 
-@pytest.mark.parametrize("policy", ["routine", "clinical_only"])
+@pytest.mark.parametrize("policy", ["symptom_based", "routine", "clinical_only"])
 def test_feature_policy_excludes_leakage_columns(df, policy):
     X, numeric, categorical = feature_frame(df, policy)
     for banned in ("Typhoid Status", "Blood Culture Result", "Complications"):
@@ -64,6 +67,33 @@ def test_clinical_only_policy_drops_serology(df):
     _, _, categorical = feature_frame(df, "clinical_only")
     assert "Widal Test" not in categorical
     assert "Typhidot Test" not in categorical
+
+
+def test_symptom_based_policy_drops_every_reviewed_attribute(df):
+    """The post-review feature space must contain nothing dropped at review."""
+    from typhoid_ml.config import DROPPED_AT_REVIEW, HEADACHE_SOURCE
+
+    X, numeric, categorical = feature_frame(df, "symptom_based")
+    for banned in list(DROPPED_AT_REVIEW) + [HEADACHE_SOURCE]:
+        assert banned not in X.columns
+    assert "Headache" in categorical
+    assert len(numeric) == 2 and len(categorical) == 11
+
+
+def test_headache_is_derived_from_neurological_symptoms(df):
+    """Headache maps to Yes; Confusion, Delirium and a blank map to No."""
+    source = df["Neurological Symptoms"]
+    derived = df["Headache"]
+    assert derived.isna().sum() == 0
+    assert set(derived.unique()) <= {"Yes", "No"}
+    assert (derived[source == "Headache"] == "Yes").all()
+    assert (derived[source != "Headache"] == "No").all()
+
+
+def test_deployed_feature_frame_has_no_missing_values(df):
+    """Every retained attribute is complete, so the form needs no optional field."""
+    X, _, _ = feature_frame(df, "symptom_based")
+    assert X.isna().sum().sum() == 0
 
 
 def test_category_levels_are_non_empty(df):

@@ -96,14 +96,20 @@ This is a substantive methodological decision and needs a paragraph in Section
 
 Table 3.0 currently lists both variables without noting that they are held out.
 
-### 5. Widal and Typhidot results are model inputs
+### 5. Widal and Typhidot results are model inputs — RESOLVED at supervisory review
 
-Section 3.1.1 lists the Widal and Typhidot tests among the features, and they
-are retained in the default (`routine`) policy. Chapter 1, however, argues that
-these tests are unreliable and often unavailable in the settings the model
-targets. A `clinical_only` policy that removes both is therefore also reported
-as a sensitivity analysis (Table 4.5), which lets the discussion state directly
-how much diagnostic performance survives when no serology is available.
+Section 3.1.1 lists the Widal and Typhidot tests among the features. Chapter 1
+argues that these tests are unreliable and often unavailable in the settings the
+model targets, which was the tension this note recorded.
+
+Supervisory review resolved it by dropping both, together with the two
+haematology counts, vaccination status, and the two attributes recorded for only
+three quarters of patients. The deployed policy (`symptom_based`) is the
+resulting 13-attribute feature space; `routine` is retained as the pre-review
+comparator so that Chapter Four can report the cost of the reduction, which is
+0.06 accuracy points. See `typhoid_ml.config.DROPPED_AT_REVIEW` and Section
+4.2.1. Section 3.1.1 needs the paragraph supplied in
+`CHAPTER_3_AMENDMENT.docx`; nothing in the existing text needs deleting.
 
 ### 6. Loss function
 

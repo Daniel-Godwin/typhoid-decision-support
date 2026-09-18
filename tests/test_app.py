@@ -24,15 +24,39 @@ def client():
 
 @pytest.fixture(scope="module")
 def valid_record():
+    """A reference record in the deployed (post-review) feature space."""
+    return dict(form_schema()["reference"])
+
+
+@pytest.fixture(scope="module")
+def routine_record():
+    """A reference record in the pre-review comparator feature space."""
     return dict(form_schema("routine")["reference"])
 
 
 def test_schema_covers_every_model_feature():
+    """The deployed policy collects the thirteen post-review attributes."""
+    schema = form_schema()
+    assert len(schema["numeric"]) == 2
+    assert len(schema["categorical"]) == 11
+    assert set(schema["levels"]) == set(schema["categorical"])
+    assert set(schema["reference"]) == set(schema["numeric"]) | set(schema["categorical"])
+
+
+def test_comparator_schema_is_unchanged():
+    """The routine policy is kept for Chapter Four's comparison and must not drift."""
     schema = form_schema("routine")
     assert len(schema["numeric"]) == 4
     assert len(schema["categorical"]) == 16
-    assert set(schema["levels"]) == set(schema["categorical"])
-    assert set(schema["reference"]) == set(schema["numeric"]) | set(schema["categorical"])
+
+
+def test_dropped_attributes_are_absent_from_the_deployed_schema():
+    """Nothing dropped at supervisory review may reach the deployed model."""
+    from typhoid_ml.config import DROPPED_AT_REVIEW, HEADACHE_SOURCE, LEAKAGE_EXCLUDED
+
+    collected = set(form_schema()["reference"])
+    for attribute in list(DROPPED_AT_REVIEW) + LEAKAGE_EXCLUDED + [HEADACHE_SOURCE]:
+        assert attribute not in collected, f"{attribute} is still collected"
 
 
 def test_validation_accepts_reference_record(valid_record):
@@ -49,7 +73,16 @@ def test_validation_rejects_missing_field(valid_record):
     assert "Age" in json.loads(str(exc.value))
 
 
-def test_optional_fields_match_dataset_missingness():
+def test_deployed_form_has_no_optional_field():
+    """Every attribute that was absent for some patients was dropped at review.
+
+    The point-of-care form therefore asks nothing that may be left blank, so no
+    entry the clinician skips can move the result.
+    """
+    assert form_schema()["optional"] == []
+
+
+def test_comparator_optional_fields_match_dataset_missingness():
     """Only attributes that are actually absent for some patients may be optional."""
     assert set(form_schema("routine")["optional"]) == {
         "Gastrointestinal Symptoms",
@@ -59,23 +92,23 @@ def test_optional_fields_match_dataset_missingness():
 
 
 @pytest.mark.parametrize("blank", ["", "Not recorded", None])
-def test_optional_field_may_be_left_unanswered(valid_record, blank):
+def test_optional_field_may_be_left_unanswered(routine_record, blank):
     field = "Neurological Symptoms"
-    out = validate_record(dict(valid_record, **{field: blank}))
+    out = validate_record(dict(routine_record, **{field: blank}), "routine")
     value = out["record"][field]
     assert isinstance(value, float) and value != value  # NaN, so the imputer sees it
 
 
-def test_unanswered_optional_field_is_not_treated_as_a_category(valid_record):
+def test_unanswered_optional_field_is_not_treated_as_a_category(routine_record):
     """A blank must impute, not encode as an unseen category.
 
     Encoding it as unknown (-1) changes the prediction, which is the bug this
     guards against.
     """
-    baseline = validate_record(valid_record)["record"]
-    blanked = validate_record(dict(valid_record, **{"Neurological Symptoms": "Not recorded"}))[
-        "record"
-    ]
+    baseline = validate_record(routine_record, "routine")["record"]
+    blanked = validate_record(
+        dict(routine_record, **{"Neurological Symptoms": "Not recorded"}), "routine"
+    )["record"]
     assert set(baseline) == set(blanked)
 
 
@@ -112,8 +145,20 @@ def test_index_renders_dropdowns(client):
     assert "<select" in body
     assert "Open Defecation" in body  # a real dataset category level
     # Excluded features must never be collected as inputs.
-    for banned in ("Blood Culture Result", "Complications", "Typhoid Status"):
+    for banned in (
+        "Blood Culture Result",
+        "Complications",
+        "Typhoid Status",
+        "White Blood Cell Count",
+        "Platelet Count",
+        "Widal Test",
+        "Typhidot Test",
+        "Gastrointestinal Symptoms",
+        "Ongoing Infection in Society",
+        "Neurological Symptoms",
+    ):
         assert f'name="{banned}"' not in body
+    assert 'name="Headache"' in body
 
 
 def test_health_endpoint(client):
@@ -125,7 +170,8 @@ def test_health_endpoint(client):
 def test_api_schema_endpoint(client):
     data = client.get("/api/schema").get_json()
     assert data["numeric"] and data["categorical"]
-    assert "Widal Test" in data["levels"]
+    assert "Headache" in data["levels"]
+    assert "Widal Test" not in data["levels"]
 
 
 def test_api_rejects_invalid_payload(client):
@@ -151,14 +197,12 @@ def test_api_predict_returns_calibrated_result(client, valid_record):
 
 
 @requires_model
-def test_api_accepts_record_with_unrecorded_optional_fields(client, valid_record):
-    """Roughly a quarter of real records lack these fields; the API must accept them."""
-    record = dict(valid_record)
-    for field in form_schema("routine")["optional"]:
-        record[field] = "Not recorded"
+def test_api_rejects_a_blank_in_the_deployed_schema(client, valid_record):
+    """No deployed field is optional, so a blank is an error rather than an imputation."""
+    record = dict(valid_record, Headache="Not recorded")
     resp = client.post("/api/predict", json={"record": record})
-    assert resp.status_code == 200
-    assert resp.get_json()["prediction"] in ("Typhoid", "No Typhoid")
+    assert resp.status_code == 400
+    assert "Headache" in resp.get_json()["fields"]
 
 
 @requires_model

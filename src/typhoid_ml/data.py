@@ -7,17 +7,39 @@ from .config import (
     BINARY_LABELS,
     DATA_PATH,
     FEATURE_POLICIES,
+    HEADACHE_FEATURE,
+    HEADACHE_SOURCE,
     LEAKAGE_EXCLUDED,
     NEGATIVE_CLASS,
     TARGET,
 )
 
 
+def derive_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Add attributes derived during preprocessing.
+
+    `Headache` is a binary recoding of `Neurological Symptoms`, directed at
+    supervisory review so that the neurological field carries only the symptom
+    named in Objective 1. Confusion, Delirium and an absent value all map to
+    "No"; Headache maps to "Yes". Deriving it here rather than in the modelling
+    code means the deployed form, the audit and the training pipeline all see
+    the identical column.
+    """
+    if HEADACHE_SOURCE in df.columns and HEADACHE_FEATURE not in df.columns:
+        df = df.copy()
+        df[HEADACHE_FEATURE] = pd.Series(
+            ["Yes" if v == "Headache" else "No" for v in df[HEADACHE_SOURCE]],
+            index=df.index,
+            dtype=object,
+        )
+    return df
+
+
 def load_dataset(path=DATA_PATH) -> pd.DataFrame:
     df = pd.read_csv(path)
     if TARGET not in df.columns:
         raise ValueError(f"Target column '{TARGET}' not found in {path}")
-    return df
+    return derive_features(df)
 
 
 def build_target(df: pd.DataFrame, target_mode: str) -> pd.Series:

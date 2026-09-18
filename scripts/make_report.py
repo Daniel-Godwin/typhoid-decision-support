@@ -115,8 +115,11 @@ def subgroup_table() -> pd.DataFrame | None:
     return pd.concat(frames, ignore_index=True) if frames else None
 
 
+# The empty suffix is the deployed policy's artefact (see typhoid_ml.config
+# DEFAULT_POLICY), which is the post-review symptom-based feature space.
 POLICY_LABELS = [
-    ("", "Routine — all permitted attributes"),
+    ("", "Deployed — 13 post-review attributes"),
+    ("_routine", "Pre-review — all 20 permitted attributes"),
     ("_clinical_only", "Pre-laboratory — Widal and Typhidot removed"),
     ("_no_fever_duration", "Ablation — Fever Duration (Days) removed"),
 ]

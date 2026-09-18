@@ -2,7 +2,7 @@
 
 ## Dataset
 
-The dataset contains **31,087 records** and **23 attributes**, with **0 duplicate rows**.
+The dataset contains **31,087 records** and **24 attributes**, with **0 duplicate rows**.
 
 ### Target distribution (four-class)
 
@@ -26,56 +26,57 @@ The dataset contains **31,087 records** and **23 attributes**, with **0 duplicat
 |---|---|---|---|---|---|
 | Majority class ('No Typhoid') | 0.6981 | 0.5 | 0.3491 | 0.5 | 0.4111 |
 | Rule: Fever Duration (Days) >= 1 | 0.9875 | 0.9792 | 0.9912 | 0.9792 | 0.9849 |
-| Optimised SVM (routine policy) | 0.9881 | 0.9803 | 0.9916 | 0.9803 | 0.9857 |
-| Optimised SVM (fever duration removed) | 0.6012 | 0.5485 | 0.545 | 0.5485 | 0.5454 |
+| Optimised SVM (deployed policy) | 0.9875 | 0.9792 | 0.9912 | 0.9792 | 0.9849 |
+| Optimised SVM (fever duration removed) | 0.4241 | 0.4874 | 0.4881 | 0.4874 | 0.4235 |
 
 ## Table 4.1 - Kernel comparison
 
 | model | kernel | accuracy | balanced_accuracy | macro_f1 | weighted_f1 | fit_predict_seconds |
 |---|---|---|---|---|---|---|
-| Binary | linear | 0.9875 | 0.9792 | 0.9849 | 0.9874 | 35.0 |
-| Binary | poly | 0.983 | 0.9718 | 0.9794 | 0.9828 | 42.4 |
-| Binary | rbf | 0.9773 | 0.9624 | 0.9725 | 0.9771 | 68.2 |
-| Four-class | linear | 0.8681 | 0.7363 | 0.7347 | 0.8701 | 492.0 |
-| Four-class | poly | 0.8731 | 0.7301 | 0.7341 | 0.8728 | 240.4 |
-| Four-class | rbf | 0.8705 | 0.7199 | 0.7266 | 0.8677 | 261.3 |
+| Binary | linear | 0.9875 | 0.9792 | 0.9849 | 0.9874 | 11.3 |
+| Binary | poly | 0.9875 | 0.9792 | 0.9849 | 0.9874 | 25.3 |
+| Binary | rbf | 0.9833 | 0.9723 | 0.9798 | 0.9831 | 24.9 |
+| Four-class | linear | 0.7774 | 0.4862 | 0.4408 | 0.7731 | 520.4 |
+| Four-class | poly | 0.804 | 0.4727 | 0.4701 | 0.8082 | 332.6 |
+| Four-class | rbf | 0.8168 | 0.4888 | 0.4898 | 0.8167 | 301.5 |
 
 ## Table 4.2 - Optimised model performance
 
 | model | kernel | C | gamma | accuracy | balanced_accuracy | macro_precision | macro_recall | macro_f1 | weighted_f1 | sensitivity | specificity | fpr | fnr | roc_auc | inference_ms_per_record |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Binary diagnosis | poly | 10.0 | 0.1 | 0.9881 | 0.9803 | 0.9916 | 0.9803 | 0.9857 | 0.9880 | 0.9606 | 1.0000 | 0.0000 | 0.0394 | 0.9797 | 9.96 |
-| Severity stratification | poly | 10.0 | scale | 0.8697 | 0.7394 | 0.7455 | 0.7394 | 0.7377 | 0.8717 | nan | nan | nan | nan | nan | 19.04 |
+| Binary diagnosis | linear | 0.1 | - | 0.9875 | 0.9792 | 0.9912 | 0.9792 | 0.9849 | 0.9874 | 0.9584 | 1.0000 | 0.0000 | 0.0416 | 0.9804 | 7.78 |
+| Severity stratification | poly | 10.0 | scale | 0.7951 | 0.4921 | 0.4952 | 0.4921 | 0.4722 | 0.7996 | nan | nan | nan | nan | nan | 18.08 |
 
 ## Table 4.3 - Per-class performance
 
 | model | class | precision | recall | f1_score | support |
 |---|---|---|---|---|---|
-| Binary | No Typhoid | 0.9832 | 1.0000 | 0.9915 | 4341 |
-| Binary | Typhoid | 1.0000 | 0.9606 | 0.9799 | 1877 |
-| Four-class | Normal or No Typhoid | 0.9859 | 1.0000 | 0.9929 | 4341 |
-| Four-class | Acute Typhoid Fever | 0.6928 | 0.5389 | 0.6063 | 1130 |
-| Four-class | Relapsing Typhoid | 0.3032 | 0.4185 | 0.3516 | 497 |
-| Four-class | Complicated Typhoid | 1.0000 | 1.0000 | 1.0000 | 250 |
+| Binary | No Typhoid | 0.9823 | 1.0000 | 0.9911 | 4341 |
+| Binary | Typhoid | 1.0000 | 0.9584 | 0.9788 | 1877 |
+| Four-class | Normal or No Typhoid | 0.9848 | 1.0000 | 0.9923 | 4341 |
+| Four-class | Acute Typhoid Fever | 0.6049 | 0.3265 | 0.4241 | 1130 |
+| Four-class | Relapsing Typhoid | 0.2492 | 0.2978 | 0.2713 | 497 |
+| Four-class | Complicated Typhoid | 0.1419 | 0.3440 | 0.2009 | 250 |
 
 ## Table 4.4 - Scalability across geographic settings (Objective 4)
 
 | model | subgroup | n | accuracy | balanced_accuracy | macro_precision | macro_recall | macro_f1 | sensitivity | specificity |
 |---|---|---|---|---|---|---|---|---|---|
-| Binary | Endemic | 2084 | 0.9861 | 0.9781 | 0.99 | 0.9781 | 0.9838 | 0.9562 | 1.0 |
-| Binary | Rural | 2046 | 0.9922 | 0.9864 | 0.9946 | 0.9864 | 0.9904 | 0.9728 | 1.0 |
-| Binary | Urban | 2088 | 0.9861 | 0.9769 | 0.9903 | 0.9769 | 0.9832 | 0.9537 | 1.0 |
-| Four-class | Endemic | 2063 | 0.8682 | 0.7391 | 0.7451 | 0.7391 | 0.7396 | nan | nan |
-| Four-class | Rural | 2090 | 0.8651 | 0.7484 | 0.7509 | 0.7484 | 0.7414 | nan | nan |
-| Four-class | Urban | 2065 | 0.876 | 0.7279 | 0.738 | 0.7279 | 0.7288 | nan | nan |
+| Binary | Endemic | 2084 | 0.9856 | 0.9773 | 0.9897 | 0.9773 | 0.9832 | 0.9547 | 1.0 |
+| Binary | Rural | 2046 | 0.9912 | 0.9847 | 0.9939 | 0.9847 | 0.9892 | 0.9694 | 1.0 |
+| Binary | Urban | 2088 | 0.9856 | 0.9761 | 0.9899 | 0.9761 | 0.9827 | 0.9522 | 1.0 |
+| Four-class | Endemic | 2063 | 0.7843 | 0.4918 | 0.4957 | 0.4918 | 0.4689 | nan | nan |
+| Four-class | Rural | 2090 | 0.7861 | 0.4732 | 0.4852 | 0.4732 | 0.4499 | nan | nan |
+| Four-class | Urban | 2065 | 0.815 | 0.5121 | 0.5099 | 0.5121 | 0.4997 | nan | nan |
 
 ## Table 4.5 - Feature policy sensitivity and ablation analysis
 
 | feature policy | accuracy | balanced_accuracy | macro_f1 | sensitivity | specificity | roc_auc |
 |---|---|---|---|---|---|---|
-| Routine — all permitted attributes | 0.9881 | 0.9803 | 0.9857 | 0.9606 | 1.0000 | 0.9797 |
+| Deployed — 13 post-review attributes | 0.9875 | 0.9792 | 0.9849 | 0.9584 | 1.0000 | 0.9804 |
+| Pre-review — all 20 permitted attributes | 0.9881 | 0.9803 | 0.9857 | 0.9606 | 1.0000 | 0.9797 |
 | Pre-laboratory — Widal and Typhidot removed | 0.9875 | 0.9792 | 0.9849 | 0.9584 | 1.0000 | 0.9802 |
-| Ablation — Fever Duration (Days) removed | 0.6012 | 0.5485 | 0.5454 | 0.4156 | 0.6814 | 0.5729 |
+| Ablation — Fever Duration (Days) removed | 0.4241 | 0.4874 | 0.4235 | 0.6473 | 0.3276 | 0.4852 |
 
 ## Table 4.6 - Association between each attribute and the diagnosis
 
@@ -88,6 +89,7 @@ The dataset contains **31,087 records** and **23 attributes**, with **0 duplicat
 | Water Source Type | Cramer's V | 0.0132 |
 | Location | Cramer's V | 0.012 |
 | Neurological Symptoms | Cramer's V | 0.0091 |
+| Headache | Cramer's V | 0.0081 |
 | Ongoing Infection in Society | Cramer's V | 0.0073 |
 | Sanitation Facilities | Cramer's V | 0.0069 |
 | Socioeconomic Status | Cramer's V | 0.0066 |
@@ -109,9 +111,9 @@ The dataset contains **31,087 records** and **23 attributes**, with **0 duplicat
 - Candidates evaluated: **24** over **3-fold** stratified cross-validation
 - Search records: **24,869**
 - Selection metric: **macro F1**
-- Best configuration: `{'svc__C': 10.0, 'svc__degree': 2, 'svc__gamma': 0.1, 'svc__kernel': 'poly'}`
-- Best cross-validated macro F1: **0.9847**
-- Search wall-clock: **935s**
+- Best configuration: `{'svc__C': 0.1, 'svc__kernel': 'linear'}`
+- Best cross-validated macro F1: **0.9842**
+- Search wall-clock: **501s**
 
 ## Hyperparameter search - multiclass
 
@@ -119,8 +121,8 @@ The dataset contains **31,087 records** and **23 attributes**, with **0 duplicat
 - Search records: **10,000** (stratified subsample)
 - Selection metric: **macro F1**
 - Best configuration: `{'svc__C': 10.0, 'svc__degree': 2, 'svc__gamma': 'scale', 'svc__kernel': 'poly'}`
-- Best cross-validated macro F1: **0.7435**
-- Search wall-clock: **824s**
+- Best cross-validated macro F1: **0.4959**
+- Search wall-clock: **951s**
 
 ## Signal audit
 
@@ -130,17 +132,29 @@ Of the 8,981 records with a fever duration of one day or more, **8,981** are lab
 
 ## Figures
 
+- `reports/figures/calibration_binary.png`
+- `reports/figures/calibration_binary_clinical_only.png`
+- `reports/figures/calibration_binary_no_fever_duration.png`
+- `reports/figures/calibration_binary_routine.png`
 - `reports/figures/confusion_matrix_binary.png`
 - `reports/figures/confusion_matrix_binary_clinical_only.png`
 - `reports/figures/confusion_matrix_binary_no_fever_duration.png`
+- `reports/figures/confusion_matrix_binary_routine.png`
 - `reports/figures/confusion_matrix_multiclass.png`
 - `reports/figures/confusion_matrix_normalised_binary.png`
 - `reports/figures/confusion_matrix_normalised_binary_clinical_only.png`
 - `reports/figures/confusion_matrix_normalised_binary_no_fever_duration.png`
+- `reports/figures/confusion_matrix_normalised_binary_routine.png`
 - `reports/figures/confusion_matrix_normalised_multiclass.png`
 - `reports/figures/pr_curve_binary.png`
 - `reports/figures/pr_curve_binary_clinical_only.png`
 - `reports/figures/pr_curve_binary_no_fever_duration.png`
+- `reports/figures/pr_curve_binary_routine.png`
 - `reports/figures/roc_curve_binary.png`
 - `reports/figures/roc_curve_binary_clinical_only.png`
 - `reports/figures/roc_curve_binary_no_fever_duration.png`
+- `reports/figures/roc_curve_binary_routine.png`
+- `reports/figures/threshold_curves_binary.png`
+- `reports/figures/threshold_curves_binary_clinical_only.png`
+- `reports/figures/threshold_curves_binary_no_fever_duration.png`
+- `reports/figures/threshold_curves_binary_routine.png`

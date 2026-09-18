@@ -439,7 +439,7 @@ def write_markdown(results: list[dict]) -> Path:
     L.append(
         "**Consequence for the deployed system.** The cut-off is exposed as "
         "`TRIAGE_THRESHOLD` and is set to the value recommended above for the "
-        "routine policy, because it is the defensible choice given the cost "
+        f"deployed ({DEFAULT_POLICY}) policy, because it is the defensible choice given the cost "
         "asymmetry and it costs nothing in specificity. That is a correct "
         "engineering decision about a model that should not be used clinically "
         "on this training data. No figure in this document should be quoted as "

@@ -53,15 +53,20 @@ def shot(page, name, results, full=True):
 def run_assessment(page, base, results):
     from typhoid_ml.predict import form_schema
 
-    schema = form_schema("routine")
+    # The deployed feature policy. Fields absent from it are skipped below, so
+    # the extra values are harmless and keep the walkthrough working if the
+    # policy is widened again.
+    schema = form_schema()
     record = dict(schema["reference"])
     record.update({
         "Age": 26, "Fever Duration (Days)": 9,
+        "Headache": "Yes", "Skin Manifestations": "Yes",
+        "Water Source Type": "River", "Sanitation Facilities": "Open Defecation",
+        "Hand Hygiene": "No", "Consumption of Street Food": "Yes",
+        "Previous History of Typhoid": "Yes", "Location": "Endemic",
         "Widal Test": "High O & H Antibody", "Typhidot Test": "IgM Positive",
-        "Gastrointestinal Symptoms": "Diarrhea", "Neurological Symptoms": "Delirium",
-        "Skin Manifestations": "Yes", "Water Source Type": "River",
-        "Sanitation Facilities": "Open Defecation", "Hand Hygiene": "No",
-        "White Blood Cell Count": 3800, "Platelet Count": 95000, "Location": "Endemic",
+        "Gastrointestinal Symptoms": "Diarrhea", "Neurological Symptoms": "Headache",
+        "White Blood Cell Count": 3800, "Platelet Count": 95000,
     })
 
     page.goto(f"{base}/clinic/assess", wait_until="networkidle")

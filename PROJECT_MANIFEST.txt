@@ -12,6 +12,19 @@ Excluded     Blood Culture Result   confirmatory gold standard, Cramer's V 0.999
              Complications          post-diagnostic, 96.98% missing
              Typhoid Status         target
 
+Dropped at supervisory review (see typhoid_ml.config.DROPPED_AT_REVIEW)
+             White Blood Cell Count      laboratory investigation
+             Platelet Count              laboratory investigation
+             Widal Test                  serology; V = 0.0014
+             Typhidot Test               serology; V = 0.0065
+             Typhoid Vaccination Status  prophylaxis, not a presenting sign
+             Gastrointestinal Symptoms   absent for 24.96% of records
+             Ongoing Infection in Society absent for 24.70%; not a patient sign
+
+Derived      Headache  binary recoding of Neurological Symptoms, added in
+                       data.derive_features() so the pipeline, the audit and
+                       the deployed form all see one identical column
+
 Model        Support Vector Machine
 Kernels      linear, polynomial, RBF
 Split        stratified 80:20, random_state 42
@@ -23,15 +36,16 @@ Evaluation   accuracy, balanced accuracy, precision, recall, F1, FPR, FNR,
              inference latency
 
 Feature policies
-  routine            all permitted attributes                  (default)
+  symptom_based      13 post-review attributes                 (default, deployed)
+  routine            all 20 permitted attributes               (pre-review comparator)
   clinical_only      Widal and Typhidot removed                (sensitivity)
   no_fever_duration  Fever Duration (Days) removed             (ablation)
 
 DATASET CAVEAT
   Fever Duration (Days) is a deterministic proxy for the target: all 8,981
   records with fever >= 1 day are labelled typhoid, none are negative. A single
-  threshold on that column scores 0.9870 accuracy / 0.9844 macro F1 against the
-  optimised SVM's 0.9881 / 0.9857. Widal (V=0.0014) and Typhidot (V=0.0065) are
+  threshold on that column scores 0.9875 accuracy / 0.9849 macro F1 against the
+  deployed SVM's identical 0.9875 / 0.9849. Widal (V=0.0014) and Typhidot (V=0.0065) are
   independent of the outcome. The dataset is synthetic. See docs/DATASET_AUDIT.md
   and docs/THESIS_ALIGNMENT.md before writing up any result.
 

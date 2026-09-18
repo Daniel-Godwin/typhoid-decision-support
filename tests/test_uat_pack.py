@@ -74,7 +74,7 @@ def test_expected_output_matches_the_application(case):
     want = by_case[case]
 
     outcome = ps.validate_and_predict(
-        payload["record"], target_mode="binary", policy="routine"
+        payload["record"], target_mode="binary"
     )
     probability = outcome["probabilities"]["Typhoid"]
     label = "Typhoid" if probability >= meta["threshold"] else "No Typhoid"

@@ -67,6 +67,13 @@ def login(client, email, password=PASSWORD):
 
 @pytest.fixture
 def valid_record():
+    """A reference record in the deployed (post-review) feature space."""
+    return dict(ps.form_schema()["reference"])
+
+
+@pytest.fixture(scope="module")
+def routine_record():
+    """A reference record in the pre-review comparator feature space."""
     return dict(ps.form_schema("routine")["reference"])
 
 
@@ -350,12 +357,27 @@ class TestDatabase:
 # ===========================================================================
 class TestModelIntegration:
     def test_schema_matches_trained_feature_set(self):
+        """The deployed policy collects the thirteen post-review attributes."""
+        schema = ps.form_schema()
+        assert len(schema["numeric"]) == 2
+        assert len(schema["categorical"]) == 11
+        assert schema["optional"] == []
+
+    def test_comparator_schema_is_unchanged(self):
+        """Kept for Chapter Four's before-and-after comparison; it must not drift."""
         schema = ps.form_schema("routine")
         assert len(schema["numeric"]) == 4
         assert len(schema["categorical"]) == 16
         assert set(schema["optional"]) == {
             "Gastrointestinal Symptoms", "Neurological Symptoms", "Ongoing Infection in Society"
         }
+
+    def test_reviewed_attributes_are_not_collected(self):
+        from typhoid_ml.config import DROPPED_AT_REVIEW, HEADACHE_SOURCE, LEAKAGE_EXCLUDED
+
+        collected = set(ps.form_schema()["reference"])
+        for attribute in list(DROPPED_AT_REVIEW) + LEAKAGE_EXCLUDED + [HEADACHE_SOURCE]:
+            assert attribute not in collected, f"{attribute} is still collected"
 
     def test_policies_and_modes_exposed(self):
         assert "routine" in ps.available_policies()
@@ -371,10 +393,17 @@ class TestModelIntegration:
         with pytest.raises(ps.ValidationError):
             ps.validate(bad)
 
-    def test_optional_field_imputes_rather_than_failing(self, valid_record):
-        out = ps.validate(dict(valid_record, **{"Neurological Symptoms": "Not recorded"}))
+    def test_optional_field_imputes_rather_than_failing(self, routine_record):
+        out = ps.validate(
+            dict(routine_record, **{"Neurological Symptoms": "Not recorded"}), "routine"
+        )
         value = out["record"]["Neurological Symptoms"]
         assert isinstance(value, float) and value != value  # NaN
+
+    def test_deployed_form_rejects_a_blank(self, valid_record):
+        """No deployed field is optional, so a skipped entry cannot move the result."""
+        with pytest.raises(ps.ValidationError):
+            ps.validate(dict(valid_record, Headache="Not recorded"))
 
     def test_out_of_range_numeric_warns(self, valid_record):
         assert "Age" in ps.validate(dict(valid_record, Age=250))["warnings"]
@@ -461,8 +490,9 @@ class TestAssessmentFlow:
     def test_api_schema_endpoint(self, client):
         login(client, "doc@example.com")
         body = client.get("/api/schema").get_json()
-        assert "Widal Test" in body["levels"]
-        assert body["optional"]
+        assert "Headache" in body["levels"]
+        assert "Widal Test" not in body["levels"]
+        assert body["optional"] == []
 
 
 # ===========================================================================

@@ -51,11 +51,11 @@ services:
         value: "true"
       # Cost-optimal cut-off from reports/THRESHOLD_ANALYSIS.md.
       - key: TRIAGE_THRESHOLD
-        value: "0.08"
+        value: "0.03"
       - key: DEFAULT_TARGET_MODE
         value: binary
       - key: DEFAULT_FEATURE_POLICY
-        value: routine
+        value: symptom_based
       - key: PRELOAD_ALL_MODELS
         value: "false"
       - key: SESSION_LIFETIME_MINUTES

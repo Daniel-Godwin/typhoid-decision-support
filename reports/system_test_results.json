@@ -1,11 +1,21 @@
 {
   "summary": {
-    "passed": 128
+    "passed": 168
   },
   "tests": [
     {
       "file": "tests/test_app.py",
       "test": "test_schema_covers_every_model_feature",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_comparator_schema_is_unchanged",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_dropped_attributes_are_absent_from_the_deployed_schema",
       "status": "PASSED"
     },
     {
@@ -20,7 +30,12 @@
     },
     {
       "file": "tests/test_app.py",
-      "test": "test_optional_fields_match_dataset_missingness",
+      "test": "test_deployed_form_has_no_optional_field",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_app.py",
+      "test": "test_comparator_optional_fields_match_dataset_missingness",
       "status": "PASSED"
     },
     {
@@ -95,7 +110,7 @@
     },
     {
       "file": "tests/test_app.py",
-      "test": "test_api_accepts_record_with_unrecorded_optional_fields",
+      "test": "test_api_rejects_a_blank_in_the_deployed_schema",
       "status": "PASSED"
     },
     {
@@ -135,6 +150,11 @@
     },
     {
       "file": "tests/test_data.py",
+      "test": "test_feature_policy_excludes_leakage_columns[symptom_based]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
       "test": "test_feature_policy_excludes_leakage_columns[routine]",
       "status": "PASSED"
     },
@@ -146,6 +166,21 @@
     {
       "file": "tests/test_data.py",
       "test": "test_clinical_only_policy_drops_serology",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_symptom_based_policy_drops_every_reviewed_attribute",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_headache_is_derived_from_neurological_symptoms",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_data.py",
+      "test": "test_deployed_feature_frame_has_no_missing_values",
       "status": "PASSED"
     },
     {
@@ -266,6 +301,126 @@
     {
       "file": "tests/test_threshold.py",
       "test": "test_positive_label_orientation_is_respected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_pack_has_ten_distinct_cases",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_pack_is_balanced_between_the_classes",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_pack_includes_cases_the_model_gets_wrong",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_threshold_matches_the_deployed_configuration",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[1]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[2]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[3]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[4]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[5]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[6]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[7]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[8]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[9]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_expected_output_matches_the_application[10]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[1]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[2]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[3]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[4]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[5]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[6]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[7]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[8]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[9]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_uat_pack.py",
+      "test": "test_every_record_passes_validation[10]",
       "status": "PASSED"
     },
     {
@@ -465,6 +620,16 @@
     },
     {
       "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_comparator_schema_is_unchanged",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_reviewed_attributes_are_not_collected",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
       "test": "TestModelIntegration::test_policies_and_modes_exposed",
       "status": "PASSED"
     },
@@ -481,6 +646,11 @@
     {
       "file": "tests/test_webapp.py",
       "test": "TestModelIntegration::test_optional_field_imputes_rather_than_failing",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestModelIntegration::test_deployed_form_rejects_a_blank",
       "status": "PASSED"
     },
     {
@@ -635,7 +805,37 @@
     },
     {
       "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_external_provider_url_keeps_its_query_string",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_already_normalised_url_is_left_alone",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_connection_pool_survives_an_idle_suspending_database",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
       "test": "TestProductionReadiness::test_csrf_enabled_outside_testing",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_health_reports_the_database_engine",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_health_never_leaks_the_connection_string",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_webapp.py",
+      "test": "TestProductionReadiness::test_production_on_sqlite_reports_degraded",
       "status": "PASSED"
     },
     {

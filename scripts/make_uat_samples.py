@@ -49,7 +49,7 @@ from typhoid_ml.threshold import positive_probabilities  # noqa: E402
 OUT = REPORT_DIR / "uat"
 
 # Matches webapp TRIAGE_THRESHOLD; see reports/THRESHOLD_ANALYSIS.md.
-THRESHOLD = 0.08
+THRESHOLD = 0.03
 
 # How many of each kind. The two hard cases are typhoid patients whose fever
 # duration is zero — the shortcut cannot reach them, and neither can the model.
@@ -353,10 +353,11 @@ def write_pack(out, numeric, categorical, digest, model_name):
         "4. Click **Run assessment** and record what the system returns.\n"
     )
     L.append(
-        "Three fields — Gastrointestinal Symptoms, Neurological Symptoms and "
-        "Ongoing Infection in Society — are optional, because roughly a quarter "
-        "of real records lack them. Where a case says *Not recorded*, leave the "
-        "field at that setting rather than inventing a value.\n"
+        "Every field on the assessment form is required. The attributes that were "
+        "absent for some patients in the source data — Gastrointestinal Symptoms "
+        "and Ongoing Infection in Society — were dropped during preprocessing at "
+        "supervisory review, so the form no longer carries a field that may be left "
+        "blank. Enter each case exactly as listed.\n"
     )
 
     L.append("---\n")

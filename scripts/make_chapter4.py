@@ -127,6 +127,85 @@ def main():
             "at the point of decision.\n"
         )
 
+    # ---- 4.2.1 -------------------------------------------------------------
+    p.append("### 4.2.1 Attributes retained and dropped during preprocessing\n")
+    p.append(
+        "The stated aim of the study is prediction and diagnosis at the point of care in "
+        "resource-limited settings, where the clinician has the patient's presenting symptoms, "
+        "exposure history and prior illness history, but may have no laboratory available. An "
+        "attribute requiring a laboratory investigation cannot be supplied at the moment the "
+        "prediction is needed, and a model depending on one would not be usable in the setting "
+        "for which it is intended. Two further considerations apply: an attribute recorded for "
+        "only some patients would oblige the point-of-care interface to accept an incomplete "
+        "entry, and an attribute describing the wider community rather than the patient is not a "
+        "clinical sign of that patient's illness.\n"
+    )
+    p.append(
+        "On this basis a further seven attributes were dropped during preprocessing, in addition "
+        "to the two withheld as diagnostic leakage. Table 4.3 states each exclusion with its "
+        "reason.\n"
+    )
+    p.append("**Table 4.3: Attributes excluded during preprocessing**\n")
+    p.append(
+        table(
+            pd.DataFrame(
+                [
+                    {"Attribute": a, "Ground for exclusion": g, "Reason": r}
+                    for a, g, r in [
+                        ("Blood Culture Result", "Diagnostic leakage",
+                         "The confirmatory gold standard; a model consuming it would restate a "
+                         "completed diagnosis rather than predict one"),
+                        ("Complications", "Diagnostic leakage",
+                         "Post-diagnostic severity, unavailable at the point of decision, absent "
+                         "for 96.98% of records"),
+                        ("White Blood Cell Count", "Laboratory investigation",
+                         "Requires a haematology laboratory; not obtainable at the point of care"),
+                        ("Platelet Count", "Laboratory investigation",
+                         "Requires a haematology laboratory; not obtainable at the point of care"),
+                        ("Widal Test", "Laboratory investigation",
+                         "Serological assay requiring laboratory support; also independent of the "
+                         "label (V = 0.0014)"),
+                        ("Typhidot Test", "Laboratory investigation",
+                         "Serological assay requiring laboratory support; also independent of the "
+                         "label (V = 0.0065)"),
+                        ("Typhoid Vaccination Status", "Not a presenting sign",
+                         "History of prophylaxis rather than of disease or presentation"),
+                        ("Gastrointestinal Symptoms", "Incomplete recording",
+                         "Absent for 24.96% of records, which would require an optional field at "
+                         "entry"),
+                        ("Ongoing Infection in Society", "Not a patient attribute",
+                         "Describes community transmission rather than the individual patient; "
+                         "absent for 24.70% of records"),
+                    ]
+                ]
+            )
+        )
+    )
+    p.append(
+        "In addition, `Neurological Symptoms` was recoded as a binary `Headache` indicator, so "
+        "that the attribute carries the symptom named in Objective 1 rather than a mixture of "
+        "neurological presentations. A recorded value of *Headache* maps to *Yes*; *Confusion*, "
+        "*Delirium* and an absent value map to *No*. No discriminative information is lost in "
+        "the recoding, because there was none to lose: the probability of typhoid is 0.2972 "
+        "given *Confusion*, 0.3023 given *Delirium*, 0.3085 given *Headache* and 0.2998 where "
+        "the field is blank, against an overall rate of 0.3019.\n"
+    )
+    p.append(
+        "Thirteen attributes therefore form the modelling feature space — two numeric (`Age` and "
+        "`Fever Duration (Days)`) and eleven categorical (`Gender`, `Location`, `Socioeconomic "
+        "Status`, `Water Source Type`, `Sanitation Facilities`, `Hand Hygiene`, `Consumption of "
+        "Street Food`, `Weather Condition`, `Skin Manifestations`, `Headache` and `Previous "
+        "History of Typhoid`). Every one is obtainable by history and examination without "
+        "laboratory support, and every one is complete for all 31,087 records, so the deployed "
+        "data entry form carries no optional field and no entry the clinician skips can move the "
+        "result.\n"
+    )
+    p.append(
+        "The pre-review feature space of twenty attributes was retained as a comparator, and is "
+        "reported alongside the deployed policy throughout this chapter so that the cost of the "
+        "reduction can be read directly rather than assumed.\n"
+    )
+
     # ---- 4.3 ---------------------------------------------------------------
     p.append("## 4.3 Kernel comparison\n")
     p.append(
@@ -135,10 +214,10 @@ def main():
         "family of decision boundaries suited the data before committing to an exhaustive search.\n"
     )
     kb = csv(REPORTS / "kernel_comparison_binary.csv")
-    p.append("**Table 4.3: Kernel comparison, binary diagnostic model**\n")
+    p.append("**Table 4.4: Kernel comparison, binary diagnostic model**\n")
     p.append(table(kb))
     km = csv(REPORTS / "kernel_comparison_multiclass.csv")
-    p.append("**Table 4.4: Kernel comparison, four-class severity model**\n")
+    p.append("**Table 4.5: Kernel comparison, four-class severity model**\n")
     p.append(table(km))
     if kb is not None and not kb.empty:
         best = kb.loc[kb["macro_f1"].idxmax()]
@@ -180,7 +259,7 @@ def main():
     # ---- 4.5 ---------------------------------------------------------------
     p.append("## 4.5 Performance of the optimised models\n")
     m = csv(REPORTS / "table_4_2_metrics.csv")
-    p.append("**Table 4.5: Performance of the optimised models on the held-out test partition**\n")
+    p.append("**Table 4.6: Performance of the optimised models on the held-out test partition**\n")
     p.append(table(m))
     if binary:
         p.append(
@@ -209,16 +288,35 @@ def main():
             else ""
         )
     perclass = csv(REPORTS / "table_4_3_perclass.csv")
-    p.append("**Table 4.6: Per-class precision, recall and F1**\n")
+    p.append("**Table 4.7: Per-class precision, recall and F1**\n")
     p.append(table(perclass))
     if multi:
         p.append(
-            f"The four-class model achieved accuracy of **{pct(multi['accuracy'])}** and macro F1 "
-            f"of **{num(multi['macro_f1'])}**. Performance was highly uneven across classes: "
-            "*Normal or No Typhoid* and *Complicated Typhoid* were classified almost perfectly, "
-            "while *Acute Typhoid Fever* and *Relapsing Typhoid* were frequently confused with "
-            "one another. Section 4.7 shows that this pattern is a property of the dataset "
-            "rather than a limitation of the classifier.\n"
+            f"The four-class severity model achieved accuracy of **{pct(multi['accuracy'])}** and "
+            f"macro F1 of **{num(multi['macro_f1'])}**. The gap between the two figures is the "
+            "result of note: a high accuracy on a heavily imbalanced target is carried by the "
+            "majority class, and a macro F1 well below it shows that the minority severity "
+            "classes are not being recovered.\n"
+        )
+        p.append(
+            "This is a direct and expected consequence of the feature reduction described in "
+            "Section 4.2.1, and it is worth stating plainly rather than leaving to be inferred. "
+            "Severity in this dataset is encoded almost entirely in the white blood cell count: "
+            "every record labelled *Complicated Typhoid* has a count above 11,000 cells per "
+            "microlitre and no record of any other class does, so the two ranges do not overlap "
+            "by a single count (Section 4.7). A model given that attribute separates the class "
+            "perfectly; a model restricted to what a clinician can observe without a laboratory "
+            "cannot, because the distinguishing information is a laboratory measurement. The "
+            "distinction between *Acute* and *Relapsing Typhoid* is not encoded in any attribute "
+            "at all, and neither feature space recovers it.\n"
+        )
+        p.append(
+            "The practical reading is that severity stratification is not a point-of-care task "
+            "on this data. The binary diagnostic model, which is the model the objectives "
+            "specify and the deployed system serves by default, is unaffected: it loses 0.03 "
+            "accuracy points to the reduction, as Table 4.12 records. Severity stratification is "
+            "retained as a secondary output, with the limitation above stated in the interface, "
+            "and Chapter Five recommends that it be revisited where haematology is available.\n"
         )
     p.append(
         "Confusion matrices for both models, together with ROC and precision–recall curves for "
@@ -233,7 +331,7 @@ def main():
         "`Location` attribute and the full metric set recomputed within each subgroup.\n"
     )
     sub = csv(REPORTS / "table_4_4_subgroups.csv")
-    p.append("**Table 4.7: Performance by geographic setting**\n")
+    p.append("**Table 4.8: Performance by geographic setting**\n")
     p.append(table(sub))
     if sub is not None and not sub.empty and "macro_f1" in sub.columns:
         b = sub[sub["model"] == "Binary"] if "model" in sub.columns else sub
@@ -257,7 +355,7 @@ def main():
         "attribute and the diagnosis was measured.\n"
     )
     base = csv(REPORTS / "table_4_0_baselines.csv")
-    p.append("**Table 4.8: Reference baselines, binary diagnostic task**\n")
+    p.append("**Table 4.9: Reference baselines, binary diagnostic task**\n")
     p.append(table(base))
     if analysis:
         p.append(
@@ -269,17 +367,26 @@ def main():
             "reproduces almost the entire performance of the optimised model.\n"
         )
     base4 = csv(REPORTS / "table_4_0b_baselines_multiclass.csv")
-    p.append("**Table 4.9: Reference baselines, four-class task**\n")
+    p.append("**Table 4.10: Reference baselines, four-class task**\n")
     p.append(table(base4))
     p.append(
         "A second deterministic rule governs the four-class task: every record labelled "
         "*Complicated Typhoid* has a white blood cell count above 11,000, and no record of any "
-        "other class does. The two ranges do not overlap by a single count, which is why the "
-        "model classifies that class perfectly. A two-rule baseline outperforms the optimised "
-        "four-class SVM on accuracy.\n"
+        "other class does. The two ranges do not overlap by a single count. A two-rule baseline "
+        "on these two attributes alone outperforms the optimised four-class SVM on accuracy.\n"
+    )
+    p.append(
+        "This rule is also the explanation for the severity model's macro F1 reported in "
+        "Section 4.5. The white blood cell count was dropped at supervisory review because it "
+        "requires a haematology laboratory, and it is the only attribute in which severity is "
+        "encoded. The deployed severity model therefore cannot recover *Complicated Typhoid*, "
+        "and the drop in macro F1 relative to the pre-review comparator measures exactly the "
+        "size of that single deterministic rule. The two findings are the same finding seen "
+        "from two directions: what the reduction removes is not clinical signal but the "
+        "dataset's construction.\n"
     )
     assoc = csv(REPORTS / "table_4_6_association.csv")
-    p.append("**Table 4.10: Association between each attribute and the diagnosis**\n")
+    p.append("**Table 4.11: Association between each attribute and the diagnosis**\n")
     p.append(table(assoc))
     p.append(
         "Outside of `Blood Culture Result` (withheld), `Fever Duration (Days)` and "
@@ -290,15 +397,27 @@ def main():
     )
     p.append("### Ablation\n")
     sens = csv(REPORTS / "table_4_5_sensitivity.csv")
-    p.append("**Table 4.11: Feature policy sensitivity and ablation**\n")
+    p.append("**Table 4.12: Feature policy sensitivity and ablation**\n")
     p.append(table(sens))
     if ablation:
         p.append(
             f"With `Fever Duration (Days)` removed, performance collapses to an accuracy of "
             f"**{pct(ablation['accuracy'])}** and a balanced accuracy of "
             f"**{num(ablation['balanced_accuracy'])}** — against a chance floor of 0.5000. The "
-            "remaining nineteen attributes, taken together, therefore carry only marginal "
+            "remaining twelve attributes, taken together, therefore carry only marginal "
             "discriminative information about the diagnosis.\n"
+        )
+        p.append(
+            "One methodological point should be recorded about this ablation. The exhaustive "
+            "grid search of Section 4.4 was attempted on the ablated feature space and did not "
+            "terminate: with `Fever Duration (Days)` removed, the classes are very nearly "
+            "inseparable, and the sequential minimal optimisation solver does not converge at "
+            "the larger regularisation values in the search grid. The ablation model was "
+            "therefore fitted with the kernel identified by the comparison in Table 4.4 at the "
+            "library default regularisation, rather than by search. The failure to converge is "
+            "itself evidence for the conclusion drawn here — a search that cannot separate the "
+            "classes is a search over data that does not separate — and the quantity of "
+            "interest is the level of performance, not its tuning.\n"
         )
     p.append(
         "Taken together, these results establish that the dataset's apparent predictability is "
@@ -347,7 +466,7 @@ def main():
             "ppv": "PPV", "npv": "NPV", "false_negatives": "FN",
             "false_positives": "FP", "referral_rate": "Referral rate",
         })
-        p.append("**Table 4.12: Candidate operating points, binary diagnostic model**\n")
+        p.append("**Table 4.13: Candidate operating points, binary diagnostic model**\n")
         p.append(table(show))
     if thr:
         rec = thr["recommended"]
@@ -382,13 +501,13 @@ def main():
                 "missed_per_1000": "Missed per 1,000",
             })
             p.append(
-                "**Table 4.13: Predictive values projected onto other prevalences**\n"
+                "**Table 4.14: Predictive values projected onto other prevalences**\n"
             )
             p.append(table(show))
         p.append(
             "Sensitivity and specificity are properties of a classifier; positive and negative "
             "predictive value are properties of the setting in which it is used, because they "
-            "depend on how common the disease is among those tested. Table 4.13 is included "
+            "depend on how common the disease is among those tested. Table 4.14 is included "
             "because it is the calculation a deploying clinic needs, and because its result here "
             "is diagnostic in itself: the positive predictive value remains 1.0000 even at a "
             "prevalence of two per cent. For a real diagnostic test that is arithmetically "
@@ -411,7 +530,7 @@ def main():
                 [{"Cut-off": k, "Cases recovered": v} for k, v in hard["recovered_at"].items()]
             )
             p.append(
-                f"**Table 4.14: Recovery of the {hard['n_typhoid_with_zero_fever_duration']} "
+                f"**Table 4.15: Recovery of the {hard['n_typhoid_with_zero_fever_duration']} "
                 "typhoid cases recorded with zero fever duration**\n"
             )
             p.append(table(rows))
@@ -480,7 +599,7 @@ def main():
             }
         )
     if comp:
-        p.append("**Table 4.15: Comparative audit of three public typhoid datasets**\n")
+        p.append("**Table 4.16: Comparative audit of three public typhoid datasets**\n")
         p.append(table(pd.DataFrame(comp)))
     p.append(
         "Each dataset fails the audit, and each fails differently.\n"

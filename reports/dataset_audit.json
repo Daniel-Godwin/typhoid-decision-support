@@ -1,6 +1,6 @@
 {
   "rows": 31087,
-  "columns": 23,
+  "columns": 24,
   "column_names": [
     "Age",
     "Gender",
@@ -24,7 +24,8 @@
     "Previous History of Typhoid",
     "Weather Condition",
     "Ongoing Infection in Society",
-    "Typhoid Status"
+    "Typhoid Status",
+    "Headache"
   ],
   "dtypes": {
     "Age": "int64",
@@ -49,7 +50,8 @@
     "Previous History of Typhoid": "str",
     "Weather Condition": "str",
     "Ongoing Infection in Society": "str",
-    "Typhoid Status": "str"
+    "Typhoid Status": "str",
+    "Headache": "object"
   },
   "duplicates": 0,
   "missing_values": {
@@ -102,7 +104,8 @@
     "Previous History of Typhoid",
     "Weather Condition",
     "Ongoing Infection in Society",
-    "Typhoid Status"
+    "Typhoid Status",
+    "Headache"
   ],
   "excluded_features": [
     "Blood Culture Result",
