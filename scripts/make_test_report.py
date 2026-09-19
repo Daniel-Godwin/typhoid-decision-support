@@ -35,6 +35,8 @@ AREAS = [
     ("12. Production readiness", ["TestProductionReadiness"]),
     ("Dataset integrity", ["test_data.py"]),
     ("Decision-threshold analysis", ["test_threshold.py"]),
+    ("Feature-space integration", ["test_integration.py"]),
+    ("User acceptance pack", ["test_uat_pack.py"]),
 ]
 
 
@@ -125,6 +127,11 @@ def main():
         "tests/test_pipeline.py": "Preprocessing, SMOTENC, encoding, pipeline integrity",
         "tests/test_app.py": "ML reference interface and prediction service",
         "tests/test_webapp.py": "Web application, security, database, deployment readiness",
+        "tests/test_integration.py": (
+            "Agreement between the dataset, the trained artefact, the assessment "
+            "form and the prediction service"
+        ),
+        "tests/test_uat_pack.py": "Reproducibility of the user acceptance test pack",
     }
     for path, group in sorted(by_file.items()):
         p = sum(1 for t in group if t["status"] == "PASSED")

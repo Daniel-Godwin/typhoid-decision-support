@@ -93,6 +93,14 @@
 
     <main class="main" id="main">
       <div class="container">
+        {% if DEPLOYMENT_WARNING %}
+        <div class="alert alert-error mb-5" role="alert">
+          <div>
+            <strong>This deployment is not storing data.</strong>
+            <p>{{ DEPLOYMENT_WARNING }}</p>
+          </div>
+        </div>
+        {% endif %}
         {% block content %}{% endblock %}
       </div>
     </main>

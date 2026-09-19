@@ -1,6 +1,6 @@
 {
   "summary": {
-    "passed": 168
+    "passed": 204
   },
   "tests": [
     {
@@ -191,6 +191,186 @@
     {
       "file": "tests/test_data.py",
       "test": "test_audit_reports_both_target_views",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_deployed_policy_is_the_post_review_feature_space",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Blood Culture Result]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Complications]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Gastrointestinal Symptoms]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Neurological Symptoms]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Ongoing Infection in Society]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Platelet Count]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Typhidot Test]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Typhoid Status]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Typhoid Vaccination Status]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[White Blood Cell Count]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_excluded_attribute_is_not_a_model_input[Widal Test]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_headache_is_derived_from_the_supplied_column",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_no_deployed_attribute_has_a_missing_value",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_artefact_expects_the_deployed_feature_space[binary]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_artefact_expects_the_deployed_feature_space[multiclass]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_form_collects_exactly_the_model_inputs",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_every_field_is_rendered_in_a_group",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Gender]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Location]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Socioeconomic Status]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Water Source Type]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Sanitation Facilities]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Hand Hygiene]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Consumption of Street Food]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Weather Condition]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Skin Manifestations]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Headache]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_offered_options_all_occur_in_the_training_data[Previous History of Typhoid]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_stated_numeric_range_matches_the_training_data[Age]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_stated_numeric_range_matches_the_training_data[Fever Duration (Days)]",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_a_submitted_record_reaches_the_model_unchanged",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_deployed_threshold_matches_the_published_analysis",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_template_filters_are_registered",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_no_deployment_warning_outside_production",
+      "status": "PASSED"
+    },
+    {
+      "file": "tests/test_integration.py",
+      "test": "test_production_on_the_sqlite_fallback_is_announced",
       "status": "PASSED"
     },
     {

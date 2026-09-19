@@ -1,13 +1,13 @@
 # System Testing Report
 
-_Generated 19 September 2026, 06:09 UTC by `python scripts/make_test_report.py`. Regenerate after any change._
+_Generated 18 September 2026, 22:14 UTC by `python scripts/make_test_report.py`. Regenerate after any change._
 
 ## Summary
 
 | Metric | Value |
 |---|---:|
-| Total test cases | 204 |
-| Passed | 204 |
+| Total test cases | 201 |
+| Passed | 201 |
 | Failed | 0 |
 | Skipped | 0 |
 | Pass rate | 100.0% |
@@ -30,7 +30,7 @@ _Generated 19 September 2026, 06:09 UTC by `python scripts/make_test_report.py`.
 | 12 | Production readiness | 13 | 13 | 0 | Pass |
 | — | Dataset integrity | 15 | 15 | 0 | Pass |
 | — | Decision-threshold analysis | 12 | 12 | 0 | Pass |
-| — | Feature-space integration | 36 | 36 | 0 | Pass |
+| — | Feature-space integration | 33 | 33 | 0 | Pass |
 | — | User acceptance pack | 24 | 24 | 0 | Pass |
 
 ## Component coverage
@@ -39,7 +39,7 @@ _Generated 19 September 2026, 06:09 UTC by `python scripts/make_test_report.py`.
 |---|---|---:|---:|
 | `tests/test_app.py` | ML reference interface and prediction service | 23 | 23 |
 | `tests/test_data.py` | Dataset loading, target construction, feature policy | 15 | 15 |
-| `tests/test_integration.py` | Agreement between the dataset, the trained artefact, the assessment form and the prediction service | 36 | 36 |
+| `tests/test_integration.py` | Agreement between the dataset, the trained artefact, the assessment form and the prediction service | 33 | 33 |
 | `tests/test_pipeline.py` | Preprocessing, SMOTENC, encoding, pipeline integrity | 10 | 10 |
 | `tests/test_threshold.py` | Threshold sweep, operating points, calibration, prevalence adjustment | 12 | 12 |
 | `tests/test_uat_pack.py` | Reproducibility of the user acceptance test pack | 24 | 24 |

@@ -5,8 +5,9 @@
 <div class="page-head">
   <div>
     <h1>New assessment</h1>
-    <p class="lede">Complete the patient's presentation. Options are limited to values
-       present in the training data, so an unrecognised entry can never reach the model.</p>
+    <p class="lede">Complete the patient's presentation below. The model reads only the
+       thirteen attributes in <em>Patient presentation</em>; options are limited to values
+       present in the training data, so an unrecognised entry can never reach it.</p>
   </div>
 </div>
 
@@ -30,7 +31,7 @@
     <div class="card-body">
       <div class="form-grid">
         <div class="field">
-          <label for="patient_id">Patient record</label>
+          <label for="patient_id">Patient record <span class="muted">(optional)</span></label>
           <select name="patient_id" id="patient_id">
             <option value="">Not linked to a patient record</option>
             {% for p in patients %}
@@ -39,7 +40,17 @@
             </option>
             {% endfor %}
           </select>
-          <span class="hint">Optional. Linking allows the result to appear in the patient's history.</span>
+          <span class="hint">
+            {% if patients %}
+              Filing only. Nothing here reaches the model; it files the result in that
+              patient's history. <a href="{{ url_for('clinician.patient_new') }}">Register a new patient</a>.
+            {% else %}
+              You have not registered any patients yet, so there is nothing to link to.
+              Leave this as it is and the assessment will still run.
+              <a href="{{ url_for('clinician.patient_new') }}">Register a patient</a> first if you
+              want the result filed against one.
+            {% endif %}
+          </span>
         </div>
         <div class="field">
           <label for="target_mode">Model</label>

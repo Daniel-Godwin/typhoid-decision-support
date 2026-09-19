@@ -190,6 +190,7 @@ def _register_context(app: Flask) -> None:
             "ENV_NAME": app.config.get("ENV_NAME"),
             "Role": Role,
             "now": datetime.now(timezone.utc),
+            "DEPLOYMENT_WARNING": _deployment_warning(app),
         }
 
     @app.template_filter("pct")
@@ -207,3 +208,29 @@ def _register_context(app: Flask) -> None:
             return value.strftime(fmt)
         except AttributeError:
             return str(value)
+
+
+def _deployment_warning(app: Flask) -> str | None:
+    """A misconfiguration the user must be told about, on every page.
+
+    A production deploy with no `DATABASE_URL` falls back to a SQLite file on
+    an ephemeral disk. The application starts and looks healthy, but every
+    restart empties it: registered patients disappear, and a signed-in user is
+    returned to the sign-in page the moment the session's account no longer
+    exists. That presents as a mysterious sign-out rather than as the
+    configuration error it is, so it is stated plainly in the interface as
+    well as in `/health`.
+    """
+    if app.config.get("ENV_NAME") != "production":
+        return None
+    try:
+        if db.engine.dialect.name != "sqlite":
+            return None
+    except Exception:  # pragma: no cover - engine not yet available
+        return None
+    return (
+        "DATABASE_URL is not set, so the application has fallen back to a temporary "
+        "local database. Accounts, patients and assessments are erased whenever the "
+        "service restarts, and you will be signed out without warning. Set "
+        "DATABASE_URL on the hosting platform and redeploy before using the system."
+    )
